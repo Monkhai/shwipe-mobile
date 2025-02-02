@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "684959533733",
+    "project_id": "shwipe-bda3b",
+    "storage_bucket": "shwipe-bda3b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684959533733:android:0c311fcde1b5b02a291b4c",
+        "android_client_info": {
+          "package_name": "com.shwipe.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684959533733-7afrcjravcbbmugtb1imqn6qum6to0ec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shwipe.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAErkWWeWvhDXgLDAR_DQx2mPNMqbER11w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "684959533733-o37cge6o82oupn2basjsula956821c3v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shwipe.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
