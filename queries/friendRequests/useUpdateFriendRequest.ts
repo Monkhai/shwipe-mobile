@@ -17,6 +17,7 @@ export function useUpdateFriendRequest() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeystore.sentFriendRequests })
       queryClient.invalidateQueries({ queryKey: queryKeystore.receivedFriendRequests })
+      queryClient.invalidateQueries({ queryKey: queryKeystore.friends })
     },
   })
 }

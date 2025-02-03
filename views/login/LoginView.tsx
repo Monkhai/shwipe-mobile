@@ -9,21 +9,26 @@ import { Image, Pressable, View } from 'react-native'
 const SIGN_IN_WITH_GOOGLE_IMAGE = Image.resolveAssetSource(signInWIthGoogle)
 
 async function onGoogleButtonPress() {
-  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
-  const signInResult = await GoogleSignin.signIn()
+  try {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+    const signInResult = await GoogleSignin.signIn()
 
-  if (!signInResult.data) {
-    throw new Error('No data found')
+    if (!signInResult.data) {
+      throw new Error('No data found')
+    }
+    const idToken = signInResult.data.idToken
+    if (!idToken) {
+      throw new Error('No ID token found')
+    }
+
+    const googleCredential = auth.GoogleAuthProvider.credential(signInResult.data.idToken)
+
+    await auth().signInWithCredential(googleCredential)
+  } catch (error) {
+    console.log('error', error)
   }
-  const idToken = signInResult.data.idToken
-  if (!idToken) {
-    throw new Error('No ID token found')
-  }
-
-  const googleCredential = auth.GoogleAuthProvider.credential(signInResult.data.idToken)
-
-  return auth().signInWithCredential(googleCredential)
 }
+
 GoogleSignin.configure({
   webClientId: '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com',
 })
@@ -31,7 +36,7 @@ GoogleSignin.configure({
 export default function LoginView() {
   const [user] = useAuth()
   if (user) {
-    return <Redirect href="/(auth)/home" />
+    return <Redirect href="/(auth)/(tabs)/friends" />
   }
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

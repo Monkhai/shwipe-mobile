@@ -4,21 +4,40 @@ import { Provider } from 'jotai'
 import { store } from '@/jotai/authAtom'
 import QueryProvider from '@/providers/QueryProvider'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { setNotificationHandler } from 'expo-notifications'
+import { BaseNotificationData, NotificationType } from '@/providers/NotificationProvider/notfiicationTypes'
+import { NotificationProvider } from '@/providers/NotificationProvider/NotificationsProvider'
+
+const invisibleNotificationTypes = [NotificationType.FRIEND_REQUEST_SENT, NotificationType.FRIEND_REQUEST_UPDATED]
+
+setNotificationHandler({
+  handleNotification: async n => {
+    const data = n.request.content.data as BaseNotificationData
+    const shouldShow = !invisibleNotificationTypes.includes(data.type)
+    return {
+      shouldShowAlert: shouldShow,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }
+  },
+})
 
 export default function RootLayout() {
   return (
-    <Provider store={store}>
-      <QueryProvider>
-        <AuthProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack screenOptions={{ animation: 'fade' }}>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="login" />
-            </Stack>
-          </GestureHandlerRootView>
-        </AuthProvider>
-      </QueryProvider>
-    </Provider>
+    <NotificationProvider>
+      <Provider store={store}>
+        <QueryProvider>
+          <AuthProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <Stack screenOptions={{ animation: 'fade' }}>
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="login" />
+              </Stack>
+            </GestureHandlerRootView>
+          </AuthProvider>
+        </QueryProvider>
+      </Provider>
+    </NotificationProvider>
   )
 }

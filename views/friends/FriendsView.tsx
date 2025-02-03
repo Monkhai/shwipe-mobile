@@ -8,38 +8,26 @@ import { useGetAllUsers } from '@/queries/users/useGetAllUsers'
 import { router } from 'expo-router'
 import { useAtom } from 'jotai'
 import React from 'react'
-import { FlatList, Image, Pressable, Text, View } from 'react-native'
+import { Button, FlatList, Image, Pressable, Text, View } from 'react-native'
 
 export default function FriendsView() {
   const [user] = useAuth()
   const [, setUpdateFriendRequest] = useAtom(updateFriendRequestAtom)
   const { data: allUsers } = useGetAllUsers()
-  const { data: friends } = useGetUserFriends()
-  const { data: sentRequests } = useGetSentFriendRequests()
-  const { data: receivedRequests } = useGetReceivedFriendRequests()
+  const { data: friends, refetch: refetchFriends } = useGetUserFriends()
+  const { data: sentRequests, refetch: refetchSentRequests } = useGetSentFriendRequests()
+  const { data: receivedRequests, refetch: refetchReceivedRequests } = useGetReceivedFriendRequests()
   const { mutate: sendFriendRequest } = useSendFriendRequest()
+
+  function refresh() {
+    refetchFriends()
+    refetchSentRequests()
+    refetchReceivedRequests()
+  }
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-      {user && (
-        <>
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Me</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 10,
-              backgroundColor: 'white',
-              width: '100%',
-              borderRadius: 8,
-              padding: 10,
-            }}
-          >
-            <Image source={{ uri: user.photoURL! }} style={{ width: 50, height: 50, borderRadius: 50 }} />
-            <Text>{user.displayName}</Text>
-          </View>
-        </>
-      )}
+      <Button title="Refresh" onPress={refresh} />
       <View style={{ flex: 1, width: '100%' }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>All Users</Text>
         <FlatList
