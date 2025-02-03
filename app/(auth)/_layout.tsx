@@ -1,11 +1,26 @@
-import { Tabs } from 'expo-router'
+import { Stack, Tabs } from 'expo-router'
 import React from 'react'
 
 export default function _layout() {
   return (
-    <Tabs screenOptions={{ animation: 'fade' }}>
-      <Tabs.Screen name="home" />
-      <Tabs.Screen name="friends" />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="session/[session_id]" />
+      <Stack.Screen
+        name="update-friend-request"
+        options={{
+          contentStyle: {
+            height: '100%',
+          },
+
+          presentation: 'formSheet',
+          gestureDirection: 'vertical',
+          animation: 'slide_from_bottom',
+          sheetGrabberVisible: true,
+          sheetInitialDetentIndex: 0,
+          sheetAllowedDetents: [0.5],
+        }}
+      />
+    </Stack>
   )
 }

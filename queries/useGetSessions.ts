@@ -31,6 +31,6 @@ export function useGetSessions() {
     queryFn: () => getSessions(user),
     enabled: !!user,
     refetchOnWindowFocus: true,
-    // refetchInterval: 1000 * 60, // 2 minute
+    refetchInterval: 1000 * 60 * 1, // 1 minute
   })
 }

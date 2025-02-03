@@ -3,9 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { queryKeystore } from '../queryKeystore'
 import { Friend, GET_FRIENDS_CFN } from './friendsTypes'
 
-type GetUserFriendshipsResponse = Array<Friend>
-
-const fn = functions().httpsCallable<null, GetUserFriendshipsResponse>(GET_FRIENDS_CFN)
+const fn = functions().httpsCallable<null, Array<Friend>>(GET_FRIENDS_CFN)
 
 async function getUserFriends() {
   const res = await fn()
