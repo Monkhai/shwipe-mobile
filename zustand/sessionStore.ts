@@ -1,16 +1,16 @@
+import { User } from '@/queries/users/userTypes'
 import { Restaurant } from '@/wsHandler/restaurantTypes'
-import { SAFE_SessionUser } from '@/wsHandler/serverMessagesTypes'
 import { create } from 'zustand'
 
 type SessionStore = {
   sessionId: string | null
   restaurants?: Array<Restaurant>
-  users: Array<SAFE_SessionUser>
+  users: Array<User>
   isSessionStarted: boolean
 
   __setSessionId: (sessionId: string | null) => void
   __setRestaurants: (restaurants: Array<Restaurant>) => void
-  __setUsers: (users: Array<SAFE_SessionUser>) => void
+  __setUsers: (users: Array<User>) => void
   __setIsSessionStarted: (isSessionStarted: boolean) => void
   __resetAll: () => void
 }

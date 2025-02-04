@@ -30,6 +30,10 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
   isOpen: false,
 
   connectToWebSocket: () => {
+    if (get().__ws) {
+      console.log('WebSocket already connected')
+      return
+    }
     const ws = new WebsocketHandler({
       onError(error) {
         console.error(error)
@@ -110,7 +114,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
               const sessionStore = useSessionStore.getState()
               sessionStore.__resetAll()
               console.log('Session closed, redirecting to home')
-              router.dismissTo('/(auth)/home')
+              router.dismissTo('/(auth)/(tabs)/home')
               break
             }
             case ServerMessageType.REMOVED_FROM_SESSION_MESSAGE_TYPE: {

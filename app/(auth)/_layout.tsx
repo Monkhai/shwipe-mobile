@@ -21,6 +21,21 @@ export default function _layout() {
           sheetAllowedDetents: [0.5],
         }}
       />
+      <Stack.Screen
+        name="invite-friend"
+        options={{
+          contentStyle: {
+            height: '100%',
+          },
+
+          presentation: 'formSheet',
+          gestureDirection: 'vertical',
+          animation: 'slide_from_bottom',
+          sheetGrabberVisible: true,
+          sheetInitialDetentIndex: 0,
+          sheetAllowedDetents: [0.5],
+        }}
+      />
     </Stack>
   )
 }

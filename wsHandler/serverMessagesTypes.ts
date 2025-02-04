@@ -1,3 +1,4 @@
+import { User } from '@/queries/users/userTypes'
 import { Restaurant } from './restaurantTypes'
 
 export enum ServerMessageType {
@@ -11,11 +12,6 @@ export enum ServerMessageType {
   REMOVED_FROM_SESSION_MESSAGE_TYPE = 'removed_from_session',
 }
 
-export interface SAFE_SessionUser {
-  photo_url: string
-  user_name: string
-}
-
 export interface BaseServerMessage {
   type: ServerMessageType
 }
@@ -23,14 +19,14 @@ export interface BaseServerMessage {
 export interface SessionStartMessage extends BaseServerMessage {
   type: ServerMessageType.SESSION_START_MESSAGE_TYPE
   session_id: string
-  users: Array<SAFE_SessionUser>
+  users: Array<User>
   restaurants: Array<Restaurant>
 }
 
 export interface SessionCreatedMessage extends BaseServerMessage {
   type: ServerMessageType.SESSION_CREATED_MESSAGE_TYPE
   session_id: string
-  users: Array<SAFE_SessionUser>
+  users: Array<User>
 }
 
 export interface ServerErrorMessage extends BaseServerMessage {
@@ -46,14 +42,14 @@ export interface RestaurantUpdateMessage extends BaseServerMessage {
 export interface JointSessionMessage extends BaseServerMessage {
   type: ServerMessageType.JOINT_SESSION_MESSAGE_TYPE
   session_id: string
-  users: Array<SAFE_SessionUser>
+  users: Array<User>
   restaurants: Array<Restaurant>
   is_started: boolean
 }
 
 export interface UpdateUserListMessage extends BaseServerMessage {
   type: ServerMessageType.UPDATE_USER_LIST_MESSAGE_TYPE
-  users: Array<SAFE_SessionUser>
+  users: Array<User>
   session_id: string
 }
 

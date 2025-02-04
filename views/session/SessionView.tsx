@@ -1,19 +1,22 @@
-import { View, Text, Button, Image, Pressable, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import { ClientMessageType, LeaveSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { useSessionStore } from '@/zustand/sessionStore'
-import { Stack, useLocalSearchParams } from 'expo-router'
 import { useWebsocketStore } from '@/zustand/websocketStore'
-import { ClientMessageType, UpdateIndexMessage, UnsignedBaseClientMessage, LeaveSessionMessage } from '@/wsHandler/clientMessagesTypes'
+import { Link, Stack } from 'expo-router'
+import React from 'react'
+import { Button, FlatList, Image, Pressable, Text, View } from 'react-native'
 import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function SessionView() {
   const { isSessionStarted, users, sessionId } = useSessionStore()
   const { startSession, sendMessage } = useWebsocketStore()
+  const insets = useSafeAreaInsets()
 
   return (
     <>
       <Stack.Screen
         options={{
+          headerShown: true,
           headerLeft: () => {
             return (
               <Button
@@ -31,89 +34,42 @@ export default function SessionView() {
           },
         }}
       />
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {!isSessionStarted ? <Button title="start session" onPress={startSession} /> : <Text>Session Started</Text>}
-        <FlatList
-          data={users}
-          renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: '#ddd',
-                  marginRight: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                {item.photo_url ? (
-                  <Image source={{ uri: item.photo_url }} style={{ width: 40, height: 40, borderRadius: 20 }} />
-                ) : (
-                  <Text style={{ color: '#666' }}>{item.user_name?.charAt(0)?.toUpperCase() || '?'}</Text>
-                )}
-              </View>
-              <Text>{item.user_name || 'Anonymous'}</Text>
-            </View>
-          )}
-        />
+      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', paddingBottom: insets.bottom + 40 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+          <FlatList
+            style={{ width: '100%' }}
+            contentContainerStyle={{ maxHeight: 60 }}
+            horizontal
+            data={users}
+            renderItem={({ item: user }) => {
+              return (
+                <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                      backgroundColor: '#ddd',
+                      marginRight: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Image source={{ uri: user.photo_url }} style={{ width: 50, height: 50, borderRadius: 50 }} />
+                  </View>
+                </View>
+              )
+            }}
+          />
+          <Link asChild href="/(auth)/invite-friend">
+            <Pressable>
+              <Text>Invite Friend</Text>
+            </Pressable>
+          </Link>
+        </View>
         <RestaurantPicker />
+        {!isSessionStarted ? <Button title="start session" onPress={startSession} /> : <Text>Session Started</Text>}
       </View>
     </>
-  )
-}
-
-function RestaurantView() {
-  const [restaurantIndex, setRestaurantIndex] = useState(0)
-  const { session_id } = useLocalSearchParams<{ session_id: string }>()
-  const { restaurants, isSessionStarted } = useSessionStore()
-  const { sendMessage } = useWebsocketStore()
-  if (!restaurants || restaurants.length === 0 || !isSessionStarted) return null
-
-  const restaurant = restaurants[restaurantIndex]
-  const link = `${restaurant.photos[0]}&key=AIzaSyALFutkrFeGGS8jR_HVgO1xUqrlJ-_ZZm4`
-
-  function handlePress() {
-    setRestaurantIndex(prev => prev + 1)
-    const updateIndexMessage: UnsignedBaseClientMessage<UpdateIndexMessage> = {
-      type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE,
-      index: restaurantIndex + 1,
-      session_id,
-    }
-    sendMessage(updateIndexMessage)
-  }
-
-  return (
-    <View style={{ position: 'relative' }}>
-      <Text>{restaurants[restaurantIndex].name}</Text>
-      <View style={{ width: '100%', alignItems: 'center' }}>
-        <Image source={{ uri: link }} width={200} height={300} style={{ borderRadius: 10 }} />
-      </View>
-      <View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
-          <Pressable
-            onPress={handlePress}
-            style={{
-              backgroundColor: 'red',
-              padding: 20,
-              borderRadius: 8,
-            }}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>No</Text>
-          </Pressable>
-          <Pressable
-            onPress={handlePress}
-            style={{
-              backgroundColor: 'green',
-              padding: 20,
-              borderRadius: 8,
-            }}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Yes</Text>
-          </Pressable>
-        </View>
-      </View>
-    </View>
   )
 }

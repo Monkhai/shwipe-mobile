@@ -3,7 +3,10 @@ import * as Notifications from 'expo-notifications'
 import React, { useEffect } from 'react'
 
 import { queryClient } from '../QueryProvider'
-import { BaseNotificationData, NotificationType } from './notfiicationTypes'
+import { BaseNotificationData, NotificationType, SessionInvitationNotificationData } from './notfiicationTypes'
+import { useWebsocketStore } from '@/zustand/websocketStore'
+import { useSessionStore } from '@/zustand/sessionStore'
+import { ClientMessageType, JoinSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -30,6 +33,10 @@ async function handleNotification(notification: Notifications.Notification) {
       await invalidateQueries()
       break
     }
+    case NotificationType.SESSION_INVITATION: {
+      await invalidateQueries()
+      break
+    }
     default: {
       console.log('Unknown notification type', data.type)
       break
@@ -47,6 +54,23 @@ async function handleResponse(response: Notifications.NotificationResponse) {
     }
     case NotificationType.FRIEND_REQUEST_UPDATED: {
       invalidateQueries()
+      break
+    }
+    case NotificationType.SESSION_INVITATION: {
+      const { sessionId } = data as SessionInvitationNotificationData
+      if (!sessionId) {
+        console.log('No session id found')
+        return
+      }
+      const { sendMessage, connectToWebSocket } = useWebsocketStore.getState()
+      connectToWebSocket()
+
+      const joinSessionMessage: UnsignedBaseClientMessage<JoinSessionMessage> = {
+        type: ClientMessageType.JOIN_SESSION_MESSAGE_TYPE,
+        session_id: sessionId,
+      }
+      console.log('Sending join session message', joinSessionMessage)
+      sendMessage(joinSessionMessage)
       break
     }
     default: {
