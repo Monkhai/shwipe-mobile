@@ -2,6 +2,8 @@ import { User } from '@/queries/users/userTypes'
 import { Restaurant } from './restaurantTypes'
 
 export enum ServerMessageType {
+  LOADING_CONNECTION_MESSAGE_TYPE = 'loading_connection',
+  CONNECTION_ESTABLISHED_MESSAGE_TYPE = 'connection_established',
   ERROR_MESSAGE_TYPE = 'error',
   SESSION_START_MESSAGE_TYPE = 'session_start',
   SESSION_CREATED_MESSAGE_TYPE = 'session_create',
@@ -59,4 +61,12 @@ export interface SessionClosedMessage extends BaseServerMessage {
 
 export interface RemovedFromSessionMessage extends BaseServerMessage {
   type: ServerMessageType.REMOVED_FROM_SESSION_MESSAGE_TYPE
+}
+
+export interface LoadingConnectionMessage extends BaseServerMessage {
+  type: ServerMessageType.LOADING_CONNECTION_MESSAGE_TYPE
+}
+
+export interface ConnectionEstablishedMessage extends BaseServerMessage {
+  type: ServerMessageType.CONNECTION_ESTABLISHED_MESSAGE_TYPE
 }

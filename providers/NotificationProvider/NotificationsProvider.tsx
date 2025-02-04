@@ -4,9 +4,10 @@ import React, { useEffect } from 'react'
 
 import { queryClient } from '../QueryProvider'
 import { BaseNotificationData, NotificationType, SessionInvitationNotificationData } from './notfiicationTypes'
-import { useWebsocketStore } from '@/zustand/websocketStore'
+import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { ClientMessageType, JoinSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import { sleep } from '@/utils/sleep'
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -65,12 +66,24 @@ async function handleResponse(response: Notifications.NotificationResponse) {
       const { sendMessage, connectToWebSocket } = useWebsocketStore.getState()
       connectToWebSocket()
 
-      const joinSessionMessage: UnsignedBaseClientMessage<JoinSessionMessage> = {
-        type: ClientMessageType.JOIN_SESSION_MESSAGE_TYPE,
-        session_id: sessionId,
+      let maxTries = 10
+      for (let tries = 0; tries < maxTries; tries++) {
+        const connectionState = useWebsocketStore.getState().connectionState
+        const sessionIdFromStore = useSessionStore.getState().sessionId
+        if (sessionIdFromStore) {
+          break
+        }
+
+        if (connectionState === ConnectionState.CONNECTED) {
+          const joinSessionMessage: UnsignedBaseClientMessage<JoinSessionMessage> = {
+            type: ClientMessageType.JOIN_SESSION_MESSAGE_TYPE,
+            session_id: sessionId,
+          }
+          console.log('Sending join session message', joinSessionMessage)
+          sendMessage(joinSessionMessage)
+        }
+        await sleep(3)
       }
-      console.log('Sending join session message', joinSessionMessage)
-      sendMessage(joinSessionMessage)
       break
     }
     default: {

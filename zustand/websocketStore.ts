@@ -2,23 +2,28 @@ import { BaseClientMessage, ClientMessageType, StartSessionMessage, UnsignedBase
 import {
   BaseServerMessage,
   JointSessionMessage,
-  RemovedFromSessionMessage,
   RestaurantUpdateMessage,
   ServerErrorMessage,
   ServerMessageType,
-  SessionClosedMessage,
   SessionCreatedMessage,
   SessionStartMessage,
   UpdateUserListMessage,
 } from '@/wsHandler/serverMessagesTypes'
 import { WebsocketHandler } from '@/wsHandler/websocketHandler'
+import { router } from 'expo-router'
 import { create } from 'zustand'
 import { useSessionStore } from './sessionStore'
-import { router } from 'expo-router'
+
+export enum ConnectionState {
+  LOADING = 'loading',
+  CONNECTED = 'connected',
+  DISCONNECTED = 'disconnected',
+}
 
 type WebSocketStore = {
   __ws: WebsocketHandler | null
   isOpen: boolean
+  connectionState: ConnectionState
 
   connectToWebSocket: () => void
   sendMessage: (message: UnsignedBaseClientMessage<BaseClientMessage>) => void
@@ -28,6 +33,7 @@ type WebSocketStore = {
 export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
   __ws: null,
   isOpen: false,
+  connectionState: ConnectionState.DISCONNECTED,
 
   connectToWebSocket: () => {
     if (get().__ws) {
@@ -37,6 +43,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
     const ws = new WebsocketHandler({
       onError(error) {
         console.error(error)
+        set({ connectionState: ConnectionState.DISCONNECTED })
         return
       },
       onOpen() {
@@ -46,7 +53,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
       },
       onClose() {
         console.log('WebSocket disconnected')
-        set({ isOpen: false, __ws: null })
+        set({ isOpen: false, __ws: null, connectionState: ConnectionState.DISCONNECTED })
         const sessionStore = useSessionStore.getState()
         sessionStore.__resetAll()
         router.dismissTo('/home')
@@ -60,6 +67,14 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
           console.log('message', message.type)
 
           switch (message.type) {
+            case ServerMessageType.LOADING_CONNECTION_MESSAGE_TYPE: {
+              set({ connectionState: ConnectionState.LOADING })
+              break
+            }
+            case ServerMessageType.CONNECTION_ESTABLISHED_MESSAGE_TYPE: {
+              set({ connectionState: ConnectionState.CONNECTED })
+              break
+            }
             case ServerMessageType.ERROR_MESSAGE_TYPE: {
               const errorMessage = message as ServerErrorMessage
               console.log('Error message', errorMessage.error)
