@@ -111,14 +111,13 @@ function ConnectionStatusIndicator() {
   }, [connectionState])
 
   const dotStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      opacity.value,
-      [1, 0.5],
-      [
-        connectionState === ConnectionState.CONNECTED ? colors[theme].success : colors[theme].danger,
-        connectionState === ConnectionState.CONNECTED ? colors[theme].success + '80' : colors[theme].danger + '80',
-      ]
-    )
+    const color =
+      connectionState === ConnectionState.CONNECTED
+        ? colors[theme].success
+        : connectionState === ConnectionState.LOADING
+        ? colors[theme].warning
+        : colors[theme].danger
+    const backgroundColor = interpolateColor(opacity.value, [1, 0.5], [color, color + '80'])
 
     return {
       width: 12,
