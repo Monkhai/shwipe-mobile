@@ -5,6 +5,7 @@ export enum ClientMessageType {
   UPDATE_LOCATION_MESSAGE_TYPE = 'update_location',
   START_SESSION_MESSAGE_TYPE = 'start_session',
   CREATE_SESSION_MESSAGE_TYPE = 'create_session',
+  CREATE_SESSION_WITH_FRIENDS_MESSAGE_TYPE = 'create_session_with_friends',
   JOIN_SESSION_MESSAGE_TYPE = 'join_session',
   LEAVE_SESSION_MESSAGE_TYPE = 'leave_session',
 }
@@ -34,6 +35,11 @@ export interface StartSessionMessage extends BaseClientMessage {
 
 export interface CreateSessionMessage extends BaseClientMessage {
   type: ClientMessageType.CREATE_SESSION_MESSAGE_TYPE
+}
+
+export interface CreateSessionWithFriendsMessage extends BaseClientMessage {
+  type: ClientMessageType.CREATE_SESSION_WITH_FRIENDS_MESSAGE_TYPE
+  friend_ids: string[]
 }
 
 export interface JoinSessionMessage extends BaseClientMessage {

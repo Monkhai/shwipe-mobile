@@ -42,8 +42,15 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
     }
     const ws = new WebsocketHandler({
       onError(error) {
-        console.error(error)
-        set({ connectionState: ConnectionState.DISCONNECTED })
+        if (error instanceof Error) {
+          if (error.message === "The operation couldn't be completed. Connection refused") {
+            console.log('Connection refused')
+            const currentConnectionState = get().connectionState
+            if (currentConnectionState !== ConnectionState.DISCONNECTED) {
+              set({ connectionState: ConnectionState.DISCONNECTED })
+            }
+          }
+        }
         return
       },
       onOpen() {
@@ -52,7 +59,6 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
         return
       },
       onClose() {
-        console.log('WebSocket disconnected')
         set({ isOpen: false, __ws: null, connectionState: ConnectionState.DISCONNECTED })
         const sessionStore = useSessionStore.getState()
         sessionStore.__resetAll()

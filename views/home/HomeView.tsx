@@ -1,68 +1,168 @@
-import { useGetSessions } from '@/queries/useGetSessions'
-import { ClientMessageType, CreateSessionMessage, JoinSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
-import { useWebsocketStore } from '@/zustand/websocketStore'
-import React from 'react'
-import { Button, FlatList, Pressable, Text, View } from 'react-native'
+import { GeneralButton, PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
+import { ClientMessageType, CreateSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import { useWebsocketStore, ConnectionState } from '@/zustand/websocketStore'
+import React, { useCallback } from 'react'
+import { View, useColorScheme, ScrollView } from 'react-native'
+import Animated, { useAnimatedStyle, withRepeat, withSpring, withTiming, useSharedValue, interpolateColor } from 'react-native-reanimated'
+import UIText from '@/components/ui/UIText'
+import { colors } from '@/constants/colors'
+import FriendsList from '@/components/friends/FriendsList/FriendsList'
+import { sleep } from '@/utils/sleep'
 
 export default function HomeView() {
-  const { connectToWebSocket, isOpen, sendMessage } = useWebsocketStore()
-  const { data, refetch, isRefetching } = useGetSessions()
+  const { sendMessage } = useWebsocketStore()
+
+  const handleCreateSession = () => {
+    const message: UnsignedBaseClientMessage<CreateSessionMessage> = {
+      type: ClientMessageType.CREATE_SESSION_MESSAGE_TYPE,
+    }
+    sendMessage(message)
+  }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <FlatList
-        refreshing={isRefetching}
-        onRefresh={refetch}
-        style={{ width: '100%', paddingVertical: 20 }}
-        data={data ?? []}
-        ListEmptyComponent={
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>No sessions found</Text>
-          </View>
-        }
-        renderItem={({ item }) => {
-          return (
-            <Pressable
-              onPress={() => {
-                const joinSessionMessage: UnsignedBaseClientMessage<JoinSessionMessage> = {
-                  type: ClientMessageType.JOIN_SESSION_MESSAGE_TYPE,
-                  session_id: item,
-                }
-                sendMessage(joinSessionMessage)
-              }}
-              style={{
-                padding: 10,
-                marginHorizontal: 'auto',
-                borderRadius: 8,
-                width: '80%',
-                backgroundColor: 'white',
-              }}
-            >
-              <Text>{item}</Text>
-            </Pressable>
-          )
-        }}
-      />
+    <View style={{ flex: 1 }}>
+      <ConnectionStatusIndicator />
 
-      <View style={{ flex: 1 }}>
-        {!isOpen ? (
-          <Button
-            onPress={() => {
-              connectToWebSocket()
-            }}
-            title="Connect"
-          />
-        ) : (
-          <Button
-            title="Create Session"
-            onPress={() => {
-              sendMessage({
-                type: ClientMessageType.CREATE_SESSION_MESSAGE_TYPE,
-              } as UnsignedBaseClientMessage<CreateSessionMessage>)
-            }}
-          />
-        )}
-      </View>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
+        {/* Welcome Section */}
+        <View style={{ marginBottom: 30 }}>
+          <View style={{ marginBottom: 10 }}>
+            <UIText type="largeTitle">Hey there! 👋</UIText>
+          </View>
+          <View>
+            <UIText type="body" color="secondaryLabel">
+              Ready to find your next favorite restaurant?
+            </UIText>
+          </View>
+        </View>
+
+        {/* Quick Actions */}
+        <View style={{ marginBottom: 30 }}>
+          <View style={{ marginBottom: 15 }}>
+            <UIText type="titleEmphasized">Quick Actions</UIText>
+          </View>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View style={{ flex: 1 }}>
+              <PrimaryButton
+                type="primary"
+                textType="bodyEmphasized"
+                text="New Session"
+                onPress={handleCreateSession}
+                style={{ minWidth: undefined }}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <SecondaryButton
+                text="Add Friends"
+                textType="bodyEmphasized"
+                onPress={() => {
+                  alert('Add friends feature coming soon!')
+                }}
+                type="primary"
+                style={{ minWidth: undefined }}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* Friends Section */}
+        <View>
+          <View style={{ marginBottom: 15 }}>
+            <UIText type="titleEmphasized">Your Friends</UIText>
+          </View>
+          <FriendsList />
+        </View>
+      </ScrollView>
     </View>
+  )
+}
+
+function ConnectionStatusIndicator() {
+  const { connectionState, connectToWebSocket } = useWebsocketStore()
+  const theme = useColorScheme() ?? 'light'
+  const scale = useSharedValue(1)
+  const opacity = useSharedValue(0.5)
+
+  const attemptReconnection = useCallback(async () => {
+    let maxTries = 5
+    const state = useWebsocketStore.getState().connectionState
+    while (maxTries > 0 && state === ConnectionState.DISCONNECTED) {
+      console.log(state)
+      await sleep(5)
+      if (state === ConnectionState.DISCONNECTED) {
+        connectToWebSocket()
+      }
+      maxTries--
+    }
+  }, [connectionState])
+
+  React.useEffect(() => {
+    if (connectionState === ConnectionState.DISCONNECTED) {
+      attemptReconnection()
+    }
+
+    if (connectionState !== ConnectionState.DISCONNECTED) {
+      scale.value = withRepeat(withTiming(1.2, { duration: 1000 }), -1, true)
+      opacity.value = withRepeat(withTiming(1, { duration: 1000 }), -1, true)
+    } else {
+      scale.value = withSpring(1)
+      opacity.value = withSpring(1)
+    }
+  }, [connectionState])
+
+  const dotStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      opacity.value,
+      [1, 0.5],
+      [
+        connectionState === ConnectionState.CONNECTED ? colors[theme].success : colors[theme].danger,
+        connectionState === ConnectionState.CONNECTED ? colors[theme].success + '80' : colors[theme].danger + '80',
+      ]
+    )
+
+    return {
+      width: 12,
+      height: 12,
+      borderRadius: 6,
+      backgroundColor,
+      transform: [{ scale: scale.value }],
+    }
+  })
+
+  return (
+    <GeneralButton
+      style={{
+        position: 'absolute',
+        zIndex: 1000,
+        top: 20,
+        right: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 8,
+        gap: 8,
+        paddingRight: 16,
+        borderRadius: 20,
+        backgroundColor: colors[theme].elevatedBackground,
+      }}
+      onPress={() => {
+        if (connectionState === ConnectionState.DISCONNECTED) {
+          connectToWebSocket()
+        }
+      }}
+    >
+      <Animated.View style={dotStyle} />
+      <UIText
+        type="caption"
+        color={
+          connectionState === ConnectionState.CONNECTED ? 'success' : connectionState === ConnectionState.LOADING ? 'warning' : 'danger'
+        }
+      >
+        {connectionState === ConnectionState.CONNECTED
+          ? 'Connected'
+          : connectionState === ConnectionState.LOADING
+          ? 'Connecting...'
+          : 'Disconnected'}
+      </UIText>
+    </GeneralButton>
   )
 }

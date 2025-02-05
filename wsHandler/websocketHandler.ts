@@ -60,6 +60,7 @@ export class WebsocketHandler {
   }
 
   public async sendMessage(message: UnsignedBaseClientMessage<BaseClientMessage>): Promise<void> {
+    console.log('Sending message')
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       throw new Error('WebSocket is not open')
     }
