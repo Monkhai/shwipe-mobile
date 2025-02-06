@@ -21,6 +21,7 @@ export interface UpdateIndexMessage extends BaseClientMessage {
   type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE
   index: number
   session_id: string
+  liked: boolean
 }
 
 export interface UpdateLocationMessage extends BaseClientMessage {

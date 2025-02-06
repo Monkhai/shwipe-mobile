@@ -1,27 +1,35 @@
-import { WhiteHeart } from '@/components/shapes/Heart'
-import { WhiteX } from '@/components/shapes/X'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
-import { colors } from '@/constants/colors'
-import { useSessionStore } from '@/zustand/sessionStore'
+import { Restaurant } from '@/wsHandler/restaurantTypes'
 import React, { useRef, useState } from 'react'
-import { useColorScheme, View } from 'react-native'
-import RestaurantCard, { RestaurantCardRef } from './components/RestaurantCard'
+import { Text, View } from 'react-native'
+import { Pressable } from 'react-native-gesture-handler'
+import { RestaurantCardRef } from './components/RestaurantCard'
+import TEST_RestaurantCard from './components/TEST_RestaurantCard'
+import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import X, { WhiteX } from '@/components/shapes/X'
+import Heart, { WhiteHeart } from '@/components/shapes/Heart'
+import { colors } from '@/constants/colors'
 
-export default function RestaurantPicker() {
-  const theme = useColorScheme() ?? 'light'
-  const { restaurants, isSessionStarted } = useSessionStore()
+export default function TEST_RestaurantPicker() {
   const [restaurantIndex, setRestaurantIndex] = useState(0)
   const cardRefs = useRef<RestaurantCardRef[]>([])
 
-  if (!restaurants || restaurants.length === 0 || !isSessionStarted) return null
-
-  const reversedRestaurants = restaurants.toReversed()
+  const restaurants = Array.from(
+    { length: 20 },
+    (_, index) =>
+      ({
+        id: index,
+        name: `Restaurant ${index + 1}`,
+        photos: [`https://picsum.photos/200/300?random=${index}`],
+        rating: 4.5,
+        price_level: 2,
+      } as Restaurant)
+  )
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
       <View style={{ width: '90%', height: '80%' }}>
-        {reversedRestaurants.map((restaurant, index) => (
-          <RestaurantCard
+        {restaurants.toReversed().map((restaurant, index) => (
+          <TEST_RestaurantCard
             key={index}
             index={index}
             restaurant={restaurant}
@@ -44,7 +52,7 @@ export default function RestaurantPicker() {
             }
           }}
           style={{
-            backgroundColor: colors[theme].danger,
+            backgroundColor: colors.light.danger,
             borderRadius: 100,
             width: 60,
             height: 60,
@@ -64,7 +72,7 @@ export default function RestaurantPicker() {
             }
           }}
           style={{
-            backgroundColor: colors[theme].success,
+            backgroundColor: colors.light.success,
             borderRadius: 100,
             width: 60,
             height: 60,

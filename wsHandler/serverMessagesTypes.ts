@@ -12,6 +12,7 @@ export enum ServerMessageType {
   UPDATE_USER_LIST_MESSAGE_TYPE = 'update_user_list',
   SESSION_CLOSED_MESSAGE_TYPE = 'session_closed',
   REMOVED_FROM_SESSION_MESSAGE_TYPE = 'removed_from_session',
+  MATCH_FOUND_MESSAGE_TYPE = 'match_found',
 }
 
 export interface BaseServerMessage {
@@ -69,4 +70,9 @@ export interface LoadingConnectionMessage extends BaseServerMessage {
 
 export interface ConnectionEstablishedMessage extends BaseServerMessage {
   type: ServerMessageType.CONNECTION_ESTABLISHED_MESSAGE_TYPE
+}
+
+export interface MatchFoundMessage extends BaseServerMessage {
+  type: ServerMessageType.MATCH_FOUND_MESSAGE_TYPE
+  restaurant_index: number
 }

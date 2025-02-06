@@ -30,4 +30,20 @@ export const colors = {
   },
 }
 
+export const gradients = {
+  x: {
+    light: ['#FF3D00', '#FF5252', '#FF7676'],
+    dark: ['#D32F2F', '#E53935', '#F44336'],
+  },
+  heart: {
+    light: ['#4CAF50', '#66BB6A', '#81C784'],
+    dark: ['#4CAF50', '#81C784', '#A5D6A7'],
+  },
+}
+
+export const cardBorderColors = {
+  red: ['#FF3B3000', '#FF3B30', '#FF0000'],
+  green: ['#34C75900', '#34C759', '#00FF00'],
+}
+
 export type ColorType = keyof typeof colors.light | keyof typeof colors.dark

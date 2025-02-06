@@ -7,6 +7,7 @@ export default function _layout() {
     <Tabs screenOptions={{ animation: 'fade' }}>
       <Tabs.Screen name="home" />
       <Tabs.Screen name="friends" />
+      <Tabs.Screen name="tester" />
     </Tabs>
   )
 }

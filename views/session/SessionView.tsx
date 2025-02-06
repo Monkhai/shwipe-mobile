@@ -1,16 +1,19 @@
 import { ClientMessageType, LeaveSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import { GeneralButton, PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'
-import { Link, Stack } from 'expo-router'
+import { Link, router, Stack } from 'expo-router'
 import React from 'react'
 import { Button, FlatList, Image, Pressable, Text, View } from 'react-native'
 import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function SessionView() {
-  const { isSessionStarted, users, sessionId } = useSessionStore()
+  const { isSessionStarted, users, sessionId, matchedRestaurantIndex } = useSessionStore()
   const { startSession, sendMessage } = useWebsocketStore()
   const insets = useSafeAreaInsets()
+
+  console.log(matchedRestaurantIndex)
 
   return (
     <>
@@ -61,11 +64,7 @@ export default function SessionView() {
               )
             }}
           />
-          <Link asChild href="/(auth)/invite-friend">
-            <Pressable>
-              <Text>Invite Friend</Text>
-            </Pressable>
-          </Link>
+          <PrimaryButton onPress={() => router.push('/(auth)/invite-friend')} text="Add Friend" />
         </View>
         <RestaurantPicker />
         {!isSessionStarted ? <Button title="start session" onPress={startSession} /> : <Text>Session Started</Text>}

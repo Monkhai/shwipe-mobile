@@ -82,7 +82,7 @@ async function handleResponse(response: Notifications.NotificationResponse) {
           console.log('Sending join session message', joinSessionMessage)
           sendMessage(joinSessionMessage)
         }
-        await sleep(3)
+        await sleep(1)
       }
       break
     }

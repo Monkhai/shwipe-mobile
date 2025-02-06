@@ -2,6 +2,7 @@ import { BaseClientMessage, ClientMessageType, StartSessionMessage, UnsignedBase
 import {
   BaseServerMessage,
   JointSessionMessage,
+  MatchFoundMessage,
   RestaurantUpdateMessage,
   ServerErrorMessage,
   ServerMessageType,
@@ -136,6 +137,12 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
               sessionStore.__resetAll()
               console.log('Session closed, redirecting to home')
               router.dismissTo('/(auth)/(tabs)/home')
+              break
+            }
+            case ServerMessageType.MATCH_FOUND_MESSAGE_TYPE: {
+              const matchFoundMessage = message as MatchFoundMessage
+              const sessionStore = useSessionStore.getState()
+              sessionStore.__setMatchedRestaurantIndex(matchFoundMessage.restaurant_index)
               break
             }
             case ServerMessageType.REMOVED_FROM_SESSION_MESSAGE_TYPE: {

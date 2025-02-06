@@ -1,12 +1,8 @@
 import Heart from '@/components/shapes/Heart'
 import X from '@/components/shapes/X'
 import { cardBorderColors } from '@/constants/colors'
-import { ClientMessageType, UpdateIndexMessage } from '@/wsHandler/clientMessagesTypes'
-import { UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { Restaurant } from '@/wsHandler/restaurantTypes'
-import { useSessionStore } from '@/zustand/sessionStore'
-import { useWebsocketStore } from '@/zustand/websocketStore'
-import { forwardRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useImperativeHandle } from 'react'
 import { Image, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
@@ -28,46 +24,33 @@ export type RestaurantCardRef = {
 
 type CardProps = { index: number; restaurant: Restaurant; updateIndex: () => void }
 
-const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restaurant, updateIndex }, ref) => {
-  const { sessionId, restaurants } = useSessionStore()
-  const { sendMessage } = useWebsocketStore()
+const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restaurant, updateIndex }, ref) => {
   const { width } = useWindowDimensions()
   const rotation = useSharedValue(0)
   const translationX = useSharedValue(0)
+
   const heartTranslationX = useSharedValue(0)
   const xTranslationX = useSharedValue(0)
   const heartOpacity = useSharedValue(0)
   const xOpacity = useSharedValue(0)
 
-  const realIndex = (restaurants ?? []).length - index - 1
-
   function dislike() {
-    if (!sessionId) return
     rotation.value = withTiming(-ROTATION_THRESHOLD)
     translationX.value = withTiming(-width * 2)
-    const updateIndexMessage: UnsignedBaseClientMessage<UpdateIndexMessage> = {
-      type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE,
-      index: realIndex + 1,
-      session_id: sessionId,
-      liked: false,
-    }
-    sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex + 1)
+    heartTranslationX.value = withTiming(width / 2)
+    xTranslationX.value = withTiming(-width / 2)
+    heartOpacity.value = 0
+    xOpacity.value = 0
     updateIndex()
   }
 
   function like() {
-    if (!sessionId) return
     rotation.value = withTiming(ROTATION_THRESHOLD)
     translationX.value = withTiming(width * 2)
-    const updateIndexMessage: UnsignedBaseClientMessage<UpdateIndexMessage> = {
-      type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE,
-      index: realIndex + 1,
-      session_id: sessionId,
-      liked: true,
-    }
-    sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex + 1)
+    heartTranslationX.value = withTiming(width / 2)
+    xTranslationX.value = withTiming(-width / 2)
+    heartOpacity.value = 0
+    xOpacity.value = 0
     updateIndex()
   }
 
@@ -122,6 +105,10 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
       } else {
         rotation.value = withTiming(0)
         translationX.value = withTiming(0)
+        heartTranslationX.value = withTiming(0)
+        xTranslationX.value = withTiming(0)
+        heartOpacity.value = withTiming(0)
+        xOpacity.value = withTiming(0)
       }
     })
 
@@ -138,22 +125,26 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
     }
   })
 
-  const link = `${restaurant.photos[0]}`
+  const link = `${restaurant.photos[0]}&key=AIzaSyALFutkrFeGGS8jR_HVgO1xUqrlJ-_ZZm4`
   return (
-    <GestureDetector gesture={pan}>
-      <Animated.View style={[animatedStyle, { position: 'absolute', width: '100%', height: '100%' }]}>
-        <Image key={index} source={{ uri: link }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
-        <Animated.View
-          style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
-        >
-          <Heart size={100} />
+    <>
+      <GestureDetector gesture={pan}>
+        <Animated.View style={[animatedStyle, { position: 'absolute', width: '100%', height: '100%' }]}>
+          <Image key={index} source={{ uri: link }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
+          <Animated.View
+            style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
+          >
+            <Heart size={100} />
+          </Animated.View>
+          <Animated.View
+            style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}
+          >
+            <X size={100} />
+          </Animated.View>
         </Animated.View>
-        <Animated.View style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}>
-          <X size={100} />
-        </Animated.View>
-      </Animated.View>
-    </GestureDetector>
+      </GestureDetector>
+    </>
   )
 })
 
-export default RestaurantCard
+export default TEST_RestaurantCard
