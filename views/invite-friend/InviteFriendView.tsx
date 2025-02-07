@@ -8,7 +8,7 @@ import { Redirect } from 'expo-router'
 export default function InviteFriendView() {
   const { sessionId, users } = useSessionStore()
   const { data: friends, isLoading: isLoadingFriends } = useGetUserFriends()
-  const { mutate: sendSessionInvitation, isPending, isError, isSuccess } = useSendSessionInvitation()
+  const { mutate: sendSessionInvitation, isPending } = useSendSessionInvitation()
 
   if (!sessionId) {
     return <Redirect href="/(auth)/(tabs)/home" />

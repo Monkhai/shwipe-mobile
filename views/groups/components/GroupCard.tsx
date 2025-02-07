@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
@@ -27,15 +27,36 @@ export default function GroupCard({ group }: GroupCardProps) {
         padding: 16,
         borderRadius: 12,
         marginBottom: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
       }}
     >
       <View style={{ marginBottom: 8 }}>
         <UIText type="titleEmphasized">{group.name}</UIText>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <UIText type="body" color="secondaryLabel">
-          {`${group.members.length} members`}
-        </UIText>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {group.members.slice(0, 3).map((member, i) => {
+          return (
+            <View
+              style={{
+                marginLeft: i > 0 ? -10 : 0,
+                borderRadius: 16,
+                zIndex: 3 - i,
+              }}
+              key={i}
+            >
+              <Image
+                source={{ uri: member.photo_url }}
+                style={{ width: 36, height: 36, borderRadius: 100, borderWidth: 3, borderColor: colors[theme].elevatedBackground }}
+              />
+            </View>
+          )
+        })}
+        {group.members.length > 3 && (
+          <View style={{ borderRadius: 16, zIndex: 0, backgroundColor: colors[theme].elevatedBackground, padding: 4 }}>
+            <UIText type="caption">{`+${group.members.length - 3}`}</UIText>
+          </View>
+        )}
       </View>
     </GeneralButton>
   )
