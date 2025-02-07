@@ -4,4 +4,6 @@ export const queryKeystore = {
   friends: ['friends'],
   sentFriendRequests: ['sentFriendRequests'],
   receivedFriendRequests: ['receivedFriendRequests'],
+  groups: ['groups'],
+  groupInvitations: ['groupInvitations'],
 }

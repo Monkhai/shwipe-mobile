@@ -8,6 +8,7 @@ import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { ClientMessageType, JoinSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { sleep } from '@/utils/sleep'
+import { router } from 'expo-router'
 
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -27,15 +28,15 @@ async function handleNotification(notification: Notifications.Notification) {
   const data = notification.request.content.data as BaseNotificationData
   switch (data.type) {
     case NotificationType.FRIEND_REQUEST_SENT: {
-      await invalidateQueries()
+      await invalidateFriendsQueries()
       break
     }
     case NotificationType.FRIEND_REQUEST_UPDATED: {
-      await invalidateQueries()
+      await invalidateFriendsQueries()
       break
     }
     case NotificationType.SESSION_INVITATION: {
-      await invalidateQueries()
+      await invalidateFriendsQueries()
       break
     }
     default: {
@@ -50,11 +51,11 @@ async function handleResponse(response: Notifications.NotificationResponse) {
   console.log('notification received', data)
   switch (data.type) {
     case NotificationType.FRIEND_REQUEST_SENT: {
-      invalidateQueries()
+      invalidateFriendsQueries()
       break
     }
     case NotificationType.FRIEND_REQUEST_UPDATED: {
-      invalidateQueries()
+      invalidateFriendsQueries()
       break
     }
     case NotificationType.SESSION_INVITATION: {
@@ -86,6 +87,11 @@ async function handleResponse(response: Notifications.NotificationResponse) {
       }
       break
     }
+    case NotificationType.GROUP_INVITATION: {
+      await invalidateGroupsQueries()
+      router.navigate('/(auth)/(tabs)/groups')
+      break
+    }
     default: {
       console.log('Unknown notification type', data.type)
       break
@@ -93,10 +99,17 @@ async function handleResponse(response: Notifications.NotificationResponse) {
   }
 }
 
-async function invalidateQueries() {
+async function invalidateFriendsQueries() {
   await Promise.all([
     queryClient.invalidateQueries({ queryKey: queryKeystore.receivedFriendRequests }),
     queryClient.invalidateQueries({ queryKey: queryKeystore.sentFriendRequests }),
     queryClient.invalidateQueries({ queryKey: queryKeystore.friends }),
+  ])
+}
+
+async function invalidateGroupsQueries() {
+  await Promise.all([
+    queryClient.invalidateQueries({ queryKey: queryKeystore.groups }),
+    queryClient.invalidateQueries({ queryKey: queryKeystore.groupInvitations }),
   ])
 }

@@ -38,7 +38,6 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
 
   connectToWebSocket: () => {
     if (get().__ws) {
-      console.log('WebSocket already connected')
       return
     }
     const ws = new WebsocketHandler({
@@ -163,6 +162,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
       },
     })
     set({ __ws: ws })
+    // ws.connect('ws://10.100.102.146:8080/ws')
     ws.connect('ws://10.100.102.146:8080/ws')
   },
   sendMessage: (message: Omit<BaseClientMessage, 'token_id'>) => {

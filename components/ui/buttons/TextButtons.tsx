@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme, PressableProps } from 'react-native'
+import { View, Text, useColorScheme, PressableProps, ActivityIndicator } from 'react-native'
 import React, { useCallback } from 'react'
 import { AnimatedPressable } from './AnimatedPressable'
 import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
@@ -31,9 +31,10 @@ interface Props extends PressableProps {
   type?: 'primary' | 'danger'
   textType?: TextType
   text: string
+  isLoading?: boolean
 }
 
-export function PrimaryButton({ type = 'primary', text, textType = 'body', style, ...props }: Props) {
+export function PrimaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
   const theme = useColorScheme() ?? 'light'
   const scale = useSharedValue(1)
 
@@ -62,15 +63,25 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
           backgroundColor: colors[theme][bgColor],
           minWidth: 200,
           alignItems: 'center',
+          opacity: isLoading || props.disabled ? 0.5 : 1,
         },
         animatedStyle,
         style,
       ]}
       {...props}
     >
-      <UIText color={'white'} type={textType}>
-        {text}
-      </UIText>
+      {isLoading ? (
+        <>
+          <ActivityIndicator size="small" color="white" />
+          <UIText color={'white'} type={textType}>
+            {text}
+          </UIText>
+        </>
+      ) : (
+        <UIText color={'white'} type={textType}>
+          {text}
+        </UIText>
+      )}
     </AnimatedPressable>
   )
 }

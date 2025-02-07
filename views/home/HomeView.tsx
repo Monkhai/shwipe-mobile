@@ -85,11 +85,9 @@ function ConnectionStatusIndicator() {
 
   const attemptReconnection = useCallback(async () => {
     let maxTries = 5
-    const state = useWebsocketStore.getState().connectionState
-    while (maxTries > 0 && state === ConnectionState.DISCONNECTED) {
-      console.log(state)
+    while (maxTries > 0 && connectionState === ConnectionState.DISCONNECTED) {
       await sleep(5)
-      if (state === ConnectionState.DISCONNECTED) {
+      if (connectionState === ConnectionState.DISCONNECTED) {
         connectToWebSocket()
       }
       maxTries--

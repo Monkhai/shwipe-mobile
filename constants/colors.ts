@@ -1,5 +1,4 @@
 export const colors = {
-  white: '#FFFFFF',
   light: {
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
@@ -15,10 +14,10 @@ export const colors = {
     quaternaryLabel: '#3C3C432E',
   },
   dark: {
+    white: '#FFFFFF',
     background: '#000000',
     secondaryBackground: '#161618',
     elevatedBackground: '#1C1C1F',
-    white: '#000000',
     primary: '#0A84FF',
     danger: '#FF453A',
     success: '#30D158',
