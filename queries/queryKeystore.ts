@@ -7,4 +7,5 @@ export const queryKeystore = {
   groups: ['groups'],
   group: (id: string) => ['groups', id],
   groupInvitations: ['groupInvitations'],
+  groupInvitation: (id: string) => ['groupInvitations', id],
 }

@@ -94,22 +94,9 @@ function FriendItem({ friend, onInvite, onCancel, isPending, group }: FriendItem
         </View>
       </View>
       {isInvited ? (
-        <PrimaryButton
-          type="danger"
-          textType="bodyEmphasized"
-          text="Cancel"
-          onPress={onCancel}
-          style={{ paddingHorizontal: 16, paddingVertical: 8 }}
-          isLoading={isPending}
-        />
+        <PrimaryButton type="danger" textType="bodyEmphasized" text="Cancel" onPress={onCancel} isLoading={isPending} />
       ) : (
-        <PrimaryButton
-          textType="bodyEmphasized"
-          text="Invite"
-          onPress={onInvite}
-          style={{ paddingHorizontal: 16, paddingVertical: 8 }}
-          isLoading={isPending}
-        />
+        <PrimaryButton textType="bodyEmphasized" text="Invite" onPress={onInvite} isLoading={isPending} />
       )}
     </View>
   )

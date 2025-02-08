@@ -1,20 +1,19 @@
 import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
-import { Blur, BlurMask, BlurStyle, Canvas, Circle, Group } from '@shopify/react-native-skia'
+import { BlurMask, Canvas, Circle, Group } from '@shopify/react-native-skia'
 import { router } from 'expo-router'
 import React, { useEffect } from 'react'
 import { View, useColorScheme, useWindowDimensions } from 'react-native'
-import { BlurView } from 'expo-blur'
 import Animated, {
   Easing,
+  SharedValue,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withSpring,
   withTiming,
-  useAnimatedReaction,
-  SharedValue,
 } from 'react-native-reanimated'
 
 const NUM_PARTICLES = 50
@@ -72,9 +71,7 @@ const Particle = ({ particle, progress, theme, index }: ParticleProps) => {
 
   return (
     <Group>
-      {/* Single glow effect with blur */}
       <Circle cx={x} cy={y} r={20} color={colors[theme].primary + '20'}></Circle>
-      {/* Main particle */}
       <Circle cx={x} cy={y} r={8} color={colors[theme].primary + '40'}></Circle>
     </Group>
   )

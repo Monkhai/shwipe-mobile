@@ -58,8 +58,8 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
       style={[
         {
           borderRadius: 12,
-          paddingVertical: 14,
-          minHeight: texts[textType].height + 28,
+          paddingVertical: 8,
+          minHeight: texts[textType].minHeight + 16,
           paddingHorizontal: 20,
           backgroundColor: colors[theme][bgColor],
           alignItems: 'center',
@@ -81,7 +81,7 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
   )
 }
 
-export function SecondaryButton({ type = 'primary', text, textType = 'body', style, ...props }: Props) {
+export function SecondaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
   const theme = useColorScheme() ?? 'light'
   const scale = useSharedValue(1)
 
@@ -107,17 +107,64 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
           borderRadius: 12,
           paddingVertical: 14,
           paddingHorizontal: 20,
-          minWidth: 200,
           alignItems: 'center',
+          opacity: isLoading || props.disabled ? 0.5 : 1,
+          backgroundColor: colors[theme][textColor] + '33',
         },
         animatedStyle,
         style,
       ]}
       {...props}
     >
-      <UIText color={textColor} type={textType}>
-        {text}
-      </UIText>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : null}
+        <UIText color={textColor} type={textType}>
+          {text}
+        </UIText>
+      </View>
+    </AnimatedPressable>
+  )
+}
+export function TertiaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
+  const theme = useColorScheme() ?? 'light'
+  const scale = useSharedValue(1)
+
+  const onPressIn = useCallback(() => {
+    scale.value = withTiming(0.95)
+  }, [])
+  const onPressOut = useCallback(() => {
+    scale.value = withSpring(1)
+  }, [])
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }))
+
+  const textColor: ColorType = type === 'primary' ? 'primary' : 'danger'
+
+  return (
+    <AnimatedPressable
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={[
+        {
+          borderRadius: 12,
+          paddingVertical: 14,
+          paddingHorizontal: 20,
+          alignItems: 'center',
+          opacity: isLoading || props.disabled ? 0.5 : 1,
+        },
+        animatedStyle,
+        style,
+      ]}
+      {...props}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : null}
+        <UIText color={textColor} type={textType}>
+          {text}
+        </UIText>
+      </View>
     </AnimatedPressable>
   )
 }

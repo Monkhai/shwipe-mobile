@@ -9,19 +9,15 @@ import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 
 interface GroupCardProps {
   group: Group
+  onPress: (groupId: string) => void
 }
 
-export default function GroupCard({ group }: GroupCardProps) {
+export default function GroupCard({ group, onPress }: GroupCardProps) {
   const theme = useColorScheme() ?? 'light'
 
   return (
     <GeneralButton
-      onPress={() =>
-        router.push({
-          pathname: '/(auth)/[group_id]',
-          params: { group_id: group.id },
-        })
-      }
+      onPress={() => onPress(group.id)}
       style={{
         backgroundColor: colors[theme].elevatedBackground,
         padding: 16,

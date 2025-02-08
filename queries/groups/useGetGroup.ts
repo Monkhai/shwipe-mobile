@@ -8,7 +8,7 @@ export function useGetGroup(id: string) {
     queryKey: queryKeystore.group(id),
     queryFn: () => {
       const groups = queryClient.getQueryData<Group[]>(queryKeystore.groups)
-      return groups?.find(group => group.id === id)
+      return groups?.find(group => group.id === id) ?? null
     },
   })
 }

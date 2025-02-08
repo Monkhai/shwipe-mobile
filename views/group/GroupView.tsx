@@ -1,19 +1,21 @@
-import { View, ScrollView, StyleSheet, Image, useColorScheme } from 'react-native'
-import React from 'react'
-import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router'
-import { useGetGroup } from '@/queries/groups/useGetGroup'
-import NotFoundView from '../not-found/NotFoundView'
-import UIText from '@/components/ui/UIText'
-import { colors } from '@/constants/colors'
 import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
-import { User } from '@/queries/users/userTypes'
+import UIText from '@/components/ui/UIText'
 import ViewHeader from '@/components/ui/ViewHeader'
-import LoadingView from '../loading/LoadingView'
+import { colors } from '@/constants/colors'
+import { useGetGroup } from '@/queries/groups/useGetGroup'
 import { useLeaveGroup } from '@/queries/groups/useLeaveGroup'
+import { User } from '@/queries/users/userTypes'
+import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router'
+import React from 'react'
+import { Image, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import LoadingView from '../loading/LoadingView'
+import { useWebsocketStore } from '@/zustand/websocketStore'
+import { ClientMessageType, CreateSessionWithGroupMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 
 export default function GroupView() {
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
   const router = useRouter()
+  const { sendMessage } = useWebsocketStore()
   const { data: group, isLoading: isGroupLoading } = useGetGroup(group_id)
   const { mutate: leaveGroup, isPending: isLeaveGroupPending } = useLeaveGroup()
   const theme = useColorScheme() ?? 'light'
@@ -23,7 +25,7 @@ export default function GroupView() {
   }
 
   if (!group) {
-    return <Redirect href="/+not-found" />
+    return <Redirect href="/not-found" />
   }
 
   const handleInviteFriend = () => {
@@ -31,7 +33,11 @@ export default function GroupView() {
   }
 
   const handleStartSession = () => {
-    alert('Start session clicked')
+    const startSessionWithGroupMessage: UnsignedBaseClientMessage<CreateSessionWithGroupMessage> = {
+      type: ClientMessageType.CREATE_SESSION_WITH_GROUP_MESSAGE_TYPE,
+      group_id: group_id,
+    }
+    sendMessage(startSessionWithGroupMessage)
   }
 
   const handleLeaveGroup = () => {
@@ -58,7 +64,7 @@ export default function GroupView() {
         <View style={styles.actionButtons}>
           <PrimaryButton
             textType="bodyEmphasized"
-            text="Start Group Session"
+            text="Start Session"
             onPress={handleStartSession}
             style={[styles.button, styles.primaryButton]}
           />

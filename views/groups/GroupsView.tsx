@@ -9,18 +9,21 @@ import { router } from 'expo-router'
 import ViewHeader from '@/components/ui/ViewHeader'
 
 export default function GroupsView() {
-  const {
-    data: groupInvitations,
-    error: groupInvitationsError,
-    refetch: refetchGroupInvitations,
-    isRefetching: isRefetchingGroupInvitations,
-  } = useGetGroupInvitations()
-  const { data: groups, error: groupsError, refetch: refetchGroups, isRefetching: isRefetchingGroups } = useGetGroups()
+  const { data: groupInvitations, refetch: refetchGroupInvitations, isRefetching: isRefetchingGroupInvitations } = useGetGroupInvitations()
+  const { data: groups, refetch: refetchGroups, isRefetching: isRefetchingGroups } = useGetGroups()
 
   const onRefresh = useCallback(() => {
     refetchGroups()
     refetchGroupInvitations()
   }, [refetchGroups, refetchGroupInvitations])
+
+  function handleGroupCardPress(groupId: string) {
+    router.push(`/(auth)/${groupId}`)
+  }
+
+  function handleGroupInvitationCardPress(groupId: string) {
+    router.push(`/(auth)/${groupId}/group-invitation`)
+  }
 
   const isRefreshing = isRefetchingGroups || isRefetchingGroupInvitations
 
@@ -62,16 +65,16 @@ export default function GroupsView() {
         </View>
 
         {/* Group Invitations Section */}
-        {groupInvitations && groupInvitations.length > 0 && (
-          <View style={{ marginBottom: 30 }}>
-            <View style={{ marginBottom: 15 }}>
-              <UIText type="titleEmphasized">Group Invitations</UIText>
-            </View>
-            {groupInvitations.map(invitation => (
-              <GroupCard key={invitation.invitation_id} group={invitation} />
-            ))}
+        <View style={{ marginBottom: 30 }}>
+          <View style={{ marginBottom: 15 }}>
+            <UIText type="titleEmphasized">Group Invitations</UIText>
           </View>
-        )}
+          {groupInvitations &&
+            groupInvitations.length > 0 &&
+            groupInvitations.map(invitation => (
+              <GroupCard key={invitation.invitation_id} group={invitation} onPress={handleGroupInvitationCardPress} />
+            ))}
+        </View>
 
         {/* Groups Section */}
         <View>
@@ -79,7 +82,7 @@ export default function GroupsView() {
             <UIText type="titleEmphasized">Your Groups</UIText>
           </View>
           {groups && groups.length > 0 ? (
-            groups.map(group => <GroupCard key={group.id} group={group} />)
+            groups.map(group => <GroupCard key={group.id} group={group} onPress={handleGroupCardPress} />)
           ) : (
             <View style={{ alignItems: 'center', padding: 20 }}>
               <UIText type="body" color="secondaryLabel">

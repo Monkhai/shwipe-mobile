@@ -7,6 +7,7 @@ export default function _layout() {
     <Stack>
       <Stack.Screen name="index" />
       <Stack.Screen name="invite-to-group" options={{ ...largeSheetOptions, headerShown: false }} />
+      <Stack.Screen name="group-invitation" options={{ headerShown: false }} />
     </Stack>
   )
 }

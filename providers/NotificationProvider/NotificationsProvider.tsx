@@ -3,7 +3,12 @@ import * as Notifications from 'expo-notifications'
 import React, { useEffect } from 'react'
 
 import { queryClient } from '../QueryProvider'
-import { BaseNotificationData, NotificationType, SessionInvitationNotificationData } from './notfiicationTypes'
+import {
+  BaseNotificationData,
+  GroupInvitationNotificationData,
+  NotificationType,
+  SessionInvitationNotificationData,
+} from './notfiicationTypes'
 import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { ClientMessageType, JoinSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
@@ -37,6 +42,14 @@ async function handleNotification(notification: Notifications.Notification) {
     }
     case NotificationType.SESSION_INVITATION: {
       await invalidateFriendsQueries()
+      break
+    }
+    case NotificationType.GROUP_INVITATION: {
+      await invalidateGroupsQueries()
+      break
+    }
+    case NotificationType.GROUP_INVITATION_UPDATED: {
+      await invalidateGroupsQueries()
       break
     }
     default: {
@@ -89,7 +102,12 @@ async function handleResponse(response: Notifications.NotificationResponse) {
     }
     case NotificationType.GROUP_INVITATION: {
       await invalidateGroupsQueries()
-      router.navigate('/(auth)/(tabs)/groups')
+      const data = response.notification.request.content.data as GroupInvitationNotificationData
+      router.push(`/(auth)/${data.groupId}/group-invitation`)
+      break
+    }
+    case NotificationType.GROUP_INVITATION_UPDATED: {
+      await invalidateGroupsQueries()
       break
     }
     default: {

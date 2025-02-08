@@ -1,16 +1,14 @@
-import { Stack } from 'expo-router'
-import { AuthProvider } from '@/providers/AuthProvider'
-import { Provider } from 'jotai'
 import { store } from '@/jotai/authAtom'
-import QueryProvider from '@/providers/QueryProvider'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { setNotificationHandler } from 'expo-notifications'
-import { BaseNotificationData, NotificationType } from '@/providers/NotificationProvider/notfiicationTypes'
+import { AuthProvider } from '@/providers/AuthProvider'
+import { BaseNotificationData, invisibleNotificationTypes } from '@/providers/NotificationProvider/notfiicationTypes'
 import { NotificationProvider } from '@/providers/NotificationProvider/NotificationsProvider'
+import QueryProvider from '@/providers/QueryProvider'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { setNotificationHandler } from 'expo-notifications'
+import { Stack } from 'expo-router'
+import { Provider } from 'jotai'
 import { useColorScheme } from 'react-native'
-
-const invisibleNotificationTypes = [NotificationType.FRIEND_REQUEST_SENT, NotificationType.FRIEND_REQUEST_UPDATED]
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 setNotificationHandler({
   handleNotification: async n => {
@@ -38,6 +36,7 @@ export default function RootLayout() {
                   <Stack.Screen name="index" options={{ headerShown: false }} />
                   <Stack.Screen name="(auth)" options={{ headerShown: false }} />
                   <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+                  <Stack.Screen name="not-found" options={{ headerShown: false }} />
                 </Stack>
               </GestureHandlerRootView>
             </AuthProvider>
