@@ -5,14 +5,22 @@ import { useGetGroup } from '@/queries/groups/useGetGroup'
 import NotFoundView from '../not-found/NotFoundView'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
-import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
 import { User } from '@/queries/users/userTypes'
+import ViewHeader from '@/components/ui/ViewHeader'
+import LoadingView from '../loading/LoadingView'
+import { useLeaveGroup } from '@/queries/groups/useLeaveGroup'
 
 export default function GroupView() {
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
   const router = useRouter()
-  const group = useGetGroup(group_id)
+  const { data: group, isLoading: isGroupLoading } = useGetGroup(group_id)
+  const { mutate: leaveGroup, isPending: isLeaveGroupPending } = useLeaveGroup()
   const theme = useColorScheme() ?? 'light'
+
+  if (isGroupLoading) {
+    return <LoadingView />
+  }
 
   if (!group) {
     return <Redirect href="/+not-found" />
@@ -23,8 +31,11 @@ export default function GroupView() {
   }
 
   const handleStartSession = () => {
-    // To be implemented
-    console.log('Start session clicked')
+    alert('Start session clicked')
+  }
+
+  const handleLeaveGroup = () => {
+    leaveGroup({ groupId: group_id })
   }
 
   const renderMember = (member: User) => (
@@ -41,19 +52,17 @@ export default function GroupView() {
   return (
     <>
       <Stack.Screen options={{ title: group.name }} />
-      <View style={[styles.container, { backgroundColor: colors[theme].background }]}>
-        <View style={styles.header}>
-          <UIText type="title" color="label">
-            {group.name}
-          </UIText>
-          <UIText type="caption" color="secondaryLabel">
-            {`${group.members.length} ${group.members.length === 1 ? 'Member' : 'Members'}`}
-          </UIText>
-        </View>
+      <View style={styles.container}>
+        <ViewHeader title={group.name} description={`${group.members.length} ${group.members.length === 1 ? 'Member' : 'Members'}`} />
 
         <View style={styles.actionButtons}>
-          <PrimaryButton text="Invite Friend" onPress={handleInviteFriend} style={styles.button} />
-          <PrimaryButton text="Start Group Session" onPress={handleStartSession} style={[styles.button, styles.primaryButton]} />
+          <PrimaryButton
+            textType="bodyEmphasized"
+            text="Start Group Session"
+            onPress={handleStartSession}
+            style={[styles.button, styles.primaryButton]}
+          />
+          <SecondaryButton textType="bodyEmphasized" text="Invite Friend" onPress={handleInviteFriend} style={styles.button} />
         </View>
 
         <UIText type="secondaryTitle" color="label">
@@ -61,6 +70,17 @@ export default function GroupView() {
         </UIText>
 
         <ScrollView style={styles.membersList}>{group.members.map(renderMember)}</ScrollView>
+
+        <View style={{ marginTop: 20, marginBottom: 40, marginHorizontal: 16 }}>
+          <PrimaryButton
+            isLoading={isLeaveGroupPending}
+            textType="bodyEmphasized"
+            type="danger"
+            text="Leave Group"
+            onPress={handleLeaveGroup}
+            style={styles.button}
+          />
+        </View>
       </View>
     </>
   )
@@ -72,7 +92,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 30,
   },
   actionButtons: {
     flexDirection: 'row',
@@ -88,6 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light.primary,
   },
   membersList: {
+    borderWidth: 1,
     flex: 1,
     marginTop: 16,
   },

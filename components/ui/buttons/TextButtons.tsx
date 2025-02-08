@@ -4,7 +4,7 @@ import { AnimatedPressable } from './AnimatedPressable'
 import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import UIText from '../UIText'
 import { colors, ColorType } from '@/constants/colors'
-import { TextType } from '@/constants/texts'
+import { texts, TextType } from '@/constants/texts'
 
 export function GeneralButton({ children, style, ...props }: PressableProps) {
   const scale = useSharedValue(1)
@@ -59,10 +59,11 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
         {
           borderRadius: 12,
           paddingVertical: 14,
+          minHeight: texts[textType].height + 28,
           paddingHorizontal: 20,
           backgroundColor: colors[theme][bgColor],
-          minWidth: 200,
           alignItems: 'center',
+          justifyContent: 'center',
           opacity: isLoading || props.disabled ? 0.5 : 1,
         },
         animatedStyle,
@@ -70,18 +71,12 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
       ]}
       {...props}
     >
-      {isLoading ? (
-        <>
-          <ActivityIndicator size="small" color="white" />
-          <UIText color={'white'} type={textType}>
-            {text}
-          </UIText>
-        </>
-      ) : (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {isLoading ? <ActivityIndicator size="small" color="white" /> : null}
         <UIText color={'white'} type={textType}>
           {text}
         </UIText>
-      )}
+      </View>
     </AnimatedPressable>
   )
 }

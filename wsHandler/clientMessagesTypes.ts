@@ -1,3 +1,4 @@
+import index from '@/app'
 import { Location } from './locationTypes'
 
 export enum ClientMessageType {
@@ -6,6 +7,7 @@ export enum ClientMessageType {
   START_SESSION_MESSAGE_TYPE = 'start_session',
   CREATE_SESSION_MESSAGE_TYPE = 'create_session',
   CREATE_SESSION_WITH_FRIENDS_MESSAGE_TYPE = 'create_session_with_friends',
+  CREATE_SESSION_WITH_GROUP_MESSAGE_TYPE = 'create_session_with_group',
   JOIN_SESSION_MESSAGE_TYPE = 'join_session',
   LEAVE_SESSION_MESSAGE_TYPE = 'leave_session',
 }
@@ -51,4 +53,9 @@ export interface JoinSessionMessage extends BaseClientMessage {
 export interface LeaveSessionMessage extends BaseClientMessage {
   type: ClientMessageType.LEAVE_SESSION_MESSAGE_TYPE
   session_id: string
+}
+
+export interface CreateSessionWithGroupMessage extends BaseClientMessage {
+  type: ClientMessageType.CREATE_SESSION_WITH_GROUP_MESSAGE_TYPE
+  group_id: string
 }

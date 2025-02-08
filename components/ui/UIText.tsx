@@ -6,7 +6,7 @@ import { ColorType, colors } from '@/constants/colors'
 interface Props {
   type?: TextType
   color?: ColorType
-  children: string
+  children: React.ReactNode
 }
 
 export default function UIText({ type = 'body', color = 'label', children }: Props) {

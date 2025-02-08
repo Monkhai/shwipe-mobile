@@ -6,6 +6,7 @@ import UIText from '@/components/ui/UIText'
 import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
 import GroupCard from './components/GroupCard'
 import { router } from 'expo-router'
+import ViewHeader from '@/components/ui/ViewHeader'
 
 export default function GroupsView() {
   const {
@@ -31,16 +32,7 @@ export default function GroupsView() {
         contentContainerStyle={{ padding: 20 }}
       >
         {/* Header Section */}
-        <View style={{ marginBottom: 30 }}>
-          <View style={{ marginBottom: 10 }}>
-            <UIText type="largeTitle">Your Groups</UIText>
-          </View>
-          <View>
-            <UIText type="body" color="secondaryLabel">
-              Manage and join groups with your friends
-            </UIText>
-          </View>
-        </View>
+        <ViewHeader title="Your Groups" description="Manage and join groups with your friends" />
 
         {/* Quick Actions */}
         <View style={{ marginBottom: 30 }}>

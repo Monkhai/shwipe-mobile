@@ -8,6 +8,7 @@ import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import FriendsList from '@/components/friends/FriendsList/FriendsList'
 import { sleep } from '@/utils/sleep'
+import ViewHeader from '@/components/ui/ViewHeader'
 
 export default function HomeView() {
   const { sendMessage } = useWebsocketStore()
@@ -25,16 +26,7 @@ export default function HomeView() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         {/* Welcome Section */}
-        <View style={{ marginBottom: 30 }}>
-          <View style={{ marginBottom: 10 }}>
-            <UIText type="largeTitle">Hey there! 👋</UIText>
-          </View>
-          <View>
-            <UIText type="body" color="secondaryLabel">
-              Ready to find your next favorite restaurant?
-            </UIText>
-          </View>
-        </View>
+        <ViewHeader title="Hey there! 👋" description="Ready to find your next favorite restaurant?" />
 
         {/* Quick Actions */}
         <View style={{ marginBottom: 30 }}>

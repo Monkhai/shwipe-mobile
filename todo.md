@@ -1,1 +1,1 @@
--
+- create a card for both users and groups. can be the same card i think
