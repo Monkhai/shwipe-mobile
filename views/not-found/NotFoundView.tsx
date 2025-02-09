@@ -16,7 +16,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-const NUM_PARTICLES = Platform.select({ android: 25, ios: 50 })
+const NUM_PARTICLES = Platform.select({ android: 25, default: 50 })
 
 type ParticleData = {
   centerX: number

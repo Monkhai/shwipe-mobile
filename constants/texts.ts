@@ -1,4 +1,17 @@
 export const texts = {
+  extraLargeTitle: {
+    fontSize: 40,
+    minHeight: 46,
+    lineHeight: 46,
+    letterSpacing: -0.4,
+  },
+  extraLargeTitleEmphasized: {
+    fontSize: 40,
+    minHeight: 46,
+    lineHeight: 46,
+    letterSpacing: -0.4,
+    fontWeight: 'bold',
+  },
   largeTitle: {
     minHeight: 41,
     fontSize: 34,
