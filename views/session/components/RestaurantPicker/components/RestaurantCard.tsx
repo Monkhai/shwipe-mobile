@@ -47,12 +47,12 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
     translationX.value = withTiming(-width * 2)
     const updateIndexMessage: UnsignedBaseClientMessage<UpdateIndexMessage> = {
       type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE,
-      index: realIndex + 1,
+      index: realIndex,
       session_id: sessionId,
       liked: false,
     }
     sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex + 1)
+    console.log('sent update index message', realIndex)
     updateIndex()
   }
 
@@ -62,12 +62,12 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
     translationX.value = withTiming(width * 2)
     const updateIndexMessage: UnsignedBaseClientMessage<UpdateIndexMessage> = {
       type: ClientMessageType.UPDATE_INDEX_MESSAGE_TYPE,
-      index: realIndex + 1,
+      index: realIndex,
       session_id: sessionId,
       liked: true,
     }
     sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex + 1)
+    console.log('sent update index message', realIndex)
     updateIndex()
   }
 

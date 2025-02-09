@@ -30,14 +30,10 @@ export async function registerForPushNotificationsAsync(): Promise<string> {
       throw new Error('Project ID not found')
     }
 
-    try {
-      const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
-        projectId,
-      })
-      return pushToken
-    } catch (error) {
-      throw new Error(`${error}`)
-    }
+    const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
+      projectId,
+    })
+    return pushToken
   } else {
     throw new Error('must use physical device for push notifications')
   }

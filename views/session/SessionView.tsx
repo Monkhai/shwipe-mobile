@@ -1,12 +1,12 @@
+import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import { ClientMessageType, LeaveSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
-import { GeneralButton, PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'
-import { Link, router, Stack } from 'expo-router'
-import React from 'react'
-import { Button, FlatList, Image, Pressable, Text, View } from 'react-native'
-import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
+import { router, Stack } from 'expo-router'
+import React, { useEffect } from 'react'
+import { Button, FlatList, Image, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
 
 export default function SessionView() {
   const { isSessionStarted, users, sessionId, matchedRestaurantIndex } = useSessionStore()
@@ -15,25 +15,33 @@ export default function SessionView() {
 
   console.log(matchedRestaurantIndex)
 
+  const handleLeaveSession = () => {
+    if (!sessionId) return
+    const leaveSessionMessage: UnsignedBaseClientMessage<LeaveSessionMessage> = {
+      type: ClientMessageType.LEAVE_SESSION_MESSAGE_TYPE,
+      session_id: sessionId,
+    }
+    sendMessage(leaveSessionMessage)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (!sessionId) return
+      const leaveSessionMessage: UnsignedBaseClientMessage<LeaveSessionMessage> = {
+        type: ClientMessageType.LEAVE_SESSION_MESSAGE_TYPE,
+        session_id: sessionId,
+      }
+      sendMessage(leaveSessionMessage)
+    }
+  }, [sessionId])
+
   return (
     <>
       <Stack.Screen
         options={{
           headerShown: true,
           headerLeft: () => {
-            return (
-              <Button
-                title="Back"
-                onPress={() => {
-                  if (!sessionId) return
-                  const leaveSessionMessage: UnsignedBaseClientMessage<LeaveSessionMessage> = {
-                    type: ClientMessageType.LEAVE_SESSION_MESSAGE_TYPE,
-                    session_id: sessionId,
-                  }
-                  sendMessage(leaveSessionMessage)
-                }}
-              />
-            )
+            return <Button title="Back" onPress={handleLeaveSession} />
           },
         }}
       />
