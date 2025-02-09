@@ -4,7 +4,7 @@ import { colors } from '@/constants/colors'
 import { BlurMask, Canvas, Circle, Group } from '@shopify/react-native-skia'
 import { router } from 'expo-router'
 import React, { useEffect } from 'react'
-import { View, useColorScheme, useWindowDimensions } from 'react-native'
+import { Platform, View, useColorScheme, useWindowDimensions } from 'react-native'
 import Animated, {
   Easing,
   SharedValue,
@@ -16,7 +16,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-const NUM_PARTICLES = 50
+const NUM_PARTICLES = Platform.select({ android: 25, ios: 50 })
 
 type ParticleData = {
   centerX: number

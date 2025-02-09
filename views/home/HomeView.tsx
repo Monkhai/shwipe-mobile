@@ -2,13 +2,14 @@ import { GeneralButton, PrimaryButton, SecondaryButton } from '@/components/ui/b
 import { ClientMessageType, CreateSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { useWebsocketStore, ConnectionState } from '@/zustand/websocketStore'
 import React, { useCallback } from 'react'
-import { View, useColorScheme, ScrollView } from 'react-native'
+import { View, useColorScheme, ScrollView, Button } from 'react-native'
 import Animated, { useAnimatedStyle, withRepeat, withSpring, withTiming, useSharedValue, interpolateColor } from 'react-native-reanimated'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import FriendsList from '@/components/friends/FriendsList/FriendsList'
 import { sleep } from '@/utils/sleep'
 import ViewHeader from '@/components/ui/ViewHeader'
+import { router } from 'expo-router'
 
 export default function HomeView() {
   const { sendMessage } = useWebsocketStore()
@@ -26,6 +27,7 @@ export default function HomeView() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         {/* Welcome Section */}
+        <Button onPress={() => router.push('/not-found')} title="not found" />
         <ViewHeader title="Hey there! 👋" description="Ready to find your next favorite restaurant?" />
 
         {/* Quick Actions */}
