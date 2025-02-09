@@ -7,8 +7,9 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { setNotificationHandler } from 'expo-notifications'
 import { Stack } from 'expo-router'
 import { Provider } from 'jotai'
-import { useColorScheme } from 'react-native'
+import { I18nManager, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import * as Expo from 'expo'
 
 setNotificationHandler({
   handleNotification: async n => {
@@ -21,6 +22,13 @@ setNotificationHandler({
     }
   },
 })
+
+const isRTL = I18nManager.isRTL
+if (isRTL) {
+  I18nManager.allowRTL(false)
+  I18nManager.forceRTL(false)
+  Expo.reloadAppAsync()
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()

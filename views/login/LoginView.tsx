@@ -1,10 +1,10 @@
 import signInWIthGoogle from '@/assets/auth/google.png'
 import { useAuth } from '@/providers/AuthProvider'
 import auth from '@react-native-firebase/auth'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { GoogleSignin, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin'
 import { Redirect } from 'expo-router'
 import React from 'react'
-import { Image, Pressable, View } from 'react-native'
+import { Image, Platform, Pressable, View } from 'react-native'
 
 const SIGN_IN_WITH_GOOGLE_IMAGE = Image.resolveAssetSource(signInWIthGoogle)
 
@@ -22,18 +22,18 @@ async function onGoogleButtonPress() {
     }
 
     const googleCredential = auth.GoogleAuthProvider.credential(signInResult.data.idToken)
-
     await auth().signInWithCredential(googleCredential)
   } catch (error) {
-    console.log('error', error)
+    if (isErrorWithCode(error)) {
+      console.log(error.message)
+    }
   }
 }
 
-GoogleSignin.configure({
-  webClientId: '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com',
-})
-
 export default function LoginView() {
+  const webClientId = '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com'
+  GoogleSignin.configure({ webClientId })
+
   const [user] = useAuth()
   if (user) {
     return <Redirect href="/(auth)/(tabs)/friends" />

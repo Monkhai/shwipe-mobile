@@ -58,8 +58,8 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
       style={[
         {
           borderRadius: 12,
-          paddingVertical: 8,
-          minHeight: texts[textType].minHeight + 16,
+          paddingVertical: 14,
+          minHeight: texts[textType].minHeight + 28,
           paddingHorizontal: 20,
           backgroundColor: colors[theme][bgColor],
           alignItems: 'center',
@@ -106,6 +106,7 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
         {
           borderRadius: 12,
           paddingVertical: 14,
+          minHeight: texts[textType].minHeight + 28,
           paddingHorizontal: 20,
           alignItems: 'center',
           opacity: isLoading || props.disabled ? 0.5 : 1,
@@ -126,7 +127,6 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
   )
 }
 export function TertiaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
-  const theme = useColorScheme() ?? 'light'
   const scale = useSharedValue(1)
 
   const onPressIn = useCallback(() => {
@@ -150,6 +150,7 @@ export function TertiaryButton({ type = 'primary', text, textType = 'body', styl
         {
           borderRadius: 12,
           paddingVertical: 14,
+          minHeight: texts[textType].minHeight + 28,
           paddingHorizontal: 20,
           alignItems: 'center',
           opacity: isLoading || props.disabled ? 0.5 : 1,
