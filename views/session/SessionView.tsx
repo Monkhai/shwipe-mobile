@@ -4,16 +4,15 @@ import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'
 import { router, Stack } from 'expo-router'
 import React, { useEffect } from 'react'
-import { Button, FlatList, Image, Text, View } from 'react-native'
+import { Button, FlatList, Image, Linking, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
+import { SessionMatchModal } from '@/components/session/SessionMatchModal'
 
 export default function SessionView() {
-  const { isSessionStarted, users, sessionId, matchedRestaurantIndex } = useSessionStore()
+  const { isSessionStarted, users, sessionId, matchedRestaurantIndex, restaurants } = useSessionStore()
   const { startSession, sendMessage } = useWebsocketStore()
   const insets = useSafeAreaInsets()
-
-  console.log(matchedRestaurantIndex)
 
   const handleLeaveSession = () => {
     if (!sessionId) return
@@ -45,6 +44,7 @@ export default function SessionView() {
           },
         }}
       />
+
       <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', paddingBottom: insets.bottom + 40 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <FlatList
@@ -77,6 +77,9 @@ export default function SessionView() {
         <RestaurantPicker />
         {!isSessionStarted ? <Button title="start session" onPress={startSession} /> : <Text>Session Started</Text>}
       </View>
+      {matchedRestaurantIndex !== null && restaurants ? (
+        <SessionMatchModal onDismiss={router.back} restaurant={restaurants[matchedRestaurantIndex]} />
+      ) : null}
     </>
   )
 }

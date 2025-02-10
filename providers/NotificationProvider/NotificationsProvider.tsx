@@ -31,6 +31,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
 async function handleNotification(notification: Notifications.Notification) {
   const data = notification.request.content.data as BaseNotificationData
+  console.log('notification received', data.type)
   switch (data.type) {
     case NotificationType.FRIEND_REQUEST_SENT: {
       await invalidateFriendsQueries()
@@ -61,7 +62,7 @@ async function handleNotification(notification: Notifications.Notification) {
 
 async function handleResponse(response: Notifications.NotificationResponse) {
   const data = response.notification.request.content.data as BaseNotificationData
-  console.log('notification received', data)
+  console.log('notification response received', data.type)
   switch (data.type) {
     case NotificationType.FRIEND_REQUEST_SENT: {
       invalidateFriendsQueries()
@@ -98,6 +99,7 @@ async function handleResponse(response: Notifications.NotificationResponse) {
         }
         await sleep(1)
       }
+      console.log('Joined session', sessionId)
       break
     }
     case NotificationType.GROUP_INVITATION: {

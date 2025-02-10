@@ -27,7 +27,6 @@ export default function HomeView() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         {/* Welcome Section */}
-        <Button onPress={() => router.push('/not-found')} title="not found" />
         <ViewHeader title="Hey there! 👋" description="Ready to find your next favorite restaurant?" />
 
         {/* Quick Actions */}

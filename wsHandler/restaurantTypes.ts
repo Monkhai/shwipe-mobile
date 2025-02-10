@@ -3,5 +3,11 @@ export interface Restaurant {
   rating: number
   price_level: number
   photos: Array<string>
-  location_url: string
+  navigation_links: NavigationLinks
+}
+
+export interface NavigationLinks {
+  google_maps: string
+  apple_maps: string
+  waze: string
 }

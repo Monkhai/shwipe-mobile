@@ -52,7 +52,6 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
       liked: false,
     }
     sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex)
     updateIndex()
   }
 
@@ -67,7 +66,6 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
       liked: true,
     }
     sendMessage(updateIndexMessage)
-    console.log('sent update index message', realIndex)
     updateIndex()
   }
 
@@ -122,6 +120,10 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
       } else {
         rotation.value = withTiming(0)
         translationX.value = withTiming(0)
+        heartTranslationX.value = withTiming(0)
+        xTranslationX.value = withTiming(0)
+        heartOpacity.value = withTiming(0)
+        xOpacity.value = withTiming(0)
       }
     })
 

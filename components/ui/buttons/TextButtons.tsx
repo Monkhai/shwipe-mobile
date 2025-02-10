@@ -1,12 +1,19 @@
 import { View, Text, useColorScheme, PressableProps, ActivityIndicator } from 'react-native'
 import React, { useCallback } from 'react'
 import { AnimatedPressable } from './AnimatedPressable'
-import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, {
+  AnimatedProps,
+  LinearTransition,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
 import UIText from '../UIText'
 import { colors, ColorType } from '@/constants/colors'
 import { texts, TextType } from '@/constants/texts'
 
-export function GeneralButton({ children, style, ...props }: PressableProps) {
+export function GeneralButton({ children, style, ...props }: AnimatedProps<PressableProps>) {
   const scale = useSharedValue(1)
 
   const onPressIn = useCallback(() => {
@@ -27,7 +34,7 @@ export function GeneralButton({ children, style, ...props }: PressableProps) {
   )
 }
 
-interface Props extends PressableProps {
+interface Props extends AnimatedProps<PressableProps> {
   type?: 'primary' | 'danger'
   textType?: TextType
   text: string

@@ -29,5 +29,13 @@ export const useSessionStore = create<SessionStore>()((set, get) => ({
   __setSessionId: sessionId => set({ sessionId }),
   __setRestaurants: restaurants => set({ restaurants }),
   __setUsers: users => set({ users }),
-  __resetAll: () => set({ sessionId: null, restaurants: [], users: [], isSessionStarted: false }),
+  __resetAll: () => set(initialValues),
 }))
+
+const initialValues = {
+  sessionId: null,
+  restaurants: [],
+  users: [],
+  isSessionStarted: false,
+  matchedRestaurantIndex: null,
+}
