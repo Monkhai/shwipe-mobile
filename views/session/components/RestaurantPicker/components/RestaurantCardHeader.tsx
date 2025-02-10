@@ -12,7 +12,7 @@ import Animated, { LinearTransition, SlideInRight, SlideOutRight } from 'react-n
 interface Props {
   restaurant: Restaurant
 }
-export default function TEST_RestaurantCardHeader({ restaurant }: Props) {
+export default function RestaurantCardHeader({ restaurant }: Props) {
   const theme = useColorScheme() ?? 'light'
   const [showMore, setShowMore] = useState(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)

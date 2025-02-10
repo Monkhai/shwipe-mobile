@@ -3,7 +3,7 @@ import X from '@/components/shapes/X'
 import { cardBorderColors } from '@/constants/colors'
 import { Restaurant } from '@/wsHandler/restaurantTypes'
 import React, { forwardRef, useImperativeHandle } from 'react'
-import { Image, useWindowDimensions } from 'react-native'
+import { Image, StyleSheet, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
@@ -63,10 +63,6 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
   })
 
   const animatedStyle = useAnimatedStyle(() => {
-    return { transform: [{ translateX: translationX.value }, { rotate: `${rotation.value}deg` }] }
-  })
-
-  const animatedImageStyle = useAnimatedStyle(() => {
     const rotationPercentage = Math.abs(rotation.value) / ROTATION_THRESHOLD
     const color =
       rotation.value < 0
@@ -75,6 +71,7 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
     return {
       borderColor: color,
       shadowColor: color,
+      transform: [{ translateX: translationX.value }, { rotate: `${rotation.value}deg` }],
     }
   })
 
@@ -124,37 +121,12 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
   const link = `${restaurant.photos[0]}`
   return (
     <GestureDetector gesture={pan}>
-      <Animated.View
-        layout={LinearTransition}
-        style={[
-          animatedStyle,
-          animatedImageStyle,
-          {
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: 32,
-            borderWidth: 6,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 1,
-            shadowRadius: 15,
-            elevation: 20,
-          },
-        ]}
-      >
-        <Animated.Image
-          layout={LinearTransition}
-          key={index}
-          source={{ uri: link }}
-          style={{ width: '100%', height: '100%', borderRadius: 26 }}
-        />
-        <Animated.View
-          layout={LinearTransition}
-          style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
-        >
+      <Animated.View layout={LinearTransition} style={[animatedStyle, styles.imageContainer]}>
+        <Animated.Image layout={LinearTransition} key={index} source={{ uri: link }} style={styles.image} />
+        <Animated.View layout={LinearTransition} style={[heartAnimatedStyle, styles.shape, { left: width / 2 }]}>
           <Heart size={100} />
         </Animated.View>
-        <Animated.View style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}>
+        <Animated.View style={[xAnimatedStyle, styles.shape, { right: width / 2 }]}>
           <X size={100} />
         </Animated.View>
       </Animated.View>
@@ -163,3 +135,27 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
 })
 
 export default TEST_RestaurantCard
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: 32,
+    borderWidth: 6,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+    elevation: 20,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 26,
+  },
+  shape: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})

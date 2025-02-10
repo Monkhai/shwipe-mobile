@@ -14,7 +14,7 @@ interface Props {
   restaurantIndex: number
 }
 
-export default function TEST_RestaurantCardFooter({ cardRefs, restaurantIndex }: Props) {
+export default function RestaurantCardFooter({ cardRefs, restaurantIndex }: Props) {
   return (
     <View style={styles.container}>
       <DislikeButton cardRefs={cardRefs} restaurantIndex={restaurantIndex} />

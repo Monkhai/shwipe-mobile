@@ -7,12 +7,13 @@ import { Restaurant } from '@/wsHandler/restaurantTypes'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'
 import { forwardRef, useImperativeHandle } from 'react'
-import { Image, useWindowDimensions } from 'react-native'
+import { Image, StyleSheet, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
   interpolate,
   interpolateColor,
+  LinearTransition,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -143,14 +144,12 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
   const link = `${restaurant.photos[0]}`
   return (
     <GestureDetector gesture={pan}>
-      <Animated.View style={[animatedStyle, { position: 'absolute', width: '100%', height: '100%' }]}>
-        <Image key={index} source={{ uri: link }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
-        <Animated.View
-          style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
-        >
+      <Animated.View layout={LinearTransition} style={[animatedStyle, styles.imageContainer]}>
+        <Animated.Image layout={LinearTransition} key={index} source={{ uri: link }} style={styles.image} />
+        <Animated.View layout={LinearTransition} style={[heartAnimatedStyle, styles.shape, { left: width / 2 }]}>
           <Heart size={100} />
         </Animated.View>
-        <Animated.View style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}>
+        <Animated.View style={[xAnimatedStyle, styles.shape, { right: width / 2 }]}>
           <X size={100} />
         </Animated.View>
       </Animated.View>
@@ -159,3 +158,27 @@ const RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, restau
 })
 
 export default RestaurantCard
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: 32,
+    borderWidth: 6,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+    elevation: 20,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 26,
+  },
+  shape: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})

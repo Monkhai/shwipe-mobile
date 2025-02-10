@@ -1,26 +1,40 @@
-import { WhiteHeart } from '@/components/shapes/Heart'
-import { WhiteX } from '@/components/shapes/X'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
-import { colors } from '@/constants/colors'
 import { useSessionStore } from '@/zustand/sessionStore'
 import React, { useRef, useState } from 'react'
-import { useColorScheme, View } from 'react-native'
+import { useColorScheme } from 'react-native'
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RestaurantCard, { RestaurantCardRef } from './components/RestaurantCard'
+import RestaurantCardFooter from './components/RestaurantCardFooter'
+import RestaurantCardHeader from './components/RestaurantCardHeader'
 
 export default function RestaurantPicker() {
   const theme = useColorScheme() ?? 'light'
   const { restaurants, isSessionStarted } = useSessionStore()
   const [restaurantIndex, setRestaurantIndex] = useState(0)
   const cardRefs = useRef<RestaurantCardRef[]>([])
+  const insets = useSafeAreaInsets()
 
   if (!restaurants || restaurants.length === 0 || !isSessionStarted) return null
 
-  const reversedRestaurants = restaurants.toReversed()
-
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-      <View style={{ width: '90%', height: '80%' }}>
-        {reversedRestaurants.map((restaurant, index) => (
+    <Animated.View
+      entering={FadeIn}
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        gap: 24,
+        paddingHorizontal: 16,
+        borderWidth: 1,
+        borderColor: 'red',
+      }}
+    >
+      <RestaurantCardHeader restaurant={restaurants[restaurantIndex]} />
+      <Animated.View layout={LinearTransition} style={{ width: '100%', flex: 1 }}>
+        {restaurants.toReversed().map((restaurant, index) => (
           <RestaurantCard
             key={index}
             index={index}
@@ -32,49 +46,8 @@ export default function RestaurantPicker() {
             updateIndex={() => setRestaurantIndex(restaurantIndex + 1)}
           />
         ))}
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '70%', paddingHorizontal: 40, marginTop: 20 }}>
-        <GeneralButton
-          onPress={() => {
-            const card = cardRefs.current[restaurantIndex]
-            if (card) {
-              card.dislike()
-            } else {
-              console.log('no card')
-            }
-          }}
-          style={{
-            backgroundColor: colors[theme].danger,
-            borderRadius: 100,
-            width: 60,
-            height: 60,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <WhiteX size={48} />
-        </GeneralButton>
-        <GeneralButton
-          onPress={() => {
-            const card = cardRefs.current[restaurantIndex]
-            if (card) {
-              card.like()
-            } else {
-              console.log('no card')
-            }
-          }}
-          style={{
-            backgroundColor: colors[theme].success,
-            borderRadius: 100,
-            width: 60,
-            height: 60,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <WhiteHeart size={42} />
-        </GeneralButton>
-      </View>
-    </View>
+      </Animated.View>
+      <RestaurantCardFooter restaurant={restaurants[restaurantIndex]} cardRefs={cardRefs} restaurantIndex={restaurantIndex} />
+    </Animated.View>
   )
 }

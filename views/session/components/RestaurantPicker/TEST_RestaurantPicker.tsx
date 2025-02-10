@@ -7,9 +7,9 @@ import React, { useRef, useState } from 'react'
 import { View } from 'react-native'
 import { RestaurantCardRef } from './components/RestaurantCard'
 import TEST_RestaurantCard from './components/TEST_RestaurantCard'
-import TEST_RestaurantCardFooter from './components/TEST_RestaurantCardFooter'
+import RestaurantCardFooter from './components/RestaurantCardFooter'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import TEST_RestaurantCardHeader from './components/TEST_RestaurantCardHeader'
+import RestaurantCardHeader from './components/RestaurantCardHeader'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
 export default function TEST_RestaurantPicker() {
@@ -49,7 +49,7 @@ export default function TEST_RestaurantPicker() {
         borderColor: 'red',
       }}
     >
-      <TEST_RestaurantCardHeader restaurant={restaurants[restaurantIndex]} />
+      <RestaurantCardHeader restaurant={restaurants[restaurantIndex]} />
       <Animated.View layout={LinearTransition} style={{ width: '100%', flex: 1 }}>
         {restaurants.toReversed().map((restaurant, index) => (
           <TEST_RestaurantCard
@@ -64,7 +64,7 @@ export default function TEST_RestaurantPicker() {
           />
         ))}
       </Animated.View>
-      <TEST_RestaurantCardFooter restaurant={restaurants[restaurantIndex]} cardRefs={cardRefs} restaurantIndex={restaurantIndex} />
+      <RestaurantCardFooter restaurant={restaurants[restaurantIndex]} cardRefs={cardRefs} restaurantIndex={restaurantIndex} />
     </View>
   )
 }

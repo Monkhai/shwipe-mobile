@@ -10,7 +10,7 @@ interface Props {
 export default function MatchModelBody({ restaurant }: Props) {
   const theme = useColorScheme() ?? 'light'
   const { width: screenWidth, height: screenHeight } = useWindowDimensions()
-  const imageSize = Math.min(screenWidth * 0.5, 240)
+  const imageSize = Math.min(screenWidth * 0.8, 300)
   const fontSize = Math.min(screenWidth * 0.09, 44)
   const containerPadding = Math.min(screenWidth * 0.08, 36)
   return (
@@ -43,7 +43,7 @@ export default function MatchModelBody({ restaurant }: Props) {
         style={[
           {
             position: 'absolute',
-            top: screenHeight / 3 - imageSize / 2,
+            top: screenHeight / 2.8 - imageSize / 2,
             borderWidth: 8,
             borderRadius: 1000,
             borderColor: colors[theme].white,

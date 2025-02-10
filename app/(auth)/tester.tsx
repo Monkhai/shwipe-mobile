@@ -1,8 +1,9 @@
+import { SessionMatchModal } from '@/components/session/SessionMatchModal'
 import TEST_RestaurantPicker from '@/views/session/components/RestaurantPicker/TEST_RestaurantPicker'
 import { Restaurant } from '@/wsHandler/restaurantTypes'
 import { BlurView } from 'expo-blur'
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { Button, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
@@ -12,7 +13,8 @@ export default function Tester() {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TEST_RestaurantPicker />
+      <SessionMatchModal restaurant={mockRestaurant} onDismiss={() => setIsMatched(false)} />
+      <Button title="Show Match" onPress={() => setIsMatched(true)} />
     </View>
   )
 }
