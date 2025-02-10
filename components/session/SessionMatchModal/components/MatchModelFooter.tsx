@@ -1,6 +1,7 @@
 import AppleMapsLogo from '@/components/logos/AppleMapsLogo'
 import GoogleMapsLogo from '@/components/logos/GoogleMapsLogo'
 import WazeLogo from '@/components/logos/WazeLogo'
+import RestaurantInfoPills from '@/components/restaurants/RestaurantInfoPills'
 import { GeneralButton, PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
@@ -38,12 +39,12 @@ export default function MatchModelFooter({ restaurant, onDismiss }: Props) {
       style={{
         position: 'absolute',
         bottom: 0,
+        overflow: 'hidden',
         backgroundColor: colors[theme].white + '4D',
         width: '90%',
         borderRadius: 32,
         padding: 16,
         marginBottom: 32,
-        overflow: 'hidden',
       }}
     >
       {menuType === 'restaurant' ? <RestaurantDetails restaurant={restaurant} /> : null}
@@ -70,23 +71,7 @@ function RestaurantDetails({ restaurant }: { restaurant: Restaurant }) {
       </View>
 
       {/* Info Pills */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
-        <View style={{ borderRadius: 100, overflow: 'hidden' }}>
-          <BlurView intensity={50} tint={'systemMaterialLight'} style={styles.infoPill}>
-            <UIText type="caption" color="secondaryLabel">
-              {'💰'.repeat(restaurant.price_level)}
-            </UIText>
-          </BlurView>
-        </View>
-
-        <View style={{ borderRadius: 100, overflow: 'hidden' }}>
-          <BlurView intensity={50} tint={'systemMaterialLight'} style={styles.infoPill}>
-            <UIText type="caption" color="secondaryLabel">
-              {'⭐️'.repeat(restaurant.rating)}
-            </UIText>
-          </BlurView>
-        </View>
-      </View>
+      <RestaurantInfoPills restaurant={restaurant} />
     </Animated.View>
   )
 }
@@ -134,6 +119,7 @@ function NavigationMenu({
     >
       <GeneralButton
         onPress={() => {
+          console.log('navigationLinks.waze', navigationLinks.waze)
           Linking.openURL(navigationLinks.waze)
         }}
         style={[styles.mapButton, styles.wazeButton]}
@@ -208,11 +194,5 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 0,
-  },
-  infoPill: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 100,
-    gap: 4,
   },
 })

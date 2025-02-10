@@ -9,6 +9,7 @@ import Animated, {
   clamp,
   interpolate,
   interpolateColor,
+  LinearTransition,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -62,23 +63,18 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
   })
 
   const animatedStyle = useAnimatedStyle(() => {
+    return { transform: [{ translateX: translationX.value }, { rotate: `${rotation.value}deg` }] }
+  })
+
+  const animatedImageStyle = useAnimatedStyle(() => {
     const rotationPercentage = Math.abs(rotation.value) / ROTATION_THRESHOLD
+    const color =
+      rotation.value < 0
+        ? interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.red)
+        : interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.green)
     return {
-      borderWidth: 7,
-      borderColor:
-        rotation.value < 0
-          ? interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.red)
-          : interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.green),
-      borderRadius: 20,
-      shadowColor:
-        rotation.value < 0
-          ? interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.red)
-          : interpolateColor(rotationPercentage, [0.1, 0.5, 1], cardBorderColors.green),
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 1,
-      shadowRadius: 15,
-      elevation: 20,
-      transform: [{ translateX: translationX.value }, { rotate: `${rotation.value}deg` }],
+      borderColor: color,
+      shadowColor: color,
     }
   })
 
@@ -125,25 +121,44 @@ const TEST_RestaurantCard = forwardRef<RestaurantCardRef, CardProps>(({ index, r
     }
   })
 
-  const link = `${restaurant.photos[0]}&key=AIzaSyALFutkrFeGGS8jR_HVgO1xUqrlJ-_ZZm4`
+  const link = `${restaurant.photos[0]}`
   return (
-    <>
-      <GestureDetector gesture={pan}>
-        <Animated.View style={[animatedStyle, { position: 'absolute', width: '100%', height: '100%' }]}>
-          <Image key={index} source={{ uri: link }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
-          <Animated.View
-            style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
-          >
-            <Heart size={100} />
-          </Animated.View>
-          <Animated.View
-            style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}
-          >
-            <X size={100} />
-          </Animated.View>
+    <GestureDetector gesture={pan}>
+      <Animated.View
+        layout={LinearTransition}
+        style={[
+          animatedStyle,
+          animatedImageStyle,
+          {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            borderRadius: 32,
+            borderWidth: 6,
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 1,
+            shadowRadius: 15,
+            elevation: 20,
+          },
+        ]}
+      >
+        <Animated.Image
+          layout={LinearTransition}
+          key={index}
+          source={{ uri: link }}
+          style={{ width: '100%', height: '100%', borderRadius: 26 }}
+        />
+        <Animated.View
+          layout={LinearTransition}
+          style={[heartAnimatedStyle, { position: 'absolute', left: width / 2, alignItems: 'center', justifyContent: 'center' }]}
+        >
+          <Heart size={100} />
         </Animated.View>
-      </GestureDetector>
-    </>
+        <Animated.View style={[xAnimatedStyle, { position: 'absolute', right: width / 2, alignItems: 'center', justifyContent: 'center' }]}>
+          <X size={100} />
+        </Animated.View>
+      </Animated.View>
+    </GestureDetector>
   )
 })
 

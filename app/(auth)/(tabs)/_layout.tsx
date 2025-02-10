@@ -7,7 +7,6 @@ export default function _layout() {
       <Tabs.Screen name="home" />
       <Tabs.Screen name="friends" />
       <Tabs.Screen name="groups" />
-      <Tabs.Screen name="tester" options={{ headerShown: false }} />
     </Tabs>
   )
 }

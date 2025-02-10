@@ -1,15 +1,15 @@
-import { GeneralButton, PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
-import { ClientMessageType, CreateSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
-import { useWebsocketStore, ConnectionState } from '@/zustand/websocketStore'
-import React, { useCallback } from 'react'
-import { View, useColorScheme, ScrollView, Button } from 'react-native'
-import Animated, { useAnimatedStyle, withRepeat, withSpring, withTiming, useSharedValue, interpolateColor } from 'react-native-reanimated'
-import UIText from '@/components/ui/UIText'
-import { colors } from '@/constants/colors'
 import FriendsList from '@/components/friends/FriendsList/FriendsList'
-import { sleep } from '@/utils/sleep'
+import { GeneralButton, PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
+import UIText from '@/components/ui/UIText'
 import ViewHeader from '@/components/ui/ViewHeader'
+import { colors } from '@/constants/colors'
+import { sleep } from '@/utils/sleep'
+import { ClientMessageType, CreateSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { router } from 'expo-router'
+import React, { useCallback } from 'react'
+import { Button, ScrollView, View, useColorScheme } from 'react-native'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming } from 'react-native-reanimated'
 
 export default function HomeView() {
   const { sendMessage } = useWebsocketStore()
@@ -24,7 +24,7 @@ export default function HomeView() {
   return (
     <View style={{ flex: 1 }}>
       <ConnectionStatusIndicator />
-
+      <Button title="Test" onPress={() => router.push('/tester')} />
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         {/* Welcome Section */}
         <ViewHeader title="Hey there! 👋" description="Ready to find your next favorite restaurant?" />

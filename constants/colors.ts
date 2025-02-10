@@ -1,5 +1,8 @@
 export const colors = {
+  baseMaterial: '#FFFFFF4D',
   light: {
+    material: '#8080804D',
+    definedMaterial: '#80808080',
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
     elevatedBackground: '#FFFFFF',
@@ -15,6 +18,8 @@ export const colors = {
     quaternaryLabel: '#3C3C432E',
   },
   dark: {
+    material: '#FFFFFF4D',
+    definedMaterial: '#FFFFFF80',
     white: '#FFFFFF',
     background: '#000000',
     secondaryBackground: '#121214',
@@ -45,6 +50,7 @@ export const gradients = {
 export const cardBorderColors = {
   red: ['#FF3B3000', '#FF3B30', '#FF0000'],
   green: ['#34C75900', '#34C759', '#00FF00'],
+  mixed: ['#FF3B3000', '#FF3B30', '#FF0000', '#FFFFFF00', '#34C75900', '#34C759', '#00FF00'],
 }
 
 export type ColorType = keyof typeof colors.light | keyof typeof colors.dark

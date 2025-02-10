@@ -9,6 +9,7 @@ import { Stack } from 'expo-router'
 import { Provider } from 'jotai'
 import { I18nManager, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { PortalProvider } from '@gorhom/portal'
 import * as Expo from 'expo'
 
 setNotificationHandler({
@@ -35,21 +36,23 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <NotificationProvider>
-        <Provider store={store}>
-          <QueryProvider>
-            <AuthProvider>
-              <GestureHandlerRootView style={{ flex: 1 }}>
-                <Stack screenOptions={{ animation: 'fade' }}>
-                  <Stack.Screen name="login" />
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                  <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                  <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-                  <Stack.Screen name="not-found" options={{ headerShown: false }} />
-                </Stack>
-              </GestureHandlerRootView>
-            </AuthProvider>
-          </QueryProvider>
-        </Provider>
+        <PortalProvider>
+          <Provider store={store}>
+            <QueryProvider>
+              <AuthProvider>
+                <GestureHandlerRootView style={{ flex: 1 }}>
+                  <Stack screenOptions={{ animation: 'fade' }}>
+                    <Stack.Screen name="login" />
+                    <Stack.Screen name="index" options={{ headerShown: false }} />
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+                    <Stack.Screen name="not-found" options={{ headerShown: false }} />
+                  </Stack>
+                </GestureHandlerRootView>
+              </AuthProvider>
+            </QueryProvider>
+          </Provider>
+        </PortalProvider>
       </NotificationProvider>
     </ThemeProvider>
   )
