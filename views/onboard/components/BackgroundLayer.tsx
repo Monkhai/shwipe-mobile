@@ -8,7 +8,7 @@ export default function BackgroundLayer() {
   const theme = useColorScheme() ?? 'light'
   return (
     <>
-      <Canvas style={{ height: '100%', width: '100%', position: 'absolute' }}>
+      <Canvas style={{ height: '100%', width: '100%', position: 'absolute', backgroundColor: colors.dark.background }}>
         <Rect opacity={0.4} y={0} x={0} width={width} height={height} color={'white'}>
           <LinearGradient
             colors={[colors[theme].success, colors[theme].primary]}
