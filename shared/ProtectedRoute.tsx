@@ -1,9 +1,9 @@
-import { View, Text, Button } from 'react-native'
-import React from 'react'
 import { userAtom } from '@/jotai/authAtom'
-import { useAtom } from 'jotai'
-import { Redirect, Stack } from 'expo-router'
 import auth from '@react-native-firebase/auth'
+import { Redirect, Stack } from 'expo-router'
+import { useAtom } from 'jotai'
+import React from 'react'
+import { Button } from 'react-native'
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [user] = useAtom(userAtom)

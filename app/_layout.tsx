@@ -7,10 +7,12 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { setNotificationHandler } from 'expo-notifications'
 import { Stack } from 'expo-router'
 import { Provider } from 'jotai'
-import { I18nManager, useColorScheme } from 'react-native'
+import { I18nManager, useColorScheme, useWindowDimensions } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PortalProvider } from '@gorhom/portal'
 import * as Expo from 'expo'
+import { Canvas, Circle, LinearGradient, Rect, RoundedRect } from '@shopify/react-native-skia'
+import { colors } from '@/constants/colors'
 
 setNotificationHandler({
   handleNotification: async n => {
@@ -32,7 +34,8 @@ if (isRTL) {
 }
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme()
+  const colorScheme = useColorScheme() ?? 'light'
+  const { width, height } = useWindowDimensions()
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <NotificationProvider>
@@ -41,6 +44,8 @@ export default function RootLayout() {
             <QueryProvider>
               <AuthProvider>
                 <GestureHandlerRootView style={{ flex: 1 }}>
+                  {/* Background Gradient and Shapes */}
+
                   <Stack screenOptions={{ animation: 'fade' }}>
                     <Stack.Screen name="login" />
                     <Stack.Screen name="index" options={{ headerShown: false }} />
