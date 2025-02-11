@@ -1,3 +1,4 @@
+import { SessionMatchModal } from '@/components/session/SessionMatchModal'
 import OnboardView from '@/views/onboard/OnboardView'
 import { Restaurant } from '@/wsHandler/restaurantTypes'
 import { BlurView } from 'expo-blur'
@@ -9,7 +10,7 @@ type AppRoute = '/(auth)/friends' | '/(auth)/groups' | '/(auth)/invite-friend'
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 export default function Tester() {
-  return <OnboardView />
+  return <SessionMatchModal restaurant={mockRestaurant} onDismiss={() => {}} />
 }
 
 const mockRestaurant: Restaurant = {
