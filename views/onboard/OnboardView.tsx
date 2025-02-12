@@ -6,17 +6,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import React from 'react'
 import { StyleSheet, useWindowDimensions, View } from 'react-native'
-import Animated, {
-  LinearTransition,
-  SlideInDown,
-  SlideInLeft,
-  SlideInRight,
-  SlideInUp,
-  StyleProps,
-  withDelay,
-  withTiming,
-  ZoomIn,
-} from 'react-native-reanimated'
+import Animated, { LinearTransition, SlideInDown, SlideInLeft, SlideInRight, SlideInUp, ZoomIn } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
@@ -36,7 +26,7 @@ export default function OnboardView() {
       <View style={[styles.container, { paddingTop: insets.top + 64 }]}>
         <Animated.View entering={SlideInUp.duration(DURATION)} style={{ alignItems: 'center' }}>
           <UIText type="largeTitle" color="white" style={{ marginBottom: 12, textAlign: 'center' }}>
-            Hungry Now?{'\n'}Let's Eat
+            Find-Eats{'\n'}Let's Eat
           </UIText>
           <UIText type="body" style={{ textAlign: 'center', color: colors.dark.secondaryLabel }}>
             Find the perfect spot in seconds{'\n'}Solo or with friends
@@ -86,6 +76,7 @@ export default function OnboardView() {
             .stiffness(120)}
           layout={LinearTransition}
           style={styles.ctaContainer}
+          onPress={() => {}}
         >
           <BlurView intensity={20} tint="light" style={styles.ctaBlurView}>
             <Ionicons name="restaurant-outline" size={24} color={colors.dark.white} />
@@ -134,24 +125,3 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 })
-
-type LayoutAnimation = {
-  initialValues: StyleProps
-  animations: StyleProps
-  callback?: (finished: boolean) => void
-}
-
-function EnterAnimation(): LayoutAnimation {
-  'worklet'
-  const initialValues: StyleProps = {
-    transform: [{ translateY: 0 }, { scale: 0 }],
-  }
-
-  const animations: StyleProps = {
-    transform: [
-      { translateY: withDelay(DELAY * 2.4, withTiming(-40, { duration: DURATION })) },
-      { scale: withDelay(DELAY * 2.4, withTiming(1, { duration: DURATION })) },
-    ],
-  }
-  return { initialValues, animations }
-}

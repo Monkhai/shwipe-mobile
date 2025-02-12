@@ -3,8 +3,10 @@ import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { Ionicons } from '@expo/vector-icons'
+import auth from '@react-native-firebase/auth'
 import { BlurView } from 'expo-blur'
-import React, { useEffect, useState } from 'react'
+import { router } from 'expo-router'
+import React, { useState } from 'react'
 import { Pressable, StyleSheet, useColorScheme } from 'react-native'
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -58,19 +60,33 @@ export default function HomeMenu() {
         )}
         {isOpen && (
           <Animated.View style={{ flex: 1, padding: PADDING, gap: GAP, width: 200 }} entering={FadeIn} exiting={FadeOut}>
-            <GeneralButton style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }} onPress={() => setIsOpen(false)}>
+            <GeneralButton
+              onPressIn={() => router.push('/(auth)/friends')}
+              style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+              onPress={() => setIsOpen(false)}
+            >
               <Ionicons name="people-outline" size={20} color={colors[theme].white} />
               <UIText type="body" color="white">
-                Users
+                Friends
               </UIText>
             </GeneralButton>
-            <GeneralButton style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }} onPress={() => setIsOpen(false)}>
+            <GeneralButton
+              onPressIn={() => router.push('/(auth)/groups')}
+              style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+              onPress={() => setIsOpen(false)}
+            >
               <Ionicons name="people-circle-outline" size={20} color={colors[theme].white} />
               <UIText type="body" color="white">
                 Groups
               </UIText>
             </GeneralButton>
-            <GeneralButton style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }} onPress={() => setIsOpen(false)}>
+            <GeneralButton
+              onPress={() => {
+                setIsOpen(false)
+                void auth().signOut()
+              }}
+              style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            >
               <Ionicons name="log-out-outline" size={20} color={colors[theme].white} />
               <UIText type="body" color="white">
                 Logout

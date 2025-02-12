@@ -1,10 +1,12 @@
 import signInWIthGoogle from '@/assets/auth/google.png'
+import { useGetOnboardingData } from '@/asyncStorage/storageStore'
 import { useAuth } from '@/providers/AuthProvider'
 import auth from '@react-native-firebase/auth'
-import { GoogleSignin, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin'
+import { GoogleSignin, isErrorWithCode } from '@react-native-google-signin/google-signin'
 import { Redirect } from 'expo-router'
 import React from 'react'
-import { Image, Platform, Pressable, View } from 'react-native'
+import { Image, Pressable, View } from 'react-native'
+import LoadingView from '../loading/LoadingView'
 
 const SIGN_IN_WITH_GOOGLE_IMAGE = Image.resolveAssetSource(signInWIthGoogle)
 
@@ -29,14 +31,18 @@ async function onGoogleButtonPress() {
     }
   }
 }
+const webClientId = '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com'
 
 export default function LoginView() {
-  const webClientId = '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleusercontent.com'
   GoogleSignin.configure({ webClientId })
-
+  const { data: onboardingData } = useGetOnboardingData()
   const [user] = useAuth()
+
   if (user) {
-    return <Redirect href="/(auth)/friends" />
+    if (!onboardingData || !onboardingData.hasCompletedOnboarding) {
+      return <Redirect href="/(auth)/onboard" />
+    }
+    return <Redirect href="/(auth)/home" />
   }
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { useGetOnboardingData } from '@/asyncStorage/storageStore'
 import { userAtom } from '@/jotai/authAtom'
 import { Redirect } from 'expo-router'
 import { useAtom } from 'jotai'
+import React from 'react'
 
 export default function index() {
+  const { data: onboardingData, isLoading } = useGetOnboardingData()
   const [user] = useAtom(userAtom)
+
+  if (isLoading) return null
+
   if (user) {
+    if (!onboardingData || !onboardingData.hasCompletedOnboarding) {
+      return <Redirect href="/onboard" />
+    }
     return <Redirect href="/home" />
   }
 

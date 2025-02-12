@@ -11,6 +11,7 @@ async function getUserFriends() {
 }
 
 export function useGetUserFriends() {
+  console.log('trying to get friends')
   return useQuery({
     queryKey: queryKeystore.friends,
     queryFn: getUserFriends,
