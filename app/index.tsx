@@ -10,10 +10,11 @@ export default function index() {
 
   if (isLoading) return null
 
+  if (!onboardingData || !onboardingData.hasCompletedOnboarding) {
+    return <Redirect href="/onboard" />
+  }
+
   if (user) {
-    if (!onboardingData || !onboardingData.hasCompletedOnboarding) {
-      return <Redirect href="/onboard" />
-    }
     return <Redirect href="/home" />
   }
 

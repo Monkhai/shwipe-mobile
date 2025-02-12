@@ -1,3 +1,4 @@
+import { useSetOnboardingData } from '@/asyncStorage/storageStore'
 import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
@@ -6,27 +7,28 @@ import { Ionicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import React from 'react'
 import { StyleSheet, useWindowDimensions, View } from 'react-native'
-import Animated, { LinearTransition, SlideInDown, SlideInLeft, SlideInRight, SlideInUp, ZoomIn } from 'react-native-reanimated'
+import Animated, { SlideInDown, ZoomIn } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 const DURATION = 800
-const DELAY = 400
+const DELAY = 350
 
 export default function OnboardView() {
   const insets = useSafeAreaInsets()
   const { width } = useWindowDimensions()
   const cardSize = width * 0.27
+  const { mutate: updateOnboardingData, isPending } = useSetOnboardingData()
 
   return (
     <>
       <BackgroundLayer />
 
       <View style={[styles.container, { paddingTop: insets.top + 64 }]}>
-        <Animated.View entering={SlideInUp.duration(DURATION)} style={{ alignItems: 'center' }}>
+        <Animated.View entering={ZoomIn.duration(DURATION)} style={{ alignItems: 'center' }}>
           <UIText type="largeTitle" color="white" style={{ marginBottom: 12, textAlign: 'center' }}>
-            Find-Eats{'\n'}Let's Eat
+            Find-Eats
           </UIText>
           <UIText type="body" style={{ textAlign: 'center', color: colors.dark.secondaryLabel }}>
             Find the perfect spot in seconds{'\n'}Solo or with friends
@@ -34,54 +36,55 @@ export default function OnboardView() {
         </Animated.View>
 
         <View style={styles.cardsContainer}>
-          <AnimatedBlurView
-            entering={SlideInLeft.delay(DELAY * 1).duration(DURATION)}
-            intensity={20}
-            tint="light"
-            style={[styles.card, { width: cardSize, height: cardSize, transform: [{ rotate: '-5deg' }] }]}
-          >
-            <Ionicons name="fast-food-outline" size={32} color={colors.dark.success} />
-            <UIText type="callout" color="white">
-              Quick Bites
-            </UIText>
-          </AnimatedBlurView>
-          <AnimatedBlurView
-            entering={ZoomIn.delay(DELAY * 3).duration(DURATION)}
-            style={[styles.card, { width: cardSize, height: cardSize, marginTop: -20 }]}
-            intensity={20}
-            tint="light"
-          >
-            <Ionicons name="restaurant-outline" size={32} color={colors.dark.primary} />
-            <UIText type="callout" color="white">
-              Fine Dining
-            </UIText>
-          </AnimatedBlurView>
-          <AnimatedBlurView
-            entering={SlideInRight.delay(DELAY * 4).duration(DURATION)}
-            intensity={20}
-            tint="light"
-            style={[styles.card, { width: cardSize, height: cardSize, transform: [{ rotate: '5deg' }] }]}
-          >
-            <Ionicons name="cafe-outline" size={32} color={colors.dark.warning} />
-            <UIText type="callout" color="white">
-              Cafes
-            </UIText>
-          </AnimatedBlurView>
+          <Animated.View entering={ZoomIn.delay(DELAY * 1).duration(DURATION)}>
+            <BlurView
+              intensity={20}
+              tint="light"
+              style={[styles.card, { width: cardSize, height: cardSize, transform: [{ rotate: '-5deg' }] }]}
+            >
+              <Ionicons name="fast-food-outline" size={32} color={colors.dark.success} />
+              <UIText type="callout" color="white">
+                Quick Bites
+              </UIText>
+            </BlurView>
+          </Animated.View>
+
+          <Animated.View entering={ZoomIn.delay(DELAY * 2).duration(DURATION)}>
+            <BlurView style={[styles.card, { width: cardSize, height: cardSize, marginTop: -20 }]} intensity={20} tint="light">
+              <Ionicons name="restaurant-outline" size={32} color={colors.dark.primary} />
+              <UIText type="callout" color="white">
+                Fine Dining
+              </UIText>
+            </BlurView>
+          </Animated.View>
+
+          <Animated.View entering={ZoomIn.delay(DELAY * 3).duration(DURATION)}>
+            <BlurView
+              intensity={20}
+              tint="light"
+              style={[styles.card, { width: cardSize, height: cardSize, transform: [{ rotate: '5deg' }] }]}
+            >
+              <Ionicons name="cafe-outline" size={32} color={colors.dark.warning} />
+              <UIText type="callout" color="white">
+                Cafes
+              </UIText>
+            </BlurView>
+          </Animated.View>
         </View>
 
         <GeneralButton
           entering={SlideInDown.delay(DELAY * 5)
             .springify()
             .damping(16)
-            .stiffness(120)}
-          layout={LinearTransition}
+            .stiffness(110)}
           style={styles.ctaContainer}
-          onPress={() => {}}
+          onPress={() => {
+            updateOnboardingData({ hasCompletedOnboarding: true })
+          }}
         >
           <BlurView intensity={20} tint="light" style={styles.ctaBlurView}>
-            <Ionicons name="restaurant-outline" size={24} color={colors.dark.white} />
-            <UIText type="title" color="white">
-              Start Swiping
+            <UIText type="secondaryTitle" color="white">
+              {isPending ? 'Loading...' : 'Start Swiping'}
             </UIText>
           </BlurView>
         </GeneralButton>

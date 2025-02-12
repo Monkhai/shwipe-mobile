@@ -1,6 +1,7 @@
+import { queryClient } from '@/providers/QueryProvider'
 import { queryKeystore } from '@/queries/queryKeystore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 const ONBOARDING_DATA_KEY = '@onboardingData'
 
@@ -66,5 +67,14 @@ export function useGetOnboardingData() {
   return useQuery({
     queryKey: queryKeystore.onboardingData,
     queryFn: () => storageStore.getOnboardingData(),
+  })
+}
+
+export function useSetOnboardingData() {
+  return useMutation({
+    mutationFn: (data: OnboardingData) => storageStore.setOnboardingData(data),
+    onSuccess: (_, args) => {
+      queryClient.setQueryData(queryKeystore.onboardingData, args)
+    },
   })
 }

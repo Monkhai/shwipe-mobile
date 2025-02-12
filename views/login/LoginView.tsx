@@ -35,13 +35,9 @@ const webClientId = '684959533733-kq14vetk1vfl6cq7do52djf1e7gm8iar.apps.googleus
 
 export default function LoginView() {
   GoogleSignin.configure({ webClientId })
-  const { data: onboardingData } = useGetOnboardingData()
   const [user] = useAuth()
 
   if (user) {
-    if (!onboardingData || !onboardingData.hasCompletedOnboarding) {
-      return <Redirect href="/(auth)/onboard" />
-    }
     return <Redirect href="/(auth)/home" />
   }
   return (

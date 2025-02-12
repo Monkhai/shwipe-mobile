@@ -40,7 +40,7 @@ export default function MatchModelFooter({ restaurant, onDismiss }: Props) {
         position: 'absolute',
         bottom: 0,
         overflow: 'hidden',
-        backgroundColor: colors[theme].white + '4D',
+        backgroundColor: colors.baseMaterial,
         width: '90%',
         borderRadius: 32,
         padding: 16,
