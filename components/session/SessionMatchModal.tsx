@@ -1,4 +1,4 @@
-import { Restaurant } from '@/wsHandler/restaurantTypes'
+import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'

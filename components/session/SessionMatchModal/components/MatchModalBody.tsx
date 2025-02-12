@@ -1,5 +1,5 @@
 import { colors } from '@/constants/colors'
-import { Restaurant } from '@/wsHandler/restaurantTypes'
+import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import React from 'react'
 import { Image, StyleSheet, Text, useColorScheme, useWindowDimensions, View } from 'react-native'
 import Animated, { SlideInUp, StyleProps, withTiming, ZoomIn, ZoomOut } from 'react-native-reanimated'

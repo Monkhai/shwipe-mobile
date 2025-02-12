@@ -1,7 +1,7 @@
 import Heart from '@/components/shapes/Heart'
 import X from '@/components/shapes/X'
 import { cardBorderColors } from '@/constants/colors'
-import { Restaurant } from '@/wsHandler/restaurantTypes'
+import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { Image, StyleSheet, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'

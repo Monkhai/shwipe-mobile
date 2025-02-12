@@ -2,11 +2,12 @@ import { AnimatedPressable } from '@/components/ui/buttons/AnimatedPressable'
 import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
+import { useDeleteAccount } from '@/queries/users/useDeleteAccount'
 import { Ionicons } from '@expo/vector-icons'
 import auth from '@react-native-firebase/auth'
 import { router } from 'expo-router'
 import React from 'react'
-import { useColorScheme } from 'react-native'
+import { ActivityIndicator, Alert, useColorScheme, View } from 'react-native'
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -17,8 +18,17 @@ interface Props {
 export default function HomeMenu({ showMenu, setShowMenu }: Props) {
   const theme = useColorScheme() ?? 'light'
   const insets = useSafeAreaInsets()
+  const { mutate: deleteAccount, isPending } = useDeleteAccount()
   const PADDING = 16
   const GAP = 12
+
+  function handleDeleteAccount() {
+    setShowMenu(false)
+    Alert.alert('Delete account', 'Are you sure you want to delete your account? This action is irreversible.', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => deleteAccount() },
+    ])
+  }
 
   return (
     <Animated.View
@@ -87,11 +97,17 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
               Logout
             </UIText>
           </GeneralButton>
-          <GeneralButton style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }} onPress={() => setShowMenu(false)}>
-            <Ionicons name="trash-outline" size={20} color={colors[theme].secondaryDanger} />
-            <UIText type="body" color="secondaryDanger" style={{ color: colors[theme].secondaryDanger }}>
-              Delete account
-            </UIText>
+          <GeneralButton
+            style={{ height: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            onPress={handleDeleteAccount}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <Ionicons name="trash-outline" size={20} color={colors[theme].secondaryDanger} />
+              <UIText type="body" color="secondaryDanger" style={{ color: colors[theme].secondaryDanger }}>
+                Delete account
+              </UIText>
+            </View>
+            {isPending && <ActivityIndicator size="small" color={colors[theme].secondaryDanger} />}
           </GeneralButton>
         </Animated.View>
       )}

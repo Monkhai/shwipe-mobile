@@ -9,4 +9,6 @@ export const queryKeystore = {
   groupInvitations: ['groupInvitations'],
   groupInvitation: (id: string) => ['groupInvitations', id],
   onboardingData: ['onboardingData'],
+  popularRestaurants: ['popularRestaurants'],
+  restaurantDetails: (placeId: string) => ['restaurantDetails', placeId],
 }

@@ -1,5 +1,5 @@
 import { User } from '@/queries/users/userTypes'
-import { Restaurant } from '@/wsHandler/restaurantTypes'
+import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import { create } from 'zustand'
 
 type SessionStore = {

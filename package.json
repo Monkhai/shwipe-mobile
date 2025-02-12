@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@googlemaps/google-maps-services-js": "^3.4.0",
     "@gorhom/portal": "^1.0.14",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-firebase/app": "^21.7.1",

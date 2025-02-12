@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { BlurView } from 'expo-blur'
 import UIText from '../ui/UIText'
-import { Restaurant } from '@/wsHandler/restaurantTypes'
+import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 
 interface Props {
   restaurant: Restaurant

@@ -1,5 +1,5 @@
 import { User } from '@/queries/users/userTypes'
-import { Restaurant } from './restaurantTypes'
+import { Restaurant } from '../queries/restaurants/restaurantTypes'
 
 export enum ServerMessageType {
   LOADING_CONNECTION_MESSAGE_TYPE = 'loading_connection',

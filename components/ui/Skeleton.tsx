@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
 import { Blur, Canvas, Rect } from '@shopify/react-native-skia'
+import React, { useEffect } from 'react'
+import { StyleSheet } from 'react-native'
 import { useSharedValue, withDelay, withRepeat, withTiming } from 'react-native-reanimated'
 
 interface Props {
@@ -17,7 +17,7 @@ export default function Skeleton({ width, height }: Props) {
     x.value = repeat
   }, [])
   return (
-    <Canvas style={StyleSheet.absoluteFill}>
+    <Canvas style={[StyleSheet.absoluteFill]}>
       <Rect color={'#CCCCCE'} x={0} y={0} width={width} height={height} />
       <Rect opacity={0.8} color={'white'} x={x} y={0} width={width / 2} height={height}>
         <Blur blur={20} />
