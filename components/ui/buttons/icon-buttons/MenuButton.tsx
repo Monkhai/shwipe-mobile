@@ -11,7 +11,7 @@ import UIText from '../../UIText'
 import { GeneralButton } from '../TextButtons'
 
 const size = 32
-function MenuIcon() {
+export function MenuIcon() {
   const theme = useColorScheme() ?? 'light'
   return (
     <Canvas style={{ width: size, height: size }}>

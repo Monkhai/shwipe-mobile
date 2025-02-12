@@ -16,7 +16,7 @@ export const useLeaveGroup = () => {
     mutationFn: fn,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeystore.groups })
-      router.dismissTo('/(auth)/(tabs)/groups')
+      router.dismissTo('/(auth)/groups')
     },
   })
 }

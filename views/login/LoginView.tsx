@@ -36,7 +36,7 @@ export default function LoginView() {
 
   const [user] = useAuth()
   if (user) {
-    return <Redirect href="/(auth)/(tabs)/friends" />
+    return <Redirect href="/(auth)/friends" />
   }
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

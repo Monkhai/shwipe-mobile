@@ -165,7 +165,7 @@ export default function NotFoundView() {
           onPress={() => {
             mainScale.value = withSpring(0.8)
             mainOpacity.value = withTiming(0, { duration: 300 })
-            setTimeout(() => router.dismissTo('/(auth)/(tabs)/home'), 300)
+            setTimeout(() => router.dismissTo('/(auth)/home'), 300)
           }}
         />
       </Animated.View>

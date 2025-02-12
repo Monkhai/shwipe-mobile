@@ -14,7 +14,7 @@ export default function UpdateFriendRequestView() {
   const { mutate } = useUpdateFriendRequest()
 
   if (!data) {
-    return <Redirect href={'/(auth)/(tabs)/friends'} />
+    return <Redirect href={'/(auth)/friends'} />
   }
 
   if (data.direction === 'sent') {
@@ -39,7 +39,7 @@ export default function UpdateFriendRequestView() {
                 onSuccess: () => {
                   queryClient.invalidateQueries({ queryKey: queryKeystore.sentFriendRequests })
                   queryClient.invalidateQueries({ queryKey: queryKeystore.receivedFriendRequests })
-                  router.dismissTo('/(auth)/(tabs)/friends')
+                  router.dismissTo('/(auth)/friends')
                 },
               }
             )
@@ -72,7 +72,7 @@ export default function UpdateFriendRequestView() {
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: queryKeystore.sentFriendRequests })
                 queryClient.invalidateQueries({ queryKey: queryKeystore.receivedFriendRequests })
-                router.dismissTo('/(auth)/(tabs)/friends')
+                router.dismissTo('/(auth)/friends')
               },
             }
           )
@@ -99,7 +99,7 @@ export default function UpdateFriendRequestView() {
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: queryKeystore.sentFriendRequests })
                 queryClient.invalidateQueries({ queryKey: queryKeystore.receivedFriendRequests })
-                router.dismissTo('/(auth)/(tabs)/friends')
+                router.dismissTo('/(auth)/friends')
               },
             }
           )

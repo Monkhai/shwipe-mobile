@@ -135,7 +135,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
               const sessionStore = useSessionStore.getState()
               sessionStore.__resetAll()
               console.log('Session closed, redirecting to home')
-              router.dismissTo('/(auth)/(tabs)/home')
+              router.dismissTo('/(auth)/home')
               break
             }
             case ServerMessageType.MATCH_FOUND_MESSAGE_TYPE: {

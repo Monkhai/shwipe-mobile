@@ -11,7 +11,7 @@ export default function InviteFriendView() {
   const { mutate: sendSessionInvitation, isPending } = useSendSessionInvitation()
 
   if (!sessionId) {
-    return <Redirect href="/(auth)/(tabs)/home" />
+    return <Redirect href="/(auth)/home" />
   }
 
   if (isLoadingFriends) {

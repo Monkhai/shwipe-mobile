@@ -5,7 +5,9 @@ import React from 'react'
 export default function _layout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="home" />
+      <Stack.Screen name="friends" />
+      <Stack.Screen name="groups" />
       <Stack.Screen name="session/[session_id]" />
       <Stack.Screen name="update-friend-request" options={smallSheetOptions} />
       <Stack.Screen name="invite-friend" options={smallSheetOptions} />

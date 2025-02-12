@@ -1,26 +1,11 @@
-import { SessionMatchModal } from '@/components/session/SessionMatchModal'
-import OnboardView from '@/views/onboard/OnboardView'
-import { Restaurant } from '@/wsHandler/restaurantTypes'
-import { BlurView } from 'expo-blur'
 import React from 'react'
-import Animated from 'react-native-reanimated'
-
-type AppRoute = '/(auth)/friends' | '/(auth)/groups' | '/(auth)/invite-friend'
-
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
+import { useColorScheme, useWindowDimensions, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function Tester() {
-  return <SessionMatchModal restaurant={mockRestaurant} onDismiss={() => {}} />
-}
+  const theme = useColorScheme() ?? 'light'
+  const { width, height } = useWindowDimensions()
+  const insets = useSafeAreaInsets()
 
-const mockRestaurant: Restaurant = {
-  name: 'Restaurant 1',
-  rating: 4.5,
-  price_level: 2,
-  photos: ['https://picsum.photos/200/300', 'https://picsum.photos/200/300', 'https://picsum.photos/200/300'],
-  navigation_links: {
-    apple_maps: 'https://www.apple.com',
-    google_maps: 'https://www.google.com',
-    waze: 'https://www.waze.com',
-  },
+  return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}></View>
 }
