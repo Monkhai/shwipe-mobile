@@ -7,7 +7,7 @@ import { colors } from '@/constants/colors'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import React, { useRef, useState } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
-import Animated, { LinearTransition, SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import Animated, { LinearTransition, SlideInLeft, SlideInRight, SlideOutLeft, SlideOutRight } from 'react-native-reanimated'
 
 interface Props {
   restaurant: Restaurant
@@ -21,7 +21,7 @@ export default function RestaurantCardHeader({ restaurant }: Props) {
       layout={LinearTransition}
       style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}
     >
-      {!showMore && <BackButton />}
+      {!showMore && <BackButton entering={SlideInLeft} exiting={SlideOutLeft} />}
       <Animated.View layout={LinearTransition} style={[styles.detailsContainer, { backgroundColor: colors[theme].material }]}>
         <RestaurantDetails restaurant={restaurant} showMore={showMore} setShowMore={setShowMore} timerRef={timerRef} />
       </Animated.View>

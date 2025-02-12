@@ -3,6 +3,7 @@ import React from 'react'
 import { useLocalSearchParams } from 'expo-router'
 import { useGetRestaurantDetails } from '@/queries/restaurants/useGetRestaurantDetails'
 import LoadingView from '../loading/LoadingView'
+import RestaurantDetailsViewUI from './RestaurantDetailsViewUI'
 
 export default function RestaurantDetailsView() {
   const { restaurant_id } = useLocalSearchParams<{ restaurant_id: string }>()
@@ -11,6 +12,7 @@ export default function RestaurantDetailsView() {
   if (isLoading) {
     return <LoadingView />
   }
+
   if (!data) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -19,11 +21,5 @@ export default function RestaurantDetailsView() {
     )
   }
 
-  console.log(data)
-
-  return (
-    <View>
-      <Text>RestaurantDetailsView</Text>
-    </View>
-  )
+  return <RestaurantDetailsViewUI restaurant={data} />
 }

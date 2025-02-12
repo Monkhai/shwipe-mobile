@@ -40,6 +40,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
     if (get().__ws) {
       return
     }
+    set({ connectionState: ConnectionState.LOADING })
     const ws = new WebsocketHandler({
       onError(error) {
         if (error instanceof Error) {
@@ -49,6 +50,8 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
             if (currentConnectionState !== ConnectionState.DISCONNECTED) {
               set({ connectionState: ConnectionState.DISCONNECTED })
             }
+          } else {
+            console.error('Error connecting to websocket', error)
           }
         }
         return
@@ -163,7 +166,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
     })
     set({ __ws: ws })
     // ws.connect('ws://10.100.102.146:8080/ws')
-    ws.connect('ws://10.100.102.146:8080/ws')
+    ws.connect('ws://10.100.102.147:8080/ws')
   },
   sendMessage: (message: Omit<BaseClientMessage, 'token_id'>) => {
     const ws = useWebsocketStore.getState().__ws

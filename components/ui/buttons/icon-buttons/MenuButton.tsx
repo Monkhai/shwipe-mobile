@@ -1,5 +1,5 @@
 import { colors } from '@/constants/colors'
-import { User } from '@/queries/users/userTypes'
+import { useSessionStore } from '@/zustand/sessionStore'
 import { Portal } from '@gorhom/portal'
 import { Canvas, FitBox, Path } from '@shopify/react-native-skia'
 import { BlurView } from 'expo-blur'
@@ -53,14 +53,9 @@ export default function MenuButton() {
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
-const mockUsers: User[] = Array.from({ length: 10 }, (_, i) => ({
-  display_name: `User ${i}`,
-  photo_url: `https://picsum.photos/200/300?random=${i}`,
-  id: String(i),
-}))
-
 export function Menu({ setShowMenu }: { setShowMenu: (show: boolean) => void }) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const { users } = useSessionStore()
   const width = windowWidth * 0.6
   const insets = useSafeAreaInsets()
 
@@ -98,7 +93,7 @@ export function Menu({ setShowMenu }: { setShowMenu: (show: boolean) => void }) 
               </View>
             )
           }}
-          data={mockUsers}
+          data={users}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={({ item: user }) => {

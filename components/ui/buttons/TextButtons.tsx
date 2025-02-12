@@ -1,5 +1,5 @@
 import { View, Text, useColorScheme, PressableProps, ActivityIndicator } from 'react-native'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { AnimatedPressable } from './AnimatedPressable'
 import Animated, {
   AnimatedProps,
@@ -15,6 +15,7 @@ import { texts, TextType } from '@/constants/texts'
 
 export function GeneralButton({ children, style, ...props }: AnimatedProps<PressableProps>) {
   const scale = useSharedValue(1)
+  const opacity = useSharedValue(1)
 
   const onPressIn = useCallback(() => {
     scale.value = withTiming(0.95)
@@ -25,7 +26,16 @@ export function GeneralButton({ children, style, ...props }: AnimatedProps<Press
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
+    opacity: opacity.value,
   }))
+
+  useEffect(() => {
+    if (props.disabled) {
+      opacity.value = withTiming(0.5)
+    } else {
+      opacity.value = withTiming(1)
+    }
+  }, [props.disabled])
 
   return (
     <AnimatedPressable onPressIn={onPressIn} onPressOut={onPressOut} style={[animatedStyle, style]} {...props}>

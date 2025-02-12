@@ -11,6 +11,7 @@ import { Image, ScrollView, StyleSheet, useColorScheme, View } from 'react-nativ
 import LoadingView from '../loading/LoadingView'
 import { useWebsocketStore } from '@/zustand/websocketStore'
 import { ClientMessageType, CreateSessionWithGroupMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import UIView from '@/components/ui/UIView'
 
 export default function GroupView() {
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
@@ -56,7 +57,7 @@ export default function GroupView() {
   )
 
   return (
-    <>
+    <UIView>
       <Stack.Screen options={{ title: group.name }} />
       <View style={styles.container}>
         <ViewHeader title={group.name} description={`${group.members.length} ${group.members.length === 1 ? 'Member' : 'Members'}`} />
@@ -88,7 +89,7 @@ export default function GroupView() {
           />
         </View>
       </View>
-    </>
+    </UIView>
   )
 }
 

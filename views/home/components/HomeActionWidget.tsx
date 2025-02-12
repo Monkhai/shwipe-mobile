@@ -1,6 +1,7 @@
 import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
+import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { Ionicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import React, { useState } from 'react'
@@ -13,6 +14,7 @@ interface Props {
   setShowActionWidget: (show: boolean) => void
 }
 export default function HomeActionWidget({ showActionWidget, setShowActionWidget }: Props) {
+  const { connectionState, connectToWebSocket } = useWebsocketStore()
   const insets = useSafeAreaInsets()
   const theme = useColorScheme() ?? 'light'
 
@@ -95,13 +97,24 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               justifyContent: 'center',
               gap: 12,
             }}
+            disabled={connectionState === ConnectionState.LOADING}
             onPress={() => {
-              setShowActionWidget(!showActionWidget)
+              if (connectionState === ConnectionState.DISCONNECTED) {
+                connectToWebSocket()
+              } else {
+                setShowActionWidget(!showActionWidget)
+              }
             }}
           >
             <Ionicons name={'restaurant-outline'} size={20} color={colors[theme].white} />
             <UIText type="tertiaryTitle" color="white">
-              Start Swiping
+              {connectionState === ConnectionState.CONNECTED
+                ? 'Start Swiping'
+                : connectionState === ConnectionState.LOADING
+                ? 'Connecting...'
+                : connectionState === ConnectionState.DISCONNECTED
+                ? 'Reconnect'
+                : 'Reconnecting...'}
             </UIText>
           </GeneralButton>
         </Animated.View>
