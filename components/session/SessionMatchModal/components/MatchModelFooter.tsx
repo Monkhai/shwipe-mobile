@@ -7,7 +7,6 @@ import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { NavigationLinks, Restaurant } from '@/queries/restaurants/restaurantTypes'
 import { Canvas, LinearGradient, Path } from '@shopify/react-native-skia'
-import { BlurView } from 'expo-blur'
 import React, { useState } from 'react'
 import { Linking, Platform, StyleSheet, useColorScheme, View } from 'react-native'
 import Animated, {
@@ -51,7 +50,7 @@ export default function MatchModelFooter({ restaurant, onDismiss }: Props) {
 
       <Animated.View layout={LinearTransition} style={{ flexDirection: 'row', gap: 16 }}>
         {menuType === 'navigation' ? (
-          <NavigationMenu setMenuType={setMenuType} navigationLinks={restaurant.navigation_links} />
+          <NavigationMenu onBack={() => setMenuType('restaurant')} navigationLinks={restaurant.navigation_links} />
         ) : (
           <MainMenu setMenuType={setMenuType} onDismiss={onDismiss} />
         )}
@@ -103,13 +102,7 @@ function MainMenu({ setMenuType, onDismiss }: { setMenuType: (type: 'restaurant'
   )
 }
 
-function NavigationMenu({
-  setMenuType,
-  navigationLinks,
-}: {
-  setMenuType: (type: 'restaurant' | 'navigation') => void
-  navigationLinks: NavigationLinks
-}) {
+export function NavigationMenu({ onBack, navigationLinks }: { onBack: () => void; navigationLinks: NavigationLinks }) {
   return (
     <Animated.View
       style={styles.navigationButtons}
@@ -145,12 +138,7 @@ function NavigationMenu({
           <AppleMapsLogo />
         </GeneralButton>
       ) : null}
-      <GeneralButton
-        onPress={() => {
-          setMenuType('restaurant')
-        }}
-        style={[styles.mapButton, styles.backButton]}
-      >
+      <GeneralButton onPress={onBack} style={[styles.mapButton, styles.backButton]}>
         <BackArrow />
       </GeneralButton>
     </Animated.View>
@@ -172,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 16,
     justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
   },
   mapButton: {

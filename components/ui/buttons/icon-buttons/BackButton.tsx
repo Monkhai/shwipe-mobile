@@ -13,6 +13,7 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated'
 import { ReanimatedKeyframe } from 'react-native-reanimated/lib/typescript/layoutReanimation/animationBuilder/Keyframe'
+import { BlurView } from 'expo-blur'
 
 const size = 32
 function BackArrow() {
@@ -42,5 +43,26 @@ export default function BackButton({ entering = ZoomIn, exiting = FadeOut }: Pro
         <BackArrow />
       </GeneralButton>
     </Animated.View>
+  )
+}
+
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
+
+export function BackButtonBlur({ entering = ZoomIn, exiting = FadeOut, tint = undefined }: Props & { tint?: 'dark' | 'light' }) {
+  const theme = useColorScheme() ?? 'light'
+  return (
+    <AnimatedBlurView
+      intensity={80}
+      tint={tint}
+      experimentalBlurMethod="dimezisBlurView"
+      layout={LinearTransition}
+      entering={entering}
+      exiting={exiting}
+      style={{ overflow: 'hidden', borderRadius: 100, padding: 4, backgroundColor: colors[theme].thickMaterial }}
+    >
+      <GeneralButton onPress={router.back} hitSlop={24} style={{ borderRadius: 100 }}>
+        <BackArrow />
+      </GeneralButton>
+    </AnimatedBlurView>
   )
 }

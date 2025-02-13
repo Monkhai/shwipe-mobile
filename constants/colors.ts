@@ -2,7 +2,8 @@ export const colors = {
   baseMaterial: '#FFFFFF4D',
   light: {
     material: '#8080804D',
-    definedMaterial: '#80808066',
+    thickMaterial: '#80808066',
+    thinMaterial: '#FFFFFF4D',
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
     elevatedBackground: '#FFFFFF',
@@ -20,7 +21,8 @@ export const colors = {
   },
   dark: {
     material: '#FFFFFF4D',
-    definedMaterial: '#80808080',
+    thickMaterial: '#80808080',
+    thinMaterial: '#8080804D',
     white: '#FFFFFF',
     background: '#000000',
     secondaryBackground: '#121214',

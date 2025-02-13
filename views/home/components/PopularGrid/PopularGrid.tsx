@@ -1,29 +1,28 @@
-import { View, Text } from 'react-native'
-import React from 'react'
 import UIText from '@/components/ui/UIText'
-import FeaturedRestaurant, { PopularRestaurantSkeleton } from './components/PopularRestaurant'
 import { useGetPopularRestaurants } from '@/queries/restaurants/useGetPopularRestaurants'
+import React from 'react'
+import { FlatList, View } from 'react-native'
+import FeaturedRestaurant from './components/PopularRestaurant'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function PopularGrid() {
   const { data: popularRestaurants } = useGetPopularRestaurants()
+  const insets = useSafeAreaInsets()
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <UIText type="title" color="label" style={{ marginBottom: 24 }}>
         Popular Around You
       </UIText>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: 16,
-          alignItems: 'flex-start',
-          justifyContent: 'center',
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16, paddingBottom: insets.bottom + 90 }}
+        numColumns={2}
+        columnWrapperStyle={{ gap: 16 }}
+        data={popularRestaurants}
+        renderItem={({ item: restaurant, index }) => {
+          return <FeaturedRestaurant key={index} restaurant={restaurant} />
         }}
-      >
-        {popularRestaurants
-          ? popularRestaurants.map((restaurant, i) => <FeaturedRestaurant key={i} restaurant={restaurant} />)
-          : Array.from({ length: 4 }).map((_, i) => <PopularRestaurantSkeleton key={i} />)}
-      </View>
+      />
     </View>
   )
 }

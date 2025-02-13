@@ -1,5 +1,5 @@
 import funcions from '@react-native-firebase/functions'
-import { GET_POPULAR_RESTAURANTS_CFN, Restaurant } from './restaurantTypes'
+import { GET_POPULAR_RESTAURANTS_CFN, Restaurant, RestaurantDetails } from './restaurantTypes'
 import { useQuery } from '@tanstack/react-query'
 import { queryKeystore } from '../queryKeystore'
 import * as Location from 'expo-location'
@@ -9,12 +9,12 @@ type GetPopularRestaurantsRequest = {
 }
 
 type GetPopularRestaurantsResponse = {
-  restaurants: Restaurant[]
+  restaurants: RestaurantDetails[]
 }
 
 const fn = funcions().httpsCallable<GetPopularRestaurantsRequest, GetPopularRestaurantsResponse>(GET_POPULAR_RESTAURANTS_CFN)
 
-async function getPopularRestaurants(): Promise<Restaurant[]> {
+async function getPopularRestaurants(): Promise<RestaurantDetails[]> {
   const { coords } = await Location.getCurrentPositionAsync()
   const response = await fn({ latitude: coords.latitude, longitude: coords.longitude })
   return response.data.restaurants

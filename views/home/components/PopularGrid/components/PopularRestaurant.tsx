@@ -27,7 +27,7 @@ export default function FeaturedRestaurant({ restaurant }: FeaturedRestaurantPro
         aspectRatio: 1,
         borderRadius: 16,
         overflow: 'hidden',
-        backgroundColor: colors[theme].definedMaterial,
+        backgroundColor: colors[theme].thickMaterial,
       }}
     >
       <View style={{ flex: 1 }}>

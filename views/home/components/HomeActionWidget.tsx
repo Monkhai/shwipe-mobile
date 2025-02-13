@@ -5,14 +5,29 @@ import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { Ionicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, useColorScheme } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
+import { Platform, Pressable, StyleSheet, useColorScheme } from 'react-native'
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+  measure,
+  useAnimatedReaction,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  ZoomIn,
+  ZoomOut,
+} from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 interface Props {
   showActionWidget: boolean
   setShowActionWidget: (show: boolean) => void
 }
+
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
+
 export default function HomeActionWidget({ showActionWidget, setShowActionWidget }: Props) {
   const { connectionState, connectToWebSocket } = useWebsocketStore()
   const insets = useSafeAreaInsets()
@@ -23,7 +38,7 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
       layout={LinearTransition}
       style={{
         position: 'absolute',
-        backgroundColor: colors[theme].definedMaterial,
+        backgroundColor: colors[theme].thickMaterial,
         borderRadius: 24,
         overflow: 'hidden',
         width: '70%',
@@ -32,6 +47,11 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
         zIndex: showActionWidget ? 3 : 1,
       }}
     >
+      <AnimatedBlurView
+        experimentalBlurMethod="dimezisBlurView"
+        intensity={80}
+        style={{ position: 'absolute', width: '100%', height: 180 }}
+      />
       {showActionWidget && (
         <Animated.View entering={ZoomIn} exiting={ZoomOut}>
           <GeneralButton

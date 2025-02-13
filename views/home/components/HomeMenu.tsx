@@ -5,18 +5,34 @@ import { colors } from '@/constants/colors'
 import { useDeleteAccount } from '@/queries/users/useDeleteAccount'
 import { Ionicons } from '@expo/vector-icons'
 import auth from '@react-native-firebase/auth'
+import { BlurView } from 'expo-blur'
 import { router } from 'expo-router'
 import React from 'react'
-import { ActivityIndicator, Alert, useColorScheme, View } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
+import { ActivityIndicator, Alert, Platform, useColorScheme, View } from 'react-native'
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+  measure,
+  useAnimatedReaction,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 interface Props {
   showMenu: boolean
   setShowMenu: (show: boolean) => void
 }
 export default function HomeMenu({ showMenu, setShowMenu }: Props) {
+  const ref = useAnimatedRef()
   const theme = useColorScheme() ?? 'light'
+  const height = useSharedValue(44)
+  const width = useSharedValue(44)
   const insets = useSafeAreaInsets()
   const { mutate: deleteAccount, isPending } = useDeleteAccount()
   const PADDING = 16
@@ -24,29 +40,61 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
 
   function handleDeleteAccount() {
     setShowMenu(false)
+
     Alert.alert('Delete account', 'Are you sure you want to delete your account? This action is irreversible.', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Delete', style: 'destructive', onPress: () => deleteAccount() },
     ])
   }
 
+  useAnimatedReaction(
+    () => measure(ref),
+    m => {
+      if (!m) return
+      if (Platform.OS === 'android') {
+        if (m.height > 44) {
+          height.value = m.height + 2
+          width.value = m.width + 2
+        } else {
+          height.value = withTiming(m.height + 2)
+          width.value = withTiming(m.width + 2)
+        }
+      } else {
+        height.value = withTiming(m.height + 2)
+        width.value = withTiming(m.width + 2)
+      }
+    },
+    [showMenu]
+  )
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    height: height.value,
+    width: width.value,
+  }))
+
   return (
     <Animated.View
+      ref={ref}
       layout={LinearTransition}
       style={[
         {
           position: 'absolute',
           right: 16,
           top: insets.top + 16,
-          backgroundColor: colors[theme].definedMaterial,
+          backgroundColor: colors[theme].thickMaterial,
           borderRadius: 24,
           minWidth: 44,
           minHeight: 44,
-          zIndex: 3,
+          zIndex: showMenu ? 3 : 1,
           overflow: 'hidden',
         },
       ]}
     >
+      <AnimatedBlurView
+        intensity={80}
+        style={[{ position: 'absolute', width: 44, height: 44, left: 0, right: 0, top: 0, bottom: 0 }, animatedStyle]}
+        experimentalBlurMethod="dimezisBlurView"
+      />
       {!showMenu && (
         <AnimatedPressable
           entering={FadeIn}
