@@ -28,8 +28,6 @@ export default function RestaurantPicker() {
         paddingBottom: insets.bottom,
         gap: 24,
         paddingHorizontal: 16,
-        borderWidth: 1,
-        borderColor: 'red',
       }}
     >
       <RestaurantCardHeader restaurant={restaurants[restaurantIndex]} />

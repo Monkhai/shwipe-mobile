@@ -20,23 +20,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 interface Props {
   restaurant: RestaurantDetails
+  hideBackButton?: boolean
 }
-
-export default function RestaurantDetailsViewUI({ restaurant }: Props) {
+export default function RestaurantDetailsViewUI({ restaurant, hideBackButton = false }: Props) {
   const { width: screenWidth } = useWindowDimensions()
   const insets = useSafeAreaInsets()
   const theme = useColorScheme() ?? 'light'
   const [imageLoaded, setImageLoaded] = useState(false)
   const HEADER_HEIGHT = 250
-
-  const restaurantForInfoPills = {
-    name: restaurant.name || '',
-    rating: restaurant.rating || 0,
-    price_level: restaurant.price_level || 0,
-    photos: restaurant.photo_urls || [],
-    navigation_links: restaurant.navigation_links,
-    address: restaurant.vicinity || '',
-  }
 
   const reviews =
     restaurant.reviews
@@ -56,6 +47,7 @@ export default function RestaurantDetailsViewUI({ restaurant }: Props) {
           overflow: 'hidden',
           alignItems: 'center',
           justifyContent: 'center',
+          width: '100%',
         }}
       >
         <Skeleton height={HEADER_HEIGHT} width={screenWidth} />
@@ -84,7 +76,7 @@ export default function RestaurantDetailsViewUI({ restaurant }: Props) {
               justifyContent: 'space-between',
             }}
           >
-            <BackButtonBlur tint="dark" />
+            {!hideBackButton && <BackButtonBlur tint="dark" />}
             <BlurView
               experimentalBlurMethod="dimezisBlurView"
               intensity={80}
@@ -99,13 +91,19 @@ export default function RestaurantDetailsViewUI({ restaurant }: Props) {
                   {restaurant.vicinity}
                 </UIText>
               </View>
-              <RestaurantInfoPills restaurant={restaurantForInfoPills} />
+              <RestaurantInfoPills rating={restaurant.rating!} priceLevel={restaurant.price_level!} />
             </BlurView>
           </Animated.View>
         </View>
       </View>
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20, gap: 24 }}>
+      <ScrollView
+        nestedScrollEnabled
+        bounces={false}
+        style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, gap: 24 }}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Ionicons name="star" size={24} color={colors[theme].warning} />
           <UIText type="titleEmphasized" color="label">

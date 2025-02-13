@@ -7,7 +7,7 @@ import RestaurantDetailsViewUI from './RestaurantDetailsViewUI'
 
 export default function RestaurantDetailsView() {
   const { restaurant_id } = useLocalSearchParams<{ restaurant_id: string }>()
-  const { data, isLoading, error } = useGetRestaurantDetails(restaurant_id)
+  const { data, isLoading } = useGetRestaurantDetails(restaurant_id)
 
   if (isLoading) {
     return <LoadingView />
@@ -20,6 +20,8 @@ export default function RestaurantDetailsView() {
       </View>
     )
   }
+
+  console.log(data)
 
   return <RestaurantDetailsViewUI restaurant={data} />
 }

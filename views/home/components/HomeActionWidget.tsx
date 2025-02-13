@@ -1,10 +1,11 @@
 import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
+import { ClientMessageType, CreateSessionMessage, StartSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { ConnectionState, useWebsocketStore } from '@/zustand/websocketStore'
 import { Ionicons } from '@expo/vector-icons'
 import { BlurView } from 'expo-blur'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Platform, Pressable, StyleSheet, useColorScheme } from 'react-native'
 import Animated, {
   FadeIn,
@@ -29,9 +30,22 @@ interface Props {
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 export default function HomeActionWidget({ showActionWidget, setShowActionWidget }: Props) {
-  const { connectionState, connectToWebSocket } = useWebsocketStore()
+  const { connectionState, connectToWebSocket, sendMessage } = useWebsocketStore()
   const insets = useSafeAreaInsets()
   const theme = useColorScheme() ?? 'light'
+
+  function startSoloSession() {
+    const msg: UnsignedBaseClientMessage<CreateSessionMessage> = {
+      type: ClientMessageType.CREATE_SESSION_MESSAGE_TYPE,
+    }
+    sendMessage(msg)
+  }
+
+  useEffect(() => {
+    return () => {
+      setShowActionWidget(false)
+    }
+  }, [])
 
   return (
     <Animated.View
@@ -63,11 +77,11 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               gap: 12,
             }}
             onPress={() => {
-              setShowActionWidget(false)
+              startSoloSession()
             }}
           >
             <Ionicons name="person-outline" size={24} color={colors[theme].white} />
-            <UIText type="secondaryTitle" color="white">
+            <UIText type="tertiaryTitle" color="white">
               Solo Session
             </UIText>
           </GeneralButton>
@@ -84,7 +98,7 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
             }}
           >
             <Ionicons name="people-outline" size={24} color={colors[theme].white} />
-            <UIText type="secondaryTitle" color="white">
+            <UIText type="tertiaryTitle" color="white">
               Friend Session
             </UIText>
           </GeneralButton>
@@ -101,7 +115,7 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
             }}
           >
             <Ionicons name="people-circle-outline" size={24} color={colors[theme].white} />
-            <UIText type="secondaryTitle" color="white">
+            <UIText type="tertiaryTitle" color="white">
               Group Session
             </UIText>
           </GeneralButton>

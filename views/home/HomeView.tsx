@@ -18,7 +18,7 @@ export default function HomeView() {
   const [showActionWidget, setShowActionWidget] = useState(false)
   return (
     <UIView>
-      <View style={{ paddingTop: insets.top + 16, gap: 16, paddingHorizontal: 16, flex: 1, width: '100%' }}>
+      <View style={{ paddingTop: insets.top + 16, gap: 32, paddingHorizontal: 16, flex: 1, width: '100%' }}>
         <HomeHeader />
         <PopularGrid />
         {(showMenu || showActionWidget) && (

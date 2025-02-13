@@ -4,7 +4,7 @@ import { Canvas, LinearGradient, Rect } from '@shopify/react-native-skia'
 import { colors } from '@/constants/colors'
 
 interface Props {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 export default function UIView({ children }: Props) {
   const { width, height } = useWindowDimensions()

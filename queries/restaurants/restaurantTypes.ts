@@ -4,6 +4,7 @@ export const GET_POPULAR_RESTAURANTS_CFN = 'getPopularRestaurants'
 export const GET_RESTAURANT_DETAILS_CFN = 'getRestaurantDetails'
 
 export interface Restaurant {
+  place_id: string
   name: string
   rating: number
   price_level: number

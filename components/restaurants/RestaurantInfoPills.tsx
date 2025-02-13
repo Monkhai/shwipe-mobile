@@ -7,10 +7,11 @@ import { Ionicons } from '@expo/vector-icons'
 import { colors } from '@/constants/colors'
 
 interface Props {
-  restaurant: Restaurant
+  rating: number
+  priceLevel: number
   condensed?: boolean
 }
-export default function RestaurantInfoPills({ restaurant, condensed = false }: Props) {
+export default function RestaurantInfoPills({ rating, priceLevel, condensed = false }: Props) {
   const theme = useColorScheme() ?? 'light'
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
@@ -19,13 +20,13 @@ export default function RestaurantInfoPills({ restaurant, condensed = false }: P
           {condensed ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <UIText type="caption" color="white">
-                {restaurant.price_level}
+                {priceLevel}
               </UIText>
               <Ionicons name="cash-outline" size={14} color={colors[theme].success} />
             </View>
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {Array.from({ length: restaurant.price_level }).map((_, index) => (
+              {Array.from({ length: priceLevel }).map((_, index) => (
                 <Ionicons key={index} name="cash-outline" size={14} color={colors[theme].success} />
               ))}
             </View>
@@ -38,13 +39,13 @@ export default function RestaurantInfoPills({ restaurant, condensed = false }: P
           {condensed ? (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <UIText type="caption" color="white">
-                {restaurant.rating}
+                {rating}
               </UIText>
               <Ionicons name="star" size={14} color={colors[theme].warning} />
             </View>
           ) : (
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              {Array.from({ length: restaurant.rating }).map((_, index) => (
+              {Array.from({ length: rating }).map((_, index) => (
                 <Ionicons key={index} name="star" size={14} color={colors[theme].warning} />
               ))}
             </View>

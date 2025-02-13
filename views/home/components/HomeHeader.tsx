@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
 import UIText from '@/components/ui/UIText'
+import React from 'react'
+import { View } from 'react-native'
 
 export default function HomeHeader() {
-  const time = new Date().getHours()
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View>
+        {/* <Button title="Test" onPress={() => router.push('/tester')} /> */}
         <UIText type="titleEmphasized" color="label">
           Shwipe
         </UIText>

@@ -7,7 +7,8 @@ import React, { useEffect } from 'react'
 import { Button, FlatList, Image, Linking, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import RestaurantPicker from './components/RestaurantPicker/RestaurantPicker'
-import { SessionMatchModal } from '@/components/session/SessionMatchModal'
+import { SessionMatchModal } from '@/components/session/SessionMatchModal/SessionMatchModal'
+import UIView from '@/components/ui/UIView'
 
 export default function SessionView() {
   const { isSessionStarted, users, sessionId, matchedRestaurantIndex, restaurants } = useSessionStore()
@@ -30,7 +31,7 @@ export default function SessionView() {
   }, [sessionId])
 
   return (
-    <>
+    <UIView>
       <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
         {!isSessionStarted && (
           <View
@@ -76,6 +77,6 @@ export default function SessionView() {
       {matchedRestaurantIndex !== null && restaurants ? (
         <SessionMatchModal onDismiss={router.back} restaurant={restaurants[matchedRestaurantIndex]} />
       ) : null}
-    </>
+    </UIView>
   )
 }

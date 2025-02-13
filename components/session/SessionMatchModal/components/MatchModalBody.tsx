@@ -1,5 +1,7 @@
+import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import { colors } from '@/constants/colors'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
+import { router } from 'expo-router'
 import React from 'react'
 import { Image, StyleSheet, Text, useColorScheme, useWindowDimensions, View } from 'react-native'
 import Animated, { SlideInUp, StyleProps, withTiming, ZoomIn, ZoomOut } from 'react-native-reanimated'
@@ -43,7 +45,7 @@ export default function MatchModelBody({ restaurant }: Props) {
         style={[
           {
             position: 'absolute',
-            top: screenHeight / 2.8 - imageSize / 2,
+            top: screenHeight / 2.5 - imageSize / 2,
             borderWidth: 8,
             borderRadius: 1000,
             borderColor: colors[theme].white,
@@ -64,9 +66,6 @@ export default function MatchModelBody({ restaurant }: Props) {
           }}
         />
       </Animated.View>
-
-      {/* Spacer */}
-      <View />
     </View>
   )
 }

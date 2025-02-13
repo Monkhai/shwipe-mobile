@@ -8,7 +8,7 @@ import { colors } from '@/constants/colors'
 import { NavigationLinks, Restaurant } from '@/queries/restaurants/restaurantTypes'
 import { Canvas, LinearGradient, Path } from '@shopify/react-native-skia'
 import React, { useState } from 'react'
-import { Linking, Platform, StyleSheet, useColorScheme, View } from 'react-native'
+import { Linking, Platform, StyleSheet, View } from 'react-native'
 import Animated, {
   FadeIn,
   FadeOut,
@@ -27,7 +27,6 @@ interface Props {
 }
 
 export default function MatchModelFooter({ restaurant, onDismiss }: Props) {
-  const theme = useColorScheme() ?? 'light'
   const [menuType, setMenuType] = useState<'restaurant' | 'navigation'>('restaurant')
 
   return (
@@ -70,7 +69,7 @@ function RestaurantDetails({ restaurant }: { restaurant: Restaurant }) {
       </View>
 
       {/* Info Pills */}
-      <RestaurantInfoPills restaurant={restaurant} />
+      <RestaurantInfoPills rating={restaurant.rating!} priceLevel={restaurant.price_level!} />
     </Animated.View>
   )
 }
