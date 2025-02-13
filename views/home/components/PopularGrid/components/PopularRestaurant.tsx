@@ -16,46 +16,49 @@ interface FeaturedRestaurantProps {
 export default function FeaturedRestaurant({ restaurant }: FeaturedRestaurantProps) {
   const theme = useColorScheme() ?? 'light'
   const { width: screenWidth } = useWindowDimensions()
-  const cardWidth = (screenWidth - 48) / 2 // 16px padding on each side and 16px gap between cards
+  const cardSize = (screenWidth - 48) / 2 // 16px padding on each side and 16px gap between cards
   const [isLoaded, setIsLoaded] = useState(false)
 
   const placeId = restaurant.place_id!
   return (
-    <GeneralButton
-      onPress={() => router.push(`/(auth)/restaurant/${placeId}`)}
-      style={{
-        width: cardWidth,
-        aspectRatio: 1,
-        borderRadius: 16,
-        overflow: 'hidden',
-        backgroundColor: colors[theme].thickMaterial,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <Skeleton width={cardWidth} height={cardWidth} />
-        <Image
-          onLoadEnd={() => setIsLoaded(true)}
-          source={{ uri: restaurant.photo_urls[0] }}
-          style={{ width: '100%', height: '70%', flex: 1, opacity: isLoaded ? 1 : 0 }}
-        />
-      </View>
-      <View style={{ padding: 12, gap: 4, justifyContent: 'space-between' }}>
-        <UIText type="callout" color="white" numberOfLines={1}>
-          {restaurant.name}
-        </UIText>
-        <View style={{ gap: 6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <UIText type="caption" style={{ flex: 1 }} color="secondaryLabel" numberOfLines={1}>
-            {restaurant.vicinity}
+    <View>
+      <GeneralButton
+        onPress={() => router.push(`/(auth)/restaurant/${placeId}`)}
+        style={{
+          width: cardSize,
+          height: cardSize,
+          aspectRatio: 1,
+          borderRadius: 16,
+          overflow: 'hidden',
+          backgroundColor: colors[theme].thickMaterial,
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          {!isLoaded && <Skeleton width={cardSize} height={cardSize} />}
+          <Image
+            onLoadEnd={() => setIsLoaded(true)}
+            source={{ uri: restaurant.photo_urls[0] }}
+            style={{ width: '100%', height: '70%', flex: 1, opacity: isLoaded ? 1 : 0 }}
+          />
+        </View>
+        <View style={{ padding: 12, gap: 4, justifyContent: 'space-between' }}>
+          <UIText type="callout" color="white" numberOfLines={1}>
+            {restaurant.name}
           </UIText>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-            <Ionicons name="star" size={12} color={colors[theme].warning} />
-            <UIText type="caption" color="secondaryLabel">
-              {restaurant.rating}
+          <View style={{ gap: 6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <UIText type="caption" style={{ flex: 1 }} color="secondaryLabel" numberOfLines={1}>
+              {restaurant.vicinity}
             </UIText>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <Ionicons name="star" size={12} color={colors[theme].warning} />
+              <UIText type="caption" color="secondaryLabel">
+                {restaurant.rating}
+              </UIText>
+            </View>
           </View>
         </View>
-      </View>
-    </GeneralButton>
+      </GeneralButton>
+    </View>
   )
 }
 

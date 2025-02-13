@@ -4,7 +4,7 @@ import { View } from 'react-native'
 
 export default function HomeHeader() {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <View style={{ paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View>
         {/* <Button title="Test" onPress={() => router.push('/tester')} /> */}
         <UIText type="titleEmphasized" color="label">

@@ -60,8 +60,8 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
           width.value = withTiming(m.width + 2)
         }
       } else {
-        height.value = withTiming(m.height + 2)
-        width.value = withTiming(m.width + 2)
+        height.value = withTiming(m.height + 6)
+        width.value = withTiming(m.width + 6)
       }
     },
     [showMenu]

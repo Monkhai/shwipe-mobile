@@ -18,7 +18,7 @@ export default function _layout() {
   }, [onboardingData])
 
   return (
-    <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
+    <Stack initialRouteName="index" screenOptions={{ gestureEnabled: true, headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="home" />
       <Stack.Screen name="friends" />

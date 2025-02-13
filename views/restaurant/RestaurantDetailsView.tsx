@@ -21,7 +21,5 @@ export default function RestaurantDetailsView() {
     )
   }
 
-  console.log(data)
-
   return <RestaurantDetailsViewUI restaurant={data} />
 }

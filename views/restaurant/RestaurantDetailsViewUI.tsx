@@ -123,9 +123,14 @@ export default function RestaurantDetailsViewUI({ restaurant, hideBackButton = f
             </UIText>
             <View style={{ gap: 8 }}>
               {restaurant.opening_hours.weekday_text.map((hours, index) => (
-                <UIText key={index} type="callout" color="secondaryLabel">
-                  {hours}
-                </UIText>
+                <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <UIText type="calloutEmphasized" color="secondaryLabel">
+                    {hours.split(' ')[0]}
+                  </UIText>
+                  <UIText type="callout" color="secondaryLabel">
+                    {hours.split(' ')[1]}
+                  </UIText>
+                </View>
               ))}
             </View>
           </View>
@@ -137,8 +142,8 @@ export default function RestaurantDetailsViewUI({ restaurant, hideBackButton = f
               Reviews
             </UIText>
             <View style={{ gap: 12 }}>
-              {reviews.map(review => (
-                <View key={review.time} style={{ gap: 4, padding: 16, borderRadius: 16, backgroundColor: colors[theme].thinMaterial }}>
+              {reviews.map((review, i) => (
+                <View key={i} style={{ gap: 4, padding: 16, borderRadius: 16, backgroundColor: colors[theme].thinMaterial }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'space-between' }}>
                     <UIText type="calloutEmphasized" color="label">
                       {review.author_name}

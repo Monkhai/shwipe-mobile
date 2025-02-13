@@ -2,6 +2,7 @@ import { View, ActivityIndicator, StyleSheet, useColorScheme } from 'react-nativ
 import React from 'react'
 import { colors } from '@/constants/colors'
 import UIText from '@/components/ui/UIText'
+import UIView from '@/components/ui/UIView'
 
 type LoadingViewProps = {
   message?: string
@@ -11,16 +12,18 @@ export default function LoadingView({ message = 'Loading...' }: LoadingViewProps
   const theme = useColorScheme() ?? 'light'
 
   return (
-    <View style={[styles.container, { backgroundColor: colors[theme].background }]}>
-      <ActivityIndicator size="large" color={colors[theme].primary} />
-      {message && (
-        <View style={styles.textContainer}>
-          <UIText type="body" color="secondaryLabel">
-            {message}
-          </UIText>
-        </View>
-      )}
-    </View>
+    <UIView>
+      <View style={[styles.container]}>
+        <ActivityIndicator size="large" color={colors[theme].primary} />
+        {message && (
+          <View style={styles.textContainer}>
+            <UIText type="body" color="secondaryLabel">
+              {message}
+            </UIText>
+          </View>
+        )}
+      </View>
+    </UIView>
   )
 }
 

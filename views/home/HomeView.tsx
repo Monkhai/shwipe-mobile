@@ -1,15 +1,12 @@
 import UIView from '@/components/ui/UIView'
-import { BlurView } from 'expo-blur'
 import React, { useState } from 'react'
 import { Pressable, StyleSheet, View, useColorScheme } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import HomeActionWidget from './components/HomeActionWidget'
 import HomeHeader from './components/HomeHeader'
 import HomeMenu from './components/HomeMenu'
 import PopularGrid from './components/PopularGrid/PopularGrid'
-
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 export default function HomeView() {
   const insets = useSafeAreaInsets()
@@ -18,7 +15,7 @@ export default function HomeView() {
   const [showActionWidget, setShowActionWidget] = useState(false)
   return (
     <UIView>
-      <View style={{ paddingTop: insets.top + 16, gap: 32, paddingHorizontal: 16, flex: 1, width: '100%' }}>
+      <View style={{ paddingTop: insets.top + 16, gap: 32, flex: 1, width: '100%' }}>
         <HomeHeader />
         <PopularGrid />
         {(showMenu || showActionWidget) && (
