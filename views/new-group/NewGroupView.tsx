@@ -33,9 +33,13 @@ export default function NewGroupView() {
   }
 
   return (
-    <BlurView intensity={50} tint="systemThickMaterial" style={{ flex: 1, height: '100%', borderRadius: 32, overflow: 'hidden' }}>
-      <ScrollView scrollEnabled={false} style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
-        {/* Header */}
+    <BlurView
+      intensity={80}
+      // tint="systemThickMaterial"
+      experimentalBlurMethod="dimezisBlurView"
+      style={{ padding: 20, gap: 20, backgroundColor: 'transparent', borderRadius: 32, overflow: 'hidden' }}
+    >
+      <ScrollView scrollEnabled={false} showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: 30 }}>
           <View style={{ marginBottom: 10 }}>
             <UIText type="largeTitle">Create New Group</UIText>
@@ -46,12 +50,10 @@ export default function NewGroupView() {
             </UIText>
           </View>
         </View>
-        {/* Form */}
         <View>
           <View style={{ marginBottom: 8, marginLeft: 12 }}>
             <UIText type="calloutEmphasized">Group Name</UIText>
           </View>
-          {/* <KeyboardAvoidingView> */}
           <Controller
             control={control}
             name="groupName"
@@ -72,7 +74,6 @@ export default function NewGroupView() {
               />
             )}
           />
-          {/* </KeyboardAvoidingView> */}
           {errors.groupName && (
             <View style={{ marginTop: 4 }}>
               <UIText type="caption" color="danger">
@@ -90,6 +91,7 @@ export default function NewGroupView() {
           text={isPending ? 'Creating...' : 'Create Group'}
           onPress={handleSubmit(onSubmit)}
           isLoading={isPending}
+          style={{ borderRadius: 12 }}
         />
       </View>
     </BlurView>
@@ -103,8 +105,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomButton: {
-    paddingBottom: 32,
-    paddingHorizontal: 20,
     width: '100%',
   },
 })

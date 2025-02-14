@@ -6,14 +6,15 @@ import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import { colors } from '@/constants/colors'
 import { useGetGroupInvitations } from '@/queries/groups/useGetGroupInvitations'
 import { useGetGroups } from '@/queries/groups/useGetGroups'
-import BottomSheet, { BottomSheetBackdrop, BottomSheetView, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
 import React, { useCallback, useRef } from 'react'
-import { Platform, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import { Keyboard, Platform, RefreshControl, ScrollView, useColorScheme, View } from 'react-native'
 import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import GroupCard from '../../components/groups/GroupCard/GroupCard'
 import NewGroupView from '../new-group/NewGroupView'
+import { BlurView } from 'expo-blur'
 
 export default function GroupsView() {
   const insets = useSafeAreaInsets()
@@ -47,7 +48,6 @@ export default function GroupsView() {
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: 20 }}
         >
-          {/* Group Invitations Section */}
           <View style={{ marginBottom: 30 }}>
             <View style={{ marginBottom: 15 }}>
               <UIText type="titleEmphasized">Group Invitations</UIText>
@@ -59,7 +59,6 @@ export default function GroupsView() {
               ))}
           </View>
 
-          {/* Groups Section */}
           <View>
             <View style={{ marginBottom: 15 }}>
               <UIText type="titleEmphasized">Your Groups</UIText>
@@ -83,13 +82,16 @@ export default function GroupsView() {
         snapPoints={['40%']}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
-        backgroundStyle={{ backgroundColor: 'transparent' }}
+        android_keyboardInputMode="adjustResize"
         handleComponent={null}
         enableDynamicSizing={false}
         enablePanDownToClose
         enableBlurKeyboardOnGesture
+        backgroundStyle={{ backgroundColor: 'transparent' }}
       >
-        <BottomSheetView style={{ marginBottom: Platform.select({ ios: insets.bottom, android: 20 }), paddingHorizontal: 20, flex: 1 }}>
+        <BottomSheetView
+          style={{ flex: 1, marginHorizontal: 20, marginBottom: Platform.select({ android: 40 + insets.bottom, ios: insets.bottom }) }}
+        >
           <NewGroupView />
         </BottomSheetView>
       </BottomSheet>

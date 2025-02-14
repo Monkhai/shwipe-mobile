@@ -15,41 +15,42 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
   const theme = useColorScheme() ?? 'light'
 
   return (
-    <GeneralButton
-      onPress={() => onPress(group.id)}
-      style={{
-        borderRadius: 12,
-        padding: 16,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: colors[theme].thickMaterial,
-      }}
-    >
-      <UIText color="white" type="bodyEmphasized">
-        {group.name}
-      </UIText>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {group.members.slice(0, 3).map((member, i) => {
-          return (
-            <View
-              style={{
-                marginLeft: i > 0 ? -10 : 0,
-                borderRadius: 16,
-                zIndex: 3 - i,
-              }}
-              key={i}
-            >
-              <Image source={{ uri: member.photo_url }} style={{ width: 24, height: 24, borderRadius: 100 }} />
+    <BlurView intensity={80} tint="systemThickMaterial" style={{ borderRadius: 12, overflow: 'hidden' }}>
+      <GeneralButton
+        onPress={() => onPress(group.id)}
+        style={{
+          padding: 16,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          // backgroundColor: colors[theme].thickMaterial,
+        }}
+      >
+        <UIText color="label" type="bodyEmphasized">
+          {group.name}
+        </UIText>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {group.members.slice(0, 3).map((member, i) => {
+            return (
+              <View
+                style={{
+                  marginLeft: i > 0 ? -10 : 0,
+                  borderRadius: 16,
+                  zIndex: 3 - i,
+                }}
+                key={i}
+              >
+                <Image source={{ uri: member.photo_url }} style={{ width: 24, height: 24, borderRadius: 100 }} />
+              </View>
+            )
+          })}
+          {group.members.length > 3 && (
+            <View style={{ borderRadius: 16, zIndex: 0, backgroundColor: colors[theme].elevatedBackground, padding: 4 }}>
+              <UIText type="caption">{`+${group.members.length - 3}`}</UIText>
             </View>
-          )
-        })}
-        {group.members.length > 3 && (
-          <View style={{ borderRadius: 16, zIndex: 0, backgroundColor: colors[theme].elevatedBackground, padding: 4 }}>
-            <UIText type="caption">{`+${group.members.length - 3}`}</UIText>
-          </View>
-        )}
-      </View>
-    </GeneralButton>
+          )}
+        </View>
+      </GeneralButton>
+    </BlurView>
   )
 }
