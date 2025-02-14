@@ -1,12 +1,15 @@
 import { useCreateNewGroup } from '@/queries/groups/useCreateNewGroup'
 import React from 'react'
-import { View, ScrollView, TextInput, StyleSheet } from 'react-native'
+import { View, ScrollView, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { useForm, Controller } from 'react-hook-form'
 import UIText from '@/components/ui/UIText'
 import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import { colors } from '@/constants/colors'
 import { useColorScheme } from 'react-native'
 import { router } from 'expo-router'
+import UIView from '@/components/ui/UIView'
+import { BlurView } from 'expo-blur'
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 
 interface NewGroupForm {
   groupName: string
@@ -30,8 +33,8 @@ export default function NewGroupView() {
   }
 
   return (
-    <View style={{ backgroundColor: colors[theme].elevatedBackground, flex: 1, height: '100%' }}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
+    <BlurView intensity={50} tint="systemThickMaterial" style={{ flex: 1, height: '100%', borderRadius: 32, overflow: 'hidden' }}>
+      <ScrollView scrollEnabled={false} style={{ flex: 1 }} contentContainerStyle={{ padding: 20 }}>
         {/* Header */}
         <View style={{ marginBottom: 30 }}>
           <View style={{ marginBottom: 10 }}>
@@ -43,22 +46,22 @@ export default function NewGroupView() {
             </UIText>
           </View>
         </View>
-
         {/* Form */}
         <View>
           <View style={{ marginBottom: 8, marginLeft: 12 }}>
             <UIText type="calloutEmphasized">Group Name</UIText>
           </View>
+          {/* <KeyboardAvoidingView> */}
           <Controller
             control={control}
             name="groupName"
             rules={{ required: 'Group name is required' }}
             render={({ field: { onChange, value } }) => (
-              <TextInput
+              <BottomSheetTextInput
                 style={[
                   styles.input,
                   {
-                    backgroundColor: colors[theme].secondaryBackground,
+                    backgroundColor: colors[theme].material,
                     color: colors[theme].label,
                   },
                 ]}
@@ -69,6 +72,7 @@ export default function NewGroupView() {
               />
             )}
           />
+          {/* </KeyboardAvoidingView> */}
           {errors.groupName && (
             <View style={{ marginTop: 4 }}>
               <UIText type="caption" color="danger">
@@ -78,7 +82,6 @@ export default function NewGroupView() {
           )}
         </View>
       </ScrollView>
-
       {/* Bottom Button */}
       <View style={styles.bottomButton}>
         <PrimaryButton
@@ -89,7 +92,7 @@ export default function NewGroupView() {
           isLoading={isPending}
         />
       </View>
-    </View>
+    </BlurView>
   )
 }
 

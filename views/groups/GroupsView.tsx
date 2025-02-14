@@ -1,19 +1,25 @@
+import AddGroup from '@/components/shapes/AddGroup'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
-import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { colors } from '@/constants/colors'
 import { useGetGroupInvitations } from '@/queries/groups/useGetGroupInvitations'
 import { useGetGroups } from '@/queries/groups/useGetGroups'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetView, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
-import React, { useCallback } from 'react'
-import { RefreshControl, ScrollView, View } from 'react-native'
+import React, { useCallback, useRef } from 'react'
+import { Platform, RefreshControl, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import GroupCard from './components/GroupCard'
+import GroupCard from '../../components/groups/GroupCard/GroupCard'
+import NewGroupView from '../new-group/NewGroupView'
 
 export default function GroupsView() {
   const insets = useSafeAreaInsets()
   const { data: groupInvitations, refetch: refetchGroupInvitations, isRefetching: isRefetchingGroupInvitations } = useGetGroupInvitations()
   const { data: groups, refetch: refetchGroups, isRefetching: isRefetchingGroups } = useGetGroups()
+  const ref = useRef<BottomSheet>(null)
 
   const onRefresh = useCallback(() => {
     refetchGroups()
@@ -33,41 +39,14 @@ export default function GroupsView() {
   return (
     <UIView>
       <View style={{ flex: 1, paddingTop: insets.top + 16 }}>
+        <ViewHeader title="Your Groups" description="Manage and join groups with your friends">
+          <PlusButton onPress={() => ref.current?.snapToIndex(0)} />
+        </ViewHeader>
         <ScrollView
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: 20 }}
         >
-          {/* Header Section */}
-          <ViewHeader title="Your Groups" description="Manage and join groups with your friends" />
-
-          {/* Quick Actions */}
-          <View style={{ marginBottom: 30 }}>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-              <View style={{ flex: 1 }}>
-                <PrimaryButton
-                  type="primary"
-                  textType="bodyEmphasized"
-                  text="Create Group"
-                  onPress={() => router.push('/new-group')}
-                  style={{ minWidth: undefined }}
-                />
-              </View>
-              <View style={{ flex: 1 }}>
-                <SecondaryButton
-                  text="Join Group"
-                  textType="bodyEmphasized"
-                  onPress={() => {
-                    // TODO: Implement join group functionality
-                    alert('Join group feature coming soon!')
-                  }}
-                  type="primary"
-                  style={{ minWidth: undefined }}
-                />
-              </View>
-            </View>
-          </View>
-
           {/* Group Invitations Section */}
           <View style={{ marginBottom: 30 }}>
             <View style={{ marginBottom: 15 }}>
@@ -97,6 +76,35 @@ export default function GroupsView() {
           </View>
         </ScrollView>
       </View>
+      <BottomSheet
+        ref={ref}
+        index={-1}
+        backdropComponent={props => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} />}
+        snapPoints={['40%']}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
+        backgroundStyle={{ backgroundColor: 'transparent' }}
+        handleComponent={null}
+        enableDynamicSizing={false}
+        enablePanDownToClose
+        enableBlurKeyboardOnGesture
+      >
+        <BottomSheetView style={{ marginBottom: Platform.select({ ios: insets.bottom, android: 20 }), paddingHorizontal: 20, flex: 1 }}>
+          <NewGroupView />
+        </BottomSheetView>
+      </BottomSheet>
     </UIView>
+  )
+}
+
+function PlusButton({ onPress }: { onPress: () => void }) {
+  const theme = useColorScheme() ?? 'light'
+
+  return (
+    <Animated.View layout={LinearTransition} entering={ZoomIn} exiting={ZoomOut}>
+      <GeneralButton onPress={onPress} hitSlop={24} style={{ borderRadius: 100, backgroundColor: colors[theme].material }}>
+        <AddGroup />
+      </GeneralButton>
+    </Animated.View>
   )
 }

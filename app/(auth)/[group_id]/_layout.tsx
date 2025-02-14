@@ -4,10 +4,10 @@ import React from 'react'
 
 export default function _layout() {
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="invite-to-group" options={{ ...largeSheetOptions, headerShown: false }} />
-      <Stack.Screen name="group-invitation" options={{ headerShown: false }} />
+      <Stack.Screen name="invite-to-group" />
+      <Stack.Screen name="group-invitation" />
     </Stack>
   )
 }

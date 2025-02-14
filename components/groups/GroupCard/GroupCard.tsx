@@ -1,11 +1,10 @@
-import { View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { Group } from '@/queries/groups/groupTypes'
-import { useColorScheme } from 'react-native'
-import { router } from 'expo-router'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { BlurView } from 'expo-blur'
+import React from 'react'
+import { Image, useColorScheme, View } from 'react-native'
 
 interface GroupCardProps {
   group: Group
@@ -19,17 +18,17 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
     <GeneralButton
       onPress={() => onPress(group.id)}
       style={{
-        backgroundColor: colors[theme].elevatedBackground,
-        padding: 16,
         borderRadius: 12,
-        marginBottom: 10,
+        padding: 16,
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
+        backgroundColor: colors[theme].thickMaterial,
       }}
     >
-      <View style={{ marginBottom: 8 }}>
-        <UIText type="titleEmphasized">{group.name}</UIText>
-      </View>
+      <UIText color="white" type="bodyEmphasized">
+        {group.name}
+      </UIText>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {group.members.slice(0, 3).map((member, i) => {
           return (
@@ -41,10 +40,7 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
               }}
               key={i}
             >
-              <Image
-                source={{ uri: member.photo_url }}
-                style={{ width: 36, height: 36, borderRadius: 100, borderWidth: 3, borderColor: colors[theme].elevatedBackground }}
-              />
+              <Image source={{ uri: member.photo_url }} style={{ width: 24, height: 24, borderRadius: 100 }} />
             </View>
           )
         })}

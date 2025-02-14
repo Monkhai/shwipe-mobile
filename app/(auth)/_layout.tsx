@@ -28,7 +28,6 @@ export default function _layout() {
       <Stack.Screen name="restaurant/[restaurant_id]" />
       <Stack.Screen name="update-friend-request" options={smallSheetOptions} />
       <Stack.Screen name="invite-friend" options={smallSheetOptions} />
-      <Stack.Screen name="new-group" options={smallSheetOptions} />
     </Stack>
   )
 }

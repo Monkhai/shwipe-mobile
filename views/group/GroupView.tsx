@@ -1,21 +1,22 @@
 import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
 import UIText from '@/components/ui/UIText'
+import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
 import { colors } from '@/constants/colors'
 import { useGetGroup } from '@/queries/groups/useGetGroup'
 import { useLeaveGroup } from '@/queries/groups/useLeaveGroup'
 import { User } from '@/queries/users/userTypes'
-import { Redirect, Stack, useLocalSearchParams, useRouter } from 'expo-router'
+import { ClientMessageType, CreateSessionWithGroupMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
+import { useWebsocketStore } from '@/zustand/websocketStore'
+import { Redirect, router, useLocalSearchParams } from 'expo-router'
 import React from 'react'
 import { Image, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LoadingView from '../loading/LoadingView'
-import { useWebsocketStore } from '@/zustand/websocketStore'
-import { ClientMessageType, CreateSessionWithGroupMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
-import UIView from '@/components/ui/UIView'
 
 export default function GroupView() {
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
-  const router = useRouter()
+  const insets = useSafeAreaInsets()
   const { sendMessage } = useWebsocketStore()
   const { data: group, isLoading: isGroupLoading } = useGetGroup(group_id)
   const { mutate: leaveGroup, isPending: isLeaveGroupPending } = useLeaveGroup()
@@ -58,8 +59,7 @@ export default function GroupView() {
 
   return (
     <UIView>
-      <Stack.Screen options={{ title: group.name }} />
-      <View style={styles.container}>
+      <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
         <ViewHeader title={group.name} description={`${group.members.length} ${group.members.length === 1 ? 'Member' : 'Members'}`} />
 
         <View style={styles.actionButtons}>

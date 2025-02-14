@@ -91,7 +91,14 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
       ]}
     >
       <AnimatedBlurView
-        intensity={80}
+        intensity={Platform.select({
+          ios: 80,
+          android: 60,
+        })}
+        tint={Platform.select({
+          ios: undefined,
+          android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
+        })}
         style={[{ position: 'absolute', width: 44, height: 44, left: 0, right: 0, top: 0, bottom: 0 }, animatedStyle]}
         experimentalBlurMethod="dimezisBlurView"
       />

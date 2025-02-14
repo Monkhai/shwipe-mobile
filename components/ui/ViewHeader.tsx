@@ -6,18 +6,25 @@ import BackButton from './buttons/icon-buttons/BackButton'
 interface ViewHeaderProps {
   title: string
   description: string
+  backButton?: boolean
+  children?: React.ReactNode
 }
 
-export default function ViewHeader({ title, description }: ViewHeaderProps) {
+export default function ViewHeader({ title, description, backButton = true, children }: ViewHeaderProps) {
   return (
-    <View style={{ marginBottom: 30 }}>
-      <View style={{ marginBottom: 10, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-        <BackButton />
-        <UIText type="largeTitle">{title}</UIText>
+    <View style={{ paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', gap: 16, alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        {backButton && <BackButton />}
+        <View>
+          <UIText type="titleEmphasized" color="label">
+            {title}
+          </UIText>
+          <UIText type="caption" color="secondaryLabel">
+            {description}
+          </UIText>
+        </View>
       </View>
-      <UIText type="body" color="secondaryLabel">
-        {description}
-      </UIText>
+      {children}
     </View>
   )
 }

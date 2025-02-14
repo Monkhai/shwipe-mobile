@@ -10,7 +10,7 @@ export const colors = {
     white: '#FFFFFF',
     primary: '#007AFF',
     danger: '#FF3B30',
-    secondaryDanger: '#FF6A61',
+    secondaryDanger: '#FF3B30',
     success: '#34C759',
     opaqueSuccess: '#34C75933',
     warning: '#FF9F0A',

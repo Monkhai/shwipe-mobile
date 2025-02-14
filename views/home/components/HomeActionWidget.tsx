@@ -63,7 +63,14 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
     >
       <AnimatedBlurView
         experimentalBlurMethod="dimezisBlurView"
-        intensity={80}
+        tint={Platform.select({
+          ios: undefined,
+          android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
+        })}
+        intensity={Platform.select({
+          ios: 80,
+          android: 50,
+        })}
         style={{ position: 'absolute', width: '100%', height: 180 }}
       />
       {showActionWidget && (

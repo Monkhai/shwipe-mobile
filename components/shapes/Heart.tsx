@@ -1,7 +1,7 @@
-import { View, Text, useColorScheme } from 'react-native'
-import React from 'react'
-import { Canvas, LinearGradient, Path, Skia, vec } from '@shopify/react-native-skia'
 import { gradients } from '@/constants/colors'
+import { Canvas, LinearGradient, Path, Skia, vec } from '@shopify/react-native-skia'
+import React from 'react'
+import { useColorScheme } from 'react-native'
 
 interface Props {
   size: number
