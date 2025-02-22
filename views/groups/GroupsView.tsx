@@ -9,12 +9,11 @@ import { useGetGroups } from '@/queries/groups/useGetGroups'
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
 import React, { useCallback, useRef } from 'react'
-import { Keyboard, Platform, RefreshControl, ScrollView, useColorScheme, View } from 'react-native'
+import { Button, Platform, RefreshControl, ScrollView, useColorScheme, View } from 'react-native'
 import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import GroupCard from '../../components/groups/GroupCard/GroupCard'
 import NewGroupView from '../new-group/NewGroupView'
-import { BlurView } from 'expo-blur'
 
 export default function GroupsView() {
   const insets = useSafeAreaInsets()
@@ -78,7 +77,7 @@ export default function GroupsView() {
       <BottomSheet
         ref={ref}
         index={-1}
-        backdropComponent={props => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} />}
+        // backdropComponent={props => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} />}
         snapPoints={['40%']}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
@@ -88,10 +87,9 @@ export default function GroupsView() {
         enablePanDownToClose
         enableBlurKeyboardOnGesture
         backgroundStyle={{ backgroundColor: 'transparent' }}
+        containerStyle={{ backgroundColor: 'transparent', margin: 0, width: '100%' }}
       >
-        <BottomSheetView
-          style={{ flex: 1, marginHorizontal: 20, marginBottom: Platform.select({ android: 40 + insets.bottom, ios: insets.bottom }) }}
-        >
+        <BottomSheetView style={{ backgroundColor: 'transparent' }}>
           <NewGroupView />
         </BottomSheetView>
       </BottomSheet>
@@ -104,7 +102,7 @@ function PlusButton({ onPress }: { onPress: () => void }) {
 
   return (
     <Animated.View layout={LinearTransition} entering={ZoomIn} exiting={ZoomOut}>
-      <GeneralButton onPress={onPress} hitSlop={24} style={{ borderRadius: 100, backgroundColor: colors[theme].material }}>
+      <GeneralButton onPress={onPress} hitSlop={24} style={{ borderRadius: 100, backgroundColor: colors[theme].thickMaterial }}>
         <AddGroup />
       </GeneralButton>
     </Animated.View>

@@ -1,3 +1,5 @@
+import { Platform } from 'react-native'
+
 export const colors = {
   baseMaterial: '#FFFFFF4D',
   light: {
@@ -21,7 +23,10 @@ export const colors = {
   },
   dark: {
     material: '#FFFFFF4D',
-    thickMaterial: '#80808080',
+    thickMaterial: Platform.select({
+      ios: '#80808080',
+      android: '#1C1C1F',
+    }),
     thinMaterial: '#8080804D',
     white: '#FFFFFF',
     background: '#000000',

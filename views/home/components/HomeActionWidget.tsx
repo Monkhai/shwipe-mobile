@@ -61,18 +61,20 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
         zIndex: showActionWidget ? 3 : 1,
       }}
     >
-      <AnimatedBlurView
-        experimentalBlurMethod="dimezisBlurView"
-        tint={Platform.select({
-          ios: undefined,
-          android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
-        })}
-        intensity={Platform.select({
-          ios: 80,
-          android: 50,
-        })}
-        style={{ position: 'absolute', width: '100%', height: 180 }}
-      />
+      {Platform.OS === 'ios' && (
+        <AnimatedBlurView
+          experimentalBlurMethod="dimezisBlurView"
+          tint={Platform.select({
+            ios: undefined,
+            android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
+          })}
+          intensity={Platform.select({
+            ios: 80,
+            android: 50,
+          })}
+          style={{ position: 'absolute', width: '100%', height: 180 }}
+        />
+      )}
       {showActionWidget && (
         <Animated.View entering={ZoomIn} exiting={ZoomOut}>
           <GeneralButton

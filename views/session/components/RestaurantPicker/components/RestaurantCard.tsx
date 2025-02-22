@@ -1,13 +1,12 @@
 import Heart from '@/components/shapes/Heart'
 import X from '@/components/shapes/X'
 import { cardBorderColors } from '@/constants/colors'
-import { ClientMessageType, UpdateIndexMessage } from '@/wsHandler/clientMessagesTypes'
-import { UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
+import { ClientMessageType, UnsignedBaseClientMessage, UpdateIndexMessage } from '@/wsHandler/clientMessagesTypes'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'
 import { forwardRef, useImperativeHandle } from 'react'
-import { Image, StyleSheet, useWindowDimensions } from 'react-native'
+import { StyleSheet, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   clamp,

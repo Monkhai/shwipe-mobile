@@ -9,6 +9,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const [user] = useAtom(userAtom)
 
   if (!user) {
+    alert('no user')
     return <Redirect href="/login" />
   }
 

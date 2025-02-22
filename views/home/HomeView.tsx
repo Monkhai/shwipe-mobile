@@ -1,12 +1,13 @@
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
 import React, { useState } from 'react'
-import { Pressable, StyleSheet, View, useColorScheme } from 'react-native'
+import { Button, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import HomeActionWidget from './components/HomeActionWidget'
 import HomeMenu from './components/HomeMenu'
 import PopularGrid from './components/PopularGrid/PopularGrid'
+import { router } from 'expo-router'
 
 export default function HomeView() {
   const insets = useSafeAreaInsets()

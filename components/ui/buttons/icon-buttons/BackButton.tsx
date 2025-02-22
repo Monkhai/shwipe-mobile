@@ -1,6 +1,6 @@
 import { colors } from '@/constants/colors'
 import { Canvas, FitBox, Path } from '@shopify/react-native-skia'
-import { useColorScheme } from 'react-native'
+import { Platform, useColorScheme } from 'react-native'
 import { GeneralButton } from '../TextButtons'
 import { router } from 'expo-router'
 import Animated, {
@@ -39,7 +39,7 @@ export default function BackButton({ entering = ZoomIn, exiting = FadeOut }: Pro
   const theme = useColorScheme() ?? 'light'
   return (
     <Animated.View layout={LinearTransition} entering={entering} exiting={exiting}>
-      <GeneralButton onPress={router.back} hitSlop={24} style={{ borderRadius: 100, backgroundColor: colors[theme].material }}>
+      <GeneralButton onPress={router.back} hitSlop={24} style={{ borderRadius: 100, backgroundColor: colors[theme].thickMaterial }}>
         <BackArrow />
       </GeneralButton>
     </Animated.View>
@@ -50,6 +50,22 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView)
 
 export function BackButtonBlur({ entering = ZoomIn, exiting = FadeOut, tint = undefined }: Props & { tint?: 'dark' | 'light' }) {
   const theme = useColorScheme() ?? 'light'
+
+  if (Platform.OS === 'android') {
+    return (
+      <Animated.View
+        layout={LinearTransition}
+        entering={entering}
+        exiting={exiting}
+        style={{ overflow: 'hidden', borderRadius: 100, padding: 4, backgroundColor: colors[theme].thickMaterial }}
+      >
+        <GeneralButton onPress={router.back} hitSlop={24} style={{ borderRadius: 100 }}>
+          <BackArrow />
+        </GeneralButton>
+      </Animated.View>
+    )
+  }
+
   return (
     <AnimatedBlurView
       intensity={80}

@@ -90,18 +90,20 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
         },
       ]}
     >
-      <AnimatedBlurView
-        intensity={Platform.select({
-          ios: 80,
-          android: 60,
-        })}
-        tint={Platform.select({
-          ios: undefined,
-          android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
-        })}
-        style={[{ position: 'absolute', width: 44, height: 44, left: 0, right: 0, top: 0, bottom: 0 }, animatedStyle]}
-        experimentalBlurMethod="dimezisBlurView"
-      />
+      {Platform.OS === 'ios' && (
+        <AnimatedBlurView
+          intensity={Platform.select({
+            ios: 80,
+            android: 60,
+          })}
+          tint={Platform.select({
+            ios: undefined,
+            android: theme === 'light' ? 'systemThickMaterial' : 'systemThickMaterialDark',
+          })}
+          experimentalBlurMethod="dimezisBlurView"
+          style={[{ position: 'absolute', width: 44, height: 44, left: 0, right: 0, top: 0, bottom: 0 }, animatedStyle]}
+        />
+      )}
       {!showMenu && (
         <AnimatedPressable
           entering={FadeIn}

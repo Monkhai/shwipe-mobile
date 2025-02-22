@@ -77,22 +77,7 @@ export default function RestaurantDetailsViewUI({ restaurant, hideBackButton = f
             }}
           >
             {!hideBackButton && <BackButtonBlur tint="dark" />}
-            <BlurView
-              experimentalBlurMethod="dimezisBlurView"
-              intensity={80}
-              tint="dark"
-              style={{ borderRadius: 16, padding: 16, flex: 1, overflow: 'hidden' }}
-            >
-              <UIText numberOfLines={2} type="titleEmphasized" color="white" style={{ marginBottom: 8 }}>
-                {restaurant.name}
-              </UIText>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                <UIText type="callout" style={{ flex: 1, color: colors.dark.secondaryLabel }}>
-                  {restaurant.vicinity}
-                </UIText>
-              </View>
-              <RestaurantInfoPills rating={restaurant.rating!} priceLevel={restaurant.price_level!} />
-            </BlurView>
+            <Header restaurant={restaurant} />
           </Animated.View>
         </View>
       </View>
@@ -236,15 +221,44 @@ function ActionButtons({ restaurant }: { restaurant: RestaurantDetails }) {
   )
 }
 
-function BackArrow() {
+function Header({ restaurant }: { restaurant: RestaurantDetails }) {
+  const theme = useColorScheme() ?? 'light'
+  if (Platform.OS === 'android') {
+    return (
+      <View style={{ borderRadius: 16, padding: 16, flex: 1, overflow: 'hidden', backgroundColor: colors[theme].thickMaterial }}>
+        <UIText numberOfLines={2} type="titleEmphasized" color="white" style={{ marginBottom: 8 }}>
+          {restaurant.name}
+        </UIText>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+          <UIText type="callout" style={{ flex: 1, color: colors.dark.secondaryLabel }}>
+            {restaurant.vicinity}
+          </UIText>
+        </View>
+        <RestaurantInfoPills rating={restaurant.rating!} priceLevel={restaurant.price_level!} />
+      </View>
+    )
+  }
+
   return (
-    <Canvas style={{ width: 40, height: 40 }}>
-      <Path path="M34.4656 19.9927C34.4656 28.2533 27.8647 34.9854 19.7328 34.9854C11.6153 34.9854 5 28.2533 5 19.9927C5 11.7173 11.6153 5 19.7328 5C27.8647 5 34.4656 11.7173 34.4656 19.9927ZM17.364 14.0985L12.6264 19.0961C12.3231 19.4047 12.222 19.6546 12.222 19.978C12.222 20.2866 12.3231 20.5512 12.6264 20.8599L17.364 25.8574C17.5806 26.0927 17.8262 26.2102 18.144 26.2102C18.7506 26.2102 19.1984 25.7546 19.1984 25.1225C19.1984 24.8285 19.0828 24.4905 18.8373 24.2847L16.4251 21.977L15.5007 21.0951L17.7395 21.1833H26.0881C26.7236 21.1833 27.258 20.6394 27.258 19.978C27.258 19.3165 26.7236 18.758 26.0881 18.758H17.7395L15.5152 18.8609L16.4251 17.979L18.8373 15.6713C19.0828 15.4655 19.1984 15.1421 19.1984 14.8481C19.1984 14.2161 18.7506 13.7457 18.144 13.7457C17.8262 13.7457 17.5806 13.8633 17.364 14.0985Z">
-        <LinearGradient start={{ x: 40, y: 0 }} end={{ x: 0, y: 0 }} colors={['#FFFFFF66', '#FFFFFF80']} />
-      </Path>
-    </Canvas>
+    <BlurView
+      experimentalBlurMethod="dimezisBlurView"
+      intensity={80}
+      tint="dark"
+      style={{ borderRadius: 16, padding: 16, flex: 1, overflow: 'hidden' }}
+    >
+      <UIText numberOfLines={2} type="titleEmphasized" color="white" style={{ marginBottom: 8 }}>
+        {restaurant.name}
+      </UIText>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+        <UIText type="callout" style={{ flex: 1, color: colors.dark.secondaryLabel }}>
+          {restaurant.vicinity}
+        </UIText>
+      </View>
+      <RestaurantInfoPills rating={restaurant.rating!} priceLevel={restaurant.price_level!} />
+    </BlurView>
   )
 }
+
 const styles = StyleSheet.create({
   navigationButtons: {
     flexDirection: 'row',
