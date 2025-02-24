@@ -1,4 +1,4 @@
-- customize loading more
+- convert all creation and invitation screens to use the modal over a new view
+- implement more customized loading states
 - create a card for both users and groups. can be the same card i think
-- INFORM USER WHEN SENDING MESSAGE TO A CLOSED SOCKET
 - test group card with many groups to ensure blur does not break performance
