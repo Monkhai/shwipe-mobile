@@ -65,7 +65,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
         set({ isOpen: false, __ws: null, connectionState: ConnectionState.DISCONNECTED })
         const sessionStore = useSessionStore.getState()
         sessionStore.__resetAll()
-        router.dismissTo('/home')
+        // router.dismissTo('/home')
 
         return
       },

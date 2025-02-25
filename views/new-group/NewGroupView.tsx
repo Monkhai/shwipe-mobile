@@ -6,7 +6,7 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import { BlurView } from 'expo-blur'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Platform, StyleSheet, useColorScheme, View } from 'react-native'
+import { Platform, StyleSheet, useColorScheme, View, ViewStyle } from 'react-native'
 
 interface NewGroupForm {
   groupName: string
@@ -14,16 +14,39 @@ interface NewGroupForm {
 
 export default function NewGroupView() {
   const theme = useColorScheme() ?? 'light'
+
+  // Android specific styles
+  const androidStyle: ViewStyle = {
+    padding: 20,
+    gap: 20,
+    borderRadius: 32,
+    backgroundColor: theme === 'dark' ? '#1c1c1e' : '#f2f2f7',
+    borderWidth: 1,
+    borderColor: 'red',
+  }
+
   if (Platform.OS === 'android') {
     return (
-      <View style={{ padding: 20, gap: 20, backgroundColor: colors[theme].thickMaterial, borderRadius: 32 }}>
+      <View style={androidStyle}>
         <Content />
       </View>
     )
   }
+  // iOS specific styles
+  const iosStyle: ViewStyle = {
+    padding: 20,
+    gap: 20,
+    borderRadius: 32,
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+  }
 
   return (
-    <BlurView intensity={80} style={{ padding: 20, gap: 20, backgroundColor: 'transparent', borderRadius: 32, overflow: 'hidden' }}>
+    <BlurView intensity={80} style={iosStyle}>
       <Content />
     </BlurView>
   )

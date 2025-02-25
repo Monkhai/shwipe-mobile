@@ -8,8 +8,18 @@ import { useGetGroupInvitations } from '@/queries/groups/useGetGroupInvitations'
 import { useGetGroups } from '@/queries/groups/useGetGroups'
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
-import React, { useCallback, useRef } from 'react'
-import { Button, Platform, RefreshControl, ScrollView, useColorScheme, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  Button,
+  Keyboard,
+  KeyboardEvent,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  TouchableWithoutFeedback,
+  useColorScheme,
+  View,
+} from 'react-native'
 import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import GroupCard from '../../components/groups/GroupCard/GroupCard'
@@ -20,6 +30,32 @@ export default function GroupsView() {
   const { data: groupInvitations, refetch: refetchGroupInvitations, isRefetching: isRefetchingGroupInvitations } = useGetGroupInvitations()
   const { data: groups, refetch: refetchGroups, isRefetching: isRefetchingGroups } = useGetGroups()
   const ref = useRef<BottomSheet>(null)
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false)
+
+  // Platform-specific settings
+  const snapPoints = useMemo(() => {
+    return Platform.OS === 'android' ? ['45%'] : ['40%']
+  }, [])
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e: KeyboardEvent) => {
+        setKeyboardVisible(true)
+        // Remove the automatic snap point adjustment for now
+      }
+    )
+    const keyboardDidHideListener = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', () => {
+      setKeyboardVisible(false)
+      // Remove the automatic snap point adjustment for now
+    })
+
+    return () => {
+      keyboardDidShowListener.remove()
+      keyboardDidHideListener.remove()
+    }
+  }, [isBottomSheetOpen])
 
   const onRefresh = useCallback(() => {
     refetchGroups()
@@ -36,11 +72,51 @@ export default function GroupsView() {
 
   const isRefreshing = isRefetchingGroups || isRefetchingGroupInvitations
 
+  const handleSheetChanges = useCallback((index: number) => {
+    setIsBottomSheetOpen(index !== -1)
+  }, [])
+
+  const dismissKeyboard = useCallback(() => {
+    Keyboard.dismiss()
+  }, [])
+
+  const closeBottomSheet = useCallback(() => {
+    if (ref.current) {
+      ref.current.close()
+    }
+  }, [])
+
+  const renderBackdrop = useCallback(
+    (props: any) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} pressBehavior="close" />,
+    []
+  )
+
   return (
     <UIView>
+      {isBottomSheetOpen && isKeyboardVisible && Platform.OS === 'ios' && (
+        <TouchableWithoutFeedback onPress={dismissKeyboard}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9,
+            }}
+          />
+        </TouchableWithoutFeedback>
+      )}
+
       <View style={{ flex: 1, paddingTop: insets.top + 16 }}>
         <ViewHeader title="Your Groups" description="Manage and join groups with your friends">
-          <PlusButton onPress={() => ref.current?.snapToIndex(0)} />
+          <PlusButton
+            onPress={() => {
+              if (ref.current) {
+                ref.current.snapToIndex(0)
+              }
+            }}
+          />
         </ViewHeader>
         <ScrollView
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
@@ -74,20 +150,27 @@ export default function GroupsView() {
           </View>
         </ScrollView>
       </View>
+
       <BottomSheet
         ref={ref}
         index={-1}
-        // backdropComponent={props => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} />}
-        snapPoints={['40%']}
+        onChange={handleSheetChanges}
+        snapPoints={snapPoints}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
-        android_keyboardInputMode="adjustResize"
         handleComponent={null}
         enableDynamicSizing={false}
         enablePanDownToClose
-        enableBlurKeyboardOnGesture
+        enableBlurKeyboardOnGesture={false}
+        backdropComponent={renderBackdrop}
         backgroundStyle={{ backgroundColor: 'transparent' }}
-        containerStyle={{ backgroundColor: 'transparent', margin: 0, width: '100%' }}
+        containerStyle={{
+          backgroundColor: 'transparent',
+          marginHorizontal: 16,
+          marginBottom: Platform.OS === 'android' ? 16 : 0,
+          display: 'flex',
+          alignItems: 'flex-end',
+        }}
       >
         <BottomSheetView style={{ backgroundColor: 'transparent' }}>
           <NewGroupView />
