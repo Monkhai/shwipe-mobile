@@ -11,6 +11,7 @@ import { Stack } from 'expo-router'
 import { Provider } from 'jotai'
 import { I18nManager, useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 
 setNotificationHandler({
   handleNotification: async n => {
@@ -36,23 +37,25 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <NotificationProvider>
-        <PortalProvider>
-          <Provider store={store}>
-            <QueryProvider>
-              <AuthProvider>
-                <GestureHandlerRootView style={{ flex: 1 }}>
-                  <Stack screenOptions={{ animation: 'fade', headerShown: false }}>
-                    <Stack.Screen name="login" />
-                    <Stack.Screen name="index" />
-                    <Stack.Screen name="(auth)" />
-                    <Stack.Screen name="+not-found" />
-                    <Stack.Screen name="not-found" />
-                  </Stack>
-                </GestureHandlerRootView>
-              </AuthProvider>
-            </QueryProvider>
-          </Provider>
-        </PortalProvider>
+        <Provider store={store}>
+          <QueryProvider>
+            <AuthProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <KeyboardProvider>
+                  <PortalProvider>
+                    <Stack screenOptions={{ animation: 'fade', headerShown: false }}>
+                      <Stack.Screen name="login" />
+                      <Stack.Screen name="index" />
+                      <Stack.Screen name="(auth)" />
+                      <Stack.Screen name="+not-found" />
+                      <Stack.Screen name="not-found" />
+                    </Stack>
+                  </PortalProvider>
+                </KeyboardProvider>
+              </GestureHandlerRootView>
+            </AuthProvider>
+          </QueryProvider>
+        </Provider>
       </NotificationProvider>
     </ThemeProvider>
   )

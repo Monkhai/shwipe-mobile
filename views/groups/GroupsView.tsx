@@ -1,4 +1,5 @@
 import AddGroup from '@/components/shapes/AddGroup'
+import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
@@ -6,7 +7,6 @@ import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import { colors } from '@/constants/colors'
 import { useGetGroupInvitations } from '@/queries/groups/useGetGroupInvitations'
 import { useGetGroups } from '@/queries/groups/useGetGroups'
-import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import { router } from 'expo-router'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -14,8 +14,10 @@ import {
   Keyboard,
   KeyboardEvent,
   Platform,
+  Pressable,
   RefreshControl,
   ScrollView,
+  TextInput,
   TouchableWithoutFeedback,
   useColorScheme,
   View,
@@ -29,7 +31,7 @@ export default function GroupsView() {
   const insets = useSafeAreaInsets()
   const { data: groupInvitations, refetch: refetchGroupInvitations, isRefetching: isRefetchingGroupInvitations } = useGetGroupInvitations()
   const { data: groups, refetch: refetchGroups, isRefetching: isRefetchingGroups } = useGetGroups()
-  const ref = useRef<BottomSheet>(null)
+  const modalRef = useRef<ModalRef>(null)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [isKeyboardVisible, setKeyboardVisible] = useState(false)
 
@@ -72,24 +74,9 @@ export default function GroupsView() {
 
   const isRefreshing = isRefetchingGroups || isRefetchingGroupInvitations
 
-  const handleSheetChanges = useCallback((index: number) => {
-    setIsBottomSheetOpen(index !== -1)
-  }, [])
-
   const dismissKeyboard = useCallback(() => {
     Keyboard.dismiss()
   }, [])
-
-  const closeBottomSheet = useCallback(() => {
-    if (ref.current) {
-      ref.current.close()
-    }
-  }, [])
-
-  const renderBackdrop = useCallback(
-    (props: any) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.1} pressBehavior="close" />,
-    []
-  )
 
   return (
     <UIView>
@@ -112,8 +99,8 @@ export default function GroupsView() {
         <ViewHeader title="Your Groups" description="Manage and join groups with your friends">
           <PlusButton
             onPress={() => {
-              if (ref.current) {
-                ref.current.snapToIndex(0)
+              if (modalRef.current) {
+                modalRef.current.open()
               }
             }}
           />
@@ -151,31 +138,9 @@ export default function GroupsView() {
         </ScrollView>
       </View>
 
-      <BottomSheet
-        ref={ref}
-        index={-1}
-        onChange={handleSheetChanges}
-        snapPoints={snapPoints}
-        keyboardBehavior="interactive"
-        keyboardBlurBehavior="restore"
-        handleComponent={null}
-        enableDynamicSizing={false}
-        enablePanDownToClose
-        enableBlurKeyboardOnGesture={false}
-        backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: 'transparent' }}
-        containerStyle={{
-          backgroundColor: 'transparent',
-          marginHorizontal: 16,
-          marginBottom: Platform.OS === 'android' ? 16 : 0,
-          display: 'flex',
-          alignItems: 'flex-end',
-        }}
-      >
-        <BottomSheetView style={{ backgroundColor: 'transparent' }}>
-          <NewGroupView />
-        </BottomSheetView>
-      </BottomSheet>
+      <Modal ref={modalRef}>
+        <NewGroupView />
+      </Modal>
     </UIView>
   )
 }

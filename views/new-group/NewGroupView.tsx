@@ -6,7 +6,7 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
 import { BlurView } from 'expo-blur'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Platform, StyleSheet, useColorScheme, View, ViewStyle } from 'react-native'
+import { Keyboard, Platform, Pressable, StyleSheet, TextInput, useColorScheme, View, ViewStyle } from 'react-native'
 
 interface NewGroupForm {
   groupName: string
@@ -17,12 +17,11 @@ export default function NewGroupView() {
 
   // Android specific styles
   const androidStyle: ViewStyle = {
-    padding: 20,
+    flex: 1,
     gap: 20,
+    padding: 20,
     borderRadius: 32,
-    backgroundColor: theme === 'dark' ? '#1c1c1e' : '#f2f2f7',
-    borderWidth: 1,
-    borderColor: 'red',
+    backgroundColor: colors[theme].elevatedBackground,
   }
 
   if (Platform.OS === 'android') {
@@ -70,8 +69,8 @@ function Content() {
   }
 
   return (
-    <>
-      <View style={{ marginBottom: 30 }}>
+    <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
+      <View>
         <View style={{ marginBottom: 10 }}>
           <UIText type="largeTitle">Create New Group</UIText>
         </View>
@@ -90,7 +89,7 @@ function Content() {
           name="groupName"
           rules={{ required: 'Group name is required' }}
           render={({ field: { onChange, value } }) => (
-            <BottomSheetTextInput
+            <TextInput
               style={[
                 styles.input,
                 {
@@ -123,7 +122,7 @@ function Content() {
           style={{ borderRadius: 12 }}
         />
       </View>
-    </>
+    </Pressable>
   )
 }
 
@@ -134,6 +133,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bottomButton: {
+    flex: 1,
+    justifyContent: 'flex-end',
     width: '100%',
   },
 })

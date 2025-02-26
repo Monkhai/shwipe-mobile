@@ -4,7 +4,10 @@ export const colors = {
   baseMaterial: '#FFFFFF4D',
   light: {
     material: '#8080804D',
-    thickMaterial: '#80808066',
+    thickMaterial: Platform.select({
+      ios: '#80808066',
+      android: '#1C1C1F',
+    }),
     thinMaterial: '#FFFFFF4D',
     background: '#FFFFFF',
     secondaryBackground: '#F2F2F7',
