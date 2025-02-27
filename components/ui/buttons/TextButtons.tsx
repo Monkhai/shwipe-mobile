@@ -49,9 +49,10 @@ interface Props extends AnimatedProps<PressableProps> {
   textType?: TextType
   text: string
   isLoading?: boolean
+  leftIcon?: React.ReactNode
 }
 
-export function PrimaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
+export function PrimaryButton({ type = 'primary', text, textType = 'body', style, isLoading, leftIcon, ...props }: Props) {
   const theme = useColorScheme() ?? 'light'
   const scale = useSharedValue(1)
 
@@ -89,7 +90,7 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
       {...props}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        {isLoading ? <ActivityIndicator size="small" color="white" /> : null}
+        {isLoading ? <ActivityIndicator size="small" color="white" /> : leftIcon}
         <UIText color={'white'} type={textType}>
           {text}
         </UIText>
@@ -98,7 +99,7 @@ export function PrimaryButton({ type = 'primary', text, textType = 'body', style
   )
 }
 
-export function SecondaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
+export function SecondaryButton({ type = 'primary', text, textType = 'body', style, isLoading, leftIcon, ...props }: Props) {
   const theme = useColorScheme() ?? 'light'
   const scale = useSharedValue(1)
 
@@ -125,9 +126,10 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
           paddingVertical: 14,
           minHeight: texts[textType].minHeight + 28,
           paddingHorizontal: 20,
+          backgroundColor: colors[theme].secondaryBackground,
           alignItems: 'center',
+          justifyContent: 'center',
           opacity: isLoading || props.disabled ? 0.5 : 1,
-          backgroundColor: colors[theme][textColor] + '33',
         },
         animatedStyle,
         style,
@@ -135,7 +137,7 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
       {...props}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : null}
+        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : leftIcon}
         <UIText color={textColor} type={textType}>
           {text}
         </UIText>
@@ -143,7 +145,8 @@ export function SecondaryButton({ type = 'primary', text, textType = 'body', sty
     </AnimatedPressable>
   )
 }
-export function TertiaryButton({ type = 'primary', text, textType = 'body', style, isLoading, ...props }: Props) {
+
+export function TertiaryButton({ type = 'primary', text, textType = 'body', style, isLoading, leftIcon, ...props }: Props) {
   const scale = useSharedValue(1)
 
   const onPressIn = useCallback(() => {
@@ -178,7 +181,7 @@ export function TertiaryButton({ type = 'primary', text, textType = 'body', styl
       {...props}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : null}
+        {isLoading ? <ActivityIndicator size="small" color={textColor} /> : leftIcon}
         <UIText color={textColor} type={textType}>
           {text}
         </UIText>

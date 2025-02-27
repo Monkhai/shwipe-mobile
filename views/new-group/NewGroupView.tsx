@@ -32,6 +32,7 @@ export default function NewGroupView() {
   }
 
   const iosStyle: ViewStyle = {
+    flex: 1,
     padding: 20,
     gap: 20,
     borderRadius: 32,

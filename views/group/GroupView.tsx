@@ -1,4 +1,5 @@
-import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton, TertiaryButton } from '@/components/ui/buttons/TextButtons'
+import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
@@ -8,19 +9,26 @@ import { useLeaveGroup } from '@/queries/groups/useLeaveGroup'
 import { User } from '@/queries/users/userTypes'
 import { ClientMessageType, CreateSessionWithGroupMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { useWebsocketStore } from '@/zustand/websocketStore'
-import { Redirect, router, useLocalSearchParams } from 'expo-router'
-import React from 'react'
-import { Image, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
+import { Redirect, useLocalSearchParams } from 'expo-router'
+import React, { useRef } from 'react'
+import { Image, Platform, Pressable, ScrollView, StyleSheet, useColorScheme, View } from 'react-native'
+import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import InviteToGroupView from '../invite-to-group/InviteToGroupView'
 import LoadingView from '../loading/LoadingView'
+import { useAuth } from '@/providers/AuthProvider'
 
 export default function GroupView() {
+  const [user] = useAuth()
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
   const insets = useSafeAreaInsets()
   const { sendMessage } = useWebsocketStore()
   const { data: group, isLoading: isGroupLoading } = useGetGroup(group_id)
   const { mutate: leaveGroup, isPending: isLeaveGroupPending } = useLeaveGroup()
   const theme = useColorScheme() ?? 'light'
+  const modalRef = useRef<ModalRef>(null)
 
   if (isGroupLoading) {
     return <LoadingView />
@@ -30,9 +38,7 @@ export default function GroupView() {
     return <Redirect href="/not-found" />
   }
 
-  const handleInviteFriend = () => {
-    router.push(`/${group_id}/invite-to-group`)
-  }
+  const handleInviteFriend = () => modalRef.current?.open()
 
   const handleStartSession = () => {
     const startSessionWithGroupMessage: UnsignedBaseClientMessage<CreateSessionWithGroupMessage> = {
@@ -46,93 +52,204 @@ export default function GroupView() {
     leaveGroup({ groupId: group_id })
   }
 
-  const renderMember = (member: User) => (
-    <View key={member.id} style={[styles.memberCard, { backgroundColor: colors[theme].secondaryBackground }]}>
-      <Image source={{ uri: member.photo_url }} style={styles.memberPhoto} />
-      <View style={styles.memberInfo}>
-        <UIText type="body" color="label">
-          {member.display_name}
-        </UIText>
-      </View>
-    </View>
-  )
+  const renderMemberAvatar = (member: User, index: number) => {
+    const delay = index * 100
+
+    return (
+      <Animated.View entering={FadeInDown.delay(delay).springify()} key={member.id}>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatarImageContainer}>
+            <Image source={{ uri: member.photo_url }} style={styles.avatarImage} resizeMode="cover" />
+          </View>
+        </View>
+        <View style={styles.avatarNameContainer}>
+          <UIText type="caption" color="secondaryLabel" style={{ textAlign: 'center' }}>
+            {member.display_name.split(' ')[0]}
+          </UIText>
+        </View>
+      </Animated.View>
+    )
+  }
 
   return (
     <UIView>
       <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
         <ViewHeader title={group.name} description={`${group.members.length} ${group.members.length === 1 ? 'Member' : 'Members'}`} />
 
-        <View style={styles.actionButtons}>
-          <PrimaryButton
-            textType="bodyEmphasized"
-            text="Start Session"
-            onPress={handleStartSession}
-            style={[styles.button, styles.primaryButton]}
-          />
-          <SecondaryButton textType="bodyEmphasized" text="Invite Friend" onPress={handleInviteFriend} style={styles.button} />
-        </View>
+        <View style={styles.content}>
+          {/* Hero Section */}
+          <Animated.View entering={FadeIn.delay(200)} style={styles.heroSection}>
+            {Platform.OS === 'ios' ? (
+              <BlurView intensity={30} tint={theme} style={styles.heroBlur}>
+                <HeroContent theme={theme} />
+              </BlurView>
+            ) : (
+              <View style={[styles.heroBlur, { backgroundColor: colors[theme].elevatedBackground }]}>
+                <HeroContent theme={theme} />
+              </View>
+            )}
+          </Animated.View>
 
-        <UIText type="secondaryTitle" color="label">
-          Members
-        </UIText>
+          {/* Members Section */}
+          <View style={styles.membersSection}>
+            <UIText type="secondaryTitleEmphasized" color="label" style={styles.sectionTitle}>
+              Members
+            </UIText>
 
-        <ScrollView style={styles.membersList}>{group.members.map(renderMember)}</ScrollView>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.avatarsContainer}>
+              {group.members.map((member, index) => renderMemberAvatar(member, index))}
 
-        <View style={{ marginTop: 20, marginBottom: 40, marginHorizontal: 16 }}>
-          <PrimaryButton
-            isLoading={isLeaveGroupPending}
-            textType="bodyEmphasized"
-            type="danger"
-            text="Leave Group"
-            onPress={handleLeaveGroup}
-            style={styles.button}
-          />
+              <Animated.View entering={FadeInDown.delay(group.members.length * 100).springify()}>
+                <Pressable onPress={handleInviteFriend} style={[styles.addAvatarContainer]}>
+                  <View style={styles.addIconContainer}>
+                    <Ionicons name="person-add" size={24} color={colors[theme].primary} />
+                  </View>
+                </Pressable>
+                <View style={styles.avatarNameContainer}>
+                  <UIText type="caption" color="primary" style={{ textAlign: 'center' }}>
+                    Invite
+                  </UIText>
+                </View>
+              </Animated.View>
+            </ScrollView>
+
+            {/* Action Buttons */}
+            <Animated.View entering={FadeInUp.delay(400)} style={styles.actionButtonsContainer}>
+              <PrimaryButton
+                textType="bodyEmphasized"
+                text="Start Session"
+                onPress={handleStartSession}
+                style={styles.startButton}
+                leftIcon={<Ionicons name="play" size={18} color="white" />}
+              />
+            </Animated.View>
+          </View>
+
+          {/* Leave Group Button */}
+          <Animated.View entering={FadeInUp.delay(500)} style={styles.leaveGroupContainer}>
+            <TertiaryButton
+              isLoading={isLeaveGroupPending}
+              textType="callout"
+              type="danger"
+              text="Leave Group"
+              onPress={handleLeaveGroup}
+            />
+          </Animated.View>
         </View>
       </View>
+      <Modal ref={modalRef}>
+        <InviteToGroupView groupId={group_id} />
+      </Modal>
     </UIView>
   )
 }
+
+const HeroContent = ({ theme }: { theme: 'light' | 'dark' }) => (
+  <View style={styles.heroContent}>
+    <View style={styles.heroIconContainer}>
+      <Ionicons name="people" size={32} color={colors[theme].primary} />
+    </View>
+    <UIText type="calloutEmphasized" color="label" style={{ textAlign: 'center' }}>
+      Ready to find a place to eat together?
+    </UIText>
+    <UIText type="caption" color="secondaryLabel" style={{ textAlign: 'center' }}>
+      Start a session with your group or invite more friends
+    </UIText>
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
   },
-  header: {
-    marginBottom: 30,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-    gap: 8,
-  },
-  button: {
+  content: {
     flex: 1,
-    minWidth: 0,
+    marginTop: 8,
+    display: 'flex',
+    flexDirection: 'column',
   },
-  primaryButton: {
-    backgroundColor: colors.light.primary,
+  heroSection: {
+    marginVertical: 16,
+    borderRadius: 24,
+    overflow: 'hidden',
   },
-  membersList: {
-    borderWidth: 1,
-    flex: 1,
-    marginTop: 16,
+  heroBlur: {
+    borderRadius: 24,
+    overflow: 'hidden',
   },
-  memberCard: {
-    flexDirection: 'row',
+  heroContent: {
+    padding: 20,
     alignItems: 'center',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
   },
-  memberPhoto: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 12,
+  heroIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(0,122,255,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
   },
-  memberInfo: {
+  membersSection: {
     flex: 1,
+  },
+  sectionTitle: {
+    marginBottom: 16,
+  },
+  avatarsContainer: {
+    paddingVertical: 8,
+    gap: 16,
+    paddingHorizontal: 4,
+  },
+  avatarContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    overflow: 'hidden',
+    borderColor: 'transparent',
+    borderWidth: 3,
+    padding: 2,
+  },
+  avatarImageContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 35,
+    overflow: 'hidden',
+  },
+  addAvatarContainer: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,122,255,0.1)',
+  },
+  addIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  avatarNameContainer: {
+    marginTop: 4,
+    alignItems: 'center',
+    width: 70,
+  },
+  actionButtonsContainer: {
+    marginTop: 24,
+    paddingHorizontal: 8,
+  },
+  startButton: {
+    borderRadius: 16,
+    paddingVertical: 16,
+  },
+  leaveGroupContainer: {
+    marginTop: 'auto',
+    marginBottom: 24,
+    alignItems: 'center',
   },
 })

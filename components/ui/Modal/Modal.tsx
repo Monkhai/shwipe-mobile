@@ -3,16 +3,7 @@ import React, { useImperativeHandle, useState } from 'react'
 import { Keyboard, StyleSheet, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
-import Animated, {
-  clamp,
-  FadeIn,
-  runOnJS,
-  StyleProps,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated'
+import Animated, { FadeIn, runOnJS, StyleProps, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 
 export interface ModalRef {
   open: () => void
@@ -81,7 +72,7 @@ const Modal = React.forwardRef<ModalRef, ModalProps>(({ children }, ref) => {
         transform: [{ translateY: modalHeight }],
       },
       animations: {
-        transform: [{ translateY: withSpring(0) }],
+        transform: [{ translateY: withSpring(0, { damping: 20, stiffness: 200 }) }],
       },
     }
   }
@@ -146,9 +137,9 @@ const Modal = React.forwardRef<ModalRef, ModalProps>(({ children }, ref) => {
             styles.modalBase,
             modalStyle,
             {
-              width: windowWidth * 0.95,
-              marginHorizontal: windowWidth * 0.025,
-              marginBottom: windowWidth * 0.025,
+              width: windowWidth * 0.9,
+              marginHorizontal: windowWidth * 0.05,
+              marginBottom: windowWidth * 0.05,
             },
           ]}
         >
@@ -193,9 +184,4 @@ type TargetLayoutAnimationsValues = {
   targetBorderRadius: number
   targetGlobalOriginX: number
   targetGlobalOriginY: number
-}
-
-interface WindowDimensions {
-  windowWidth: number
-  windowHeight: number
 }
