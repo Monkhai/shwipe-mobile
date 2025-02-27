@@ -81,12 +81,12 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
           position: 'absolute',
           right: 16,
           top: insets.top + 16,
-          backgroundColor: colors[theme].thickMaterial,
           borderRadius: 24,
           minWidth: 44,
           minHeight: 44,
           zIndex: showMenu ? 3 : 1,
           overflow: 'hidden',
+          backgroundColor: colors[theme].platformMaterial,
         },
       ]}
     >
@@ -117,7 +117,14 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
             setShowMenu(!showMenu)
           }}
         >
-          <Ionicons name="menu-outline" size={22} color={colors[theme].white} />
+          <Ionicons
+            name="menu-outline"
+            size={22}
+            color={Platform.select({
+              ios: colors[theme].white,
+              android: colors[theme].label,
+            })}
+          />
         </AnimatedPressable>
       )}
       {showMenu && (
@@ -127,8 +134,21 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
             style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
             onPress={() => setShowMenu(false)}
           >
-            <Ionicons name="people-outline" size={20} color={colors[theme].white} />
-            <UIText type="body" color="white">
+            <Ionicons
+              name="people-outline"
+              size={20}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="body"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Friends
             </UIText>
           </GeneralButton>
@@ -137,8 +157,21 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
             style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
             onPress={() => setShowMenu(false)}
           >
-            <Ionicons name="people-circle-outline" size={20} color={colors[theme].white} />
-            <UIText type="body" color="white">
+            <Ionicons
+              name="people-circle-outline"
+              size={20}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="body"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Groups
             </UIText>
           </GeneralButton>
@@ -149,8 +182,21 @@ export default function HomeMenu({ showMenu, setShowMenu }: Props) {
             }}
             style={{ height: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
           >
-            <Ionicons name="log-out-outline" size={20} color={colors[theme].white} />
-            <UIText type="body" color="white">
+            <Ionicons
+              name="log-out-outline"
+              size={20}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="body"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Logout
             </UIText>
           </GeneralButton>

@@ -15,7 +15,6 @@ interface NewGroupForm {
 export default function NewGroupView() {
   const theme = useColorScheme() ?? 'light'
 
-  // Android specific styles
   const androidStyle: ViewStyle = {
     flex: 1,
     gap: 20,
@@ -31,7 +30,7 @@ export default function NewGroupView() {
       </View>
     )
   }
-  // iOS specific styles
+
   const iosStyle: ViewStyle = {
     padding: 20,
     gap: 20,
@@ -69,19 +68,13 @@ function Content() {
   }
 
   return (
-    <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
-      <View>
-        <View style={{ marginBottom: 10 }}>
-          <UIText type="largeTitle">Create New Group</UIText>
-        </View>
-        <View>
-          <UIText type="body" color="secondaryLabel">
-            Create a group to start swiping with your friends
-          </UIText>
-        </View>
-      </View>
-      <View>
-        <View style={{ marginBottom: 8, marginLeft: 12 }}>
+    <Pressable style={{ flex: 1, gap: 4 }} onPress={Keyboard.dismiss}>
+      <UIText type="largeTitle">Create New Group</UIText>
+      <View style={{ gap: 8 }}>
+        <UIText type="body" color="secondaryLabel">
+          Create a group to start swiping with your friends
+        </UIText>
+        <View style={{ marginLeft: 12 }}>
           <UIText type="calloutEmphasized">Group Name</UIText>
         </View>
         <Controller

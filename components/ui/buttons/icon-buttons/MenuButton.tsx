@@ -18,15 +18,15 @@ export function MenuIcon() {
       <FitBox src={{ x: 0, y: 0, width: 40, height: 40 }} dst={{ x: 0, y: 0, width: size, height: size }}>
         <Path
           path="M27.3672 21.7012C28.3926 21.7012 29.2227 20.8809 29.2227 19.8555C29.2227 18.8301 28.3926 18 27.3672 18C26.3418 18 25.5117 18.8301 25.5117 19.8555C25.5117 20.8809 26.3418 21.7012 27.3672 21.7012Z"
-          color={colors[theme].thickMaterial}
+          color={colors[theme].platformMaterial}
         />
         <Path
           path="M20.1113 21.7012C21.1367 21.7012 21.957 20.8809 21.957 19.8555C21.957 18.8301 21.1367 18 20.1113 18C19.0859 18 18.2559 18.8301 18.2559 19.8555C18.2559 20.8809 19.0859 21.7012 20.1113 21.7012Z"
-          color={colors[theme].thickMaterial}
+          color={colors[theme].platformMaterial}
         />
         <Path
           path="M12.8555 21.7012C13.8809 21.7012 14.7012 20.8809 14.7012 19.8555C14.7012 18.8301 13.8809 18 12.8555 18C11.8301 18 11 18.8301 11 19.8555C11 20.8809 11.8301 21.7012 12.8555 21.7012Z"
-          color={colors[theme].thickMaterial}
+          color={colors[theme].platformMaterial}
         />
       </FitBox>
     </Canvas>
@@ -79,7 +79,7 @@ export function Menu({ setShowMenu }: { setShowMenu: (show: boolean) => void }) 
           overflow: 'hidden',
           width,
           borderRadius: 24,
-          backgroundColor: colors.dark.thickMaterial,
+          backgroundColor: colors.dark.platformMaterial,
         }}
       >
         <FlatList

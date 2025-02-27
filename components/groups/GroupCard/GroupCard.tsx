@@ -25,7 +25,7 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 12,
-        backgroundColor: colors[theme].thickMaterial,
+        backgroundColor: colors[theme].platformMaterial,
       }}
     >
       <UIText color="label" type="bodyEmphasized">

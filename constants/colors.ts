@@ -4,9 +4,10 @@ export const colors = {
   baseMaterial: '#FFFFFF4D',
   light: {
     material: '#8080804D',
-    thickMaterial: Platform.select({
+    thickMaterial: '#808080E6',
+    platformMaterial: Platform.select({
       ios: '#80808066',
-      android: '#1C1C1F',
+      android: '#FFFFFF',
     }),
     thinMaterial: '#FFFFFF4D',
     background: '#FFFFFF',
@@ -26,10 +27,11 @@ export const colors = {
   },
   dark: {
     material: '#FFFFFF4D',
-    thickMaterial: Platform.select({
+    platformMaterial: Platform.select({
       ios: '#80808080',
       android: '#1C1C1F',
     }),
+    thickMaterial: '#80808080',
     thinMaterial: '#8080804D',
     white: '#FFFFFF',
     background: '#000000',

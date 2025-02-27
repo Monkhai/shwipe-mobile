@@ -52,7 +52,7 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
       layout={LinearTransition}
       style={{
         position: 'absolute',
-        backgroundColor: colors[theme].thickMaterial,
+        backgroundColor: colors[theme].platformMaterial,
         borderRadius: 24,
         overflow: 'hidden',
         width: '70%',
@@ -89,8 +89,21 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               startSoloSession()
             }}
           >
-            <Ionicons name="person-outline" size={24} color={colors[theme].white} />
-            <UIText type="tertiaryTitle" color="white">
+            <Ionicons
+              name="person-outline"
+              size={24}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="tertiaryTitle"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Solo Session
             </UIText>
           </GeneralButton>
@@ -106,8 +119,21 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               setShowActionWidget(false)
             }}
           >
-            <Ionicons name="people-outline" size={24} color={colors[theme].white} />
-            <UIText type="tertiaryTitle" color="white">
+            <Ionicons
+              name="people-outline"
+              size={24}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="tertiaryTitle"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Friend Session
             </UIText>
           </GeneralButton>
@@ -123,8 +149,21 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               setShowActionWidget(false)
             }}
           >
-            <Ionicons name="people-circle-outline" size={24} color={colors[theme].white} />
-            <UIText type="tertiaryTitle" color="white">
+            <Ionicons
+              name="people-circle-outline"
+              size={24}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="tertiaryTitle"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               Group Session
             </UIText>
           </GeneralButton>
@@ -149,8 +188,21 @@ export default function HomeActionWidget({ showActionWidget, setShowActionWidget
               }
             }}
           >
-            <Ionicons name={'restaurant-outline'} size={20} color={colors[theme].white} />
-            <UIText type="tertiaryTitle" color="white">
+            <Ionicons
+              name={'restaurant-outline'}
+              size={20}
+              color={Platform.select({
+                ios: colors[theme].white,
+                android: colors[theme].label,
+              })}
+            />
+            <UIText
+              type="tertiaryTitle"
+              color={Platform.select({
+                ios: 'white',
+                android: 'label',
+              })}
+            >
               {connectionState === ConnectionState.CONNECTED
                 ? 'Start Swiping'
                 : connectionState === ConnectionState.LOADING
