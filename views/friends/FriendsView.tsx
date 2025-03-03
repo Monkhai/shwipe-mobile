@@ -1,182 +1,162 @@
+import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
+import UIText from '@/components/ui/UIText'
+import UIView from '@/components/ui/UIView'
+import ViewHeader from '@/components/ui/ViewHeader'
+import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { colors } from '@/constants/colors'
 import { updateFriendRequestAtom } from '@/jotai/updateFriendRequestAtom'
-import { useAuth } from '@/providers/AuthProvider'
+import { FriendRequest } from '@/queries/friendRequests/friendRequestsTypes'
 import { useGetReceivedFriendRequests } from '@/queries/friendRequests/useGetReceivedFriendRequests'
 import { useGetSentFriendRequests } from '@/queries/friendRequests/useGetSentFriendRequests'
-import { useSendFriendRequest } from '@/queries/friendRequests/useSendFriendRequest'
+import { Friend } from '@/queries/friends/friendsTypes'
 import { useGetUserFriends } from '@/queries/friends/useGetUserFriends'
-import { useGetAllUsers } from '@/queries/users/useGetAllUsers'
 import { router } from 'expo-router'
 import { useAtom } from 'jotai'
-import React from 'react'
-import { Button, FlatList, Image, Pressable, Text, View } from 'react-native'
+import React, { useCallback, useRef } from 'react'
+import { RefreshControl, ScrollView, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import FriendCard from './components/FriendCard'
+import NewFriendButton from './components/NewFriendButton'
 
 export default function FriendsView() {
-  const [user] = useAuth()
+  const insets = useSafeAreaInsets()
   const [, setUpdateFriendRequest] = useAtom(updateFriendRequestAtom)
-  const { data: allUsers } = useGetAllUsers()
-  const { data: friends, refetch: refetchFriends } = useGetUserFriends()
-  const { data: sentRequests, refetch: refetchSentRequests } = useGetSentFriendRequests()
-  const { data: receivedRequests, refetch: refetchReceivedRequests } = useGetReceivedFriendRequests()
-  const { mutate: sendFriendRequest } = useSendFriendRequest()
+  const { data: friends, refetch: refetchFriends, isRefetching: isRefetchingFriends } = useGetUserFriends()
+  const { data: sentRequests, refetch: refetchSentRequests, isRefetching: isRefetchingSentRequests } = useGetSentFriendRequests()
+  const {
+    data: receivedRequests,
+    refetch: refetchReceivedRequests,
+    isRefetching: isRefetchingReceivedRequests,
+  } = useGetReceivedFriendRequests()
+  const modalRef = useRef<ModalRef>(null)
+  const requestModalRef = useRef<ModalRef>(null)
 
-  function refresh() {
+  const onRefresh = useCallback(() => {
     refetchFriends()
     refetchSentRequests()
     refetchReceivedRequests()
+  }, [refetchFriends, refetchSentRequests, refetchReceivedRequests])
+
+  function handleFriendCardPress(friendId: string) {
+    router.push(`/(auth)/profile/${friendId}`)
   }
 
+  function handleFriendRequestCardPress(request: FriendRequest) {
+    setUpdateFriendRequest({
+      friendRequest: request,
+      direction: 'received',
+    })
+    if (requestModalRef.current) {
+      requestModalRef.current.open()
+    }
+  }
+
+  const isRefreshing = isRefetchingFriends || isRefetchingSentRequests || isRefetchingReceivedRequests
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-      <Button title="Refresh" onPress={refresh} />
-      <View style={{ flex: 1, width: '100%' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>All Users</Text>
-        <FlatList
-          style={{ width: '100%', padding: 10 }}
-          data={allUsers}
-          renderItem={({ item }) => {
-            const isSentReq = sentRequests?.some(req => req.user_id === item.id)
-            const isReceivedReq = receivedRequests?.some(req => req.user_id === item.id)
-            const isFriend = friends?.some(friend => friend.id === item.id)
-            const isThereAFriendRequest = isSentReq || isReceivedReq
-            return (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  backgroundColor: 'white',
-                  width: '100%',
-                  borderRadius: 8,
-                  padding: 10,
-                }}
-              >
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                  <Image source={{ uri: item.photo_url }} style={{ width: 50, height: 50, borderRadius: 50 }} />
-                  <Text>{item.display_name}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                  {isFriend ? (
-                    <Text>Friends</Text>
-                  ) : isThereAFriendRequest ? (
-                    isSentReq ? (
-                      <Text>Request Sent</Text>
-                    ) : (
-                      <Text>Request Received</Text>
-                    )
-                  ) : (
-                    <Pressable
-                      style={{
-                        backgroundColor: '#007AFF',
-                        padding: 10,
-                        borderRadius: 8,
-                      }}
-                      onPress={() => sendFriendRequest({ publicId: item.id }, { onError: error => console.log(error) })}
-                    >
-                      <Text style={{ color: 'white' }}>Send Request</Text>
-                    </Pressable>
-                  )}
-                </View>
+    <UIView>
+      <View style={{ flex: 1, paddingTop: insets.top + 16 }}>
+        <ViewHeader title="Your Friends" description="Manage your friends and requests">
+          <NewFriendButton
+            onPress={() => {
+              if (modalRef.current) {
+                modalRef.current.open()
+              }
+            }}
+          />
+        </ViewHeader>
+        <ScrollView
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          style={{ flex: 1 }}
+          contentContainerStyle={{ padding: 20 }}
+        >
+          <View style={{ marginBottom: 30 }}>
+            <View style={{ marginBottom: 15 }}>
+              <UIText type="titleEmphasized">Friend Requests</UIText>
+            </View>
+            {receivedRequests && receivedRequests.length > 0 && (
+              <View style={{ gap: 10 }}>
+                {receivedRequests.map((request, index) => (
+                  <View key={index}>
+                    <FriendCard friend={request} onPress={() => handleFriendRequestCardPress(request)} />
+                    <Modal ref={requestModalRef}>
+                      <View style={{ padding: 20 }}>
+                        <UIText type="title">Friend Request</UIText>
+                        <UIText type="body">Viewing friend request details</UIText>
+                        <GeneralButton onPress={() => requestModalRef.current?.close()}>
+                          <UIText type="body" color="label">
+                            Close
+                          </UIText>
+                        </GeneralButton>
+                      </View>
+                    </Modal>
+                  </View>
+                ))}
               </View>
-            )
-          }}
-          keyExtractor={(_, index) => index.toString()}
-        />
-      </View>
-      <View style={{ flex: 1, width: '100%' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Friends</Text>
-        <FlatList
-          style={{ width: '100%', padding: 10 }}
-          data={friends}
-          renderItem={({ item }) => {
-            return (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                  backgroundColor: 'white',
-                  width: '100%',
-                  borderRadius: 8,
-                  padding: 10,
-                }}
-              >
-                <Image source={{ uri: item.photo_url }} style={{ width: 50, height: 50, borderRadius: 50 }} />
-                <Text>{item.display_name}</Text>
+            )}
+          </View>
+
+          <View style={{ marginBottom: 30 }}>
+            <View style={{ marginBottom: 15 }}>
+              <UIText type="titleEmphasized">Sent Requests</UIText>
+            </View>
+            {sentRequests && sentRequests.length > 0 ? (
+              <View style={{ gap: 10 }}>
+                {sentRequests.map((request, index) => (
+                  <FriendCard
+                    key={index}
+                    friend={request}
+                    onPress={() => {
+                      setUpdateFriendRequest({
+                        friendRequest: request,
+                        direction: 'sent',
+                      })
+                      router.push('/(auth)/update-friend-request')
+                    }}
+                  />
+                ))}
               </View>
-            )
-          }}
-          keyExtractor={(_, index) => index.toString()}
-        />
+            ) : (
+              <View style={{ alignItems: 'center', padding: 20 }}>
+                <UIText type="body" color="secondaryLabel">
+                  You haven't sent any friend requests
+                </UIText>
+              </View>
+            )}
+          </View>
+
+          <View>
+            <View style={{ marginBottom: 15 }}>
+              <UIText type="titleEmphasized">Your Friends</UIText>
+            </View>
+            {friends && friends.length > 0 ? (
+              <View style={{ gap: 10 }}>
+                {friends.map((friend, index) => (
+                  <FriendCard key={index} friend={friend} onPress={() => handleFriendCardPress(friend.id)} />
+                ))}
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', padding: 20 }}>
+                <UIText type="body" color="secondaryLabel">
+                  You haven't added any friends yet
+                </UIText>
+              </View>
+            )}
+          </View>
+        </ScrollView>
       </View>
 
-      {/* Sent Requests */}
-      <View style={{ flex: 1, width: '100%' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Sent Requests</Text>
-        <FlatList
-          style={{ width: '100%', padding: 10 }}
-          data={sentRequests}
-          renderItem={({ item }) => {
-            return (
-              <Pressable
-                onPress={() => {
-                  setUpdateFriendRequest({
-                    friendRequest: item,
-                    direction: 'sent',
-                  })
-                  router.push('/(auth)/update-friend-request')
-                }}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                  backgroundColor: 'white',
-                  width: '100%',
-                  borderRadius: 8,
-                  padding: 10,
-                }}
-              >
-                <Image source={{ uri: item.photo_url }} style={{ width: 50, height: 50, borderRadius: 50 }} />
-                <Text>{item.display_name}</Text>
-              </Pressable>
-            )
-          }}
-          keyExtractor={(_, index) => index.toString()}
-        />
-      </View>
-      <View style={{ flex: 1, width: '100%' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Received Requests</Text>
-        <FlatList
-          style={{ width: '100%', padding: 10 }}
-          data={receivedRequests}
-          renderItem={({ item }) => {
-            return (
-              <Pressable
-                onPress={() => {
-                  setUpdateFriendRequest({
-                    friendRequest: item,
-                    direction: 'received',
-                  })
-                  router.push('/(auth)/update-friend-request')
-                }}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10,
-                  backgroundColor: 'white',
-                  width: '100%',
-                  borderRadius: 8,
-                  padding: 10,
-                }}
-              >
-                <Image source={{ uri: item.photo_url }} style={{ width: 50, height: 50, borderRadius: 50 }} />
-                <Text>{item.display_name}</Text>
-              </Pressable>
-            )
-          }}
-          keyExtractor={(_, index) => index.toString()}
-        />
-      </View>
-    </View>
+      <Modal ref={modalRef}>
+        <View style={{ padding: 20 }}>
+          <UIText type="title">Add Friend</UIText>
+          <UIText type="body">This is a placeholder for the Add Friend functionality</UIText>
+          <GeneralButton onPress={() => modalRef.current?.close()}>
+            <UIText type="body" color="label">
+              Close
+            </UIText>
+          </GeneralButton>
+        </View>
+      </Modal>
+    </UIView>
   )
 }

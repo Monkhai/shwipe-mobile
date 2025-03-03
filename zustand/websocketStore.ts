@@ -43,6 +43,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
     set({ connectionState: ConnectionState.LOADING })
     const ws = new WebsocketHandler({
       onError(error) {
+        console.log('error', error)
         if (error instanceof Error) {
           if (error.message === "The operation couldn't be completed. Connection refused") {
             console.log('Connection refused')
@@ -165,7 +166,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
       },
     })
     set({ __ws: ws })
-    ws.connect('ws://10.100.102.148:8080/ws')
+    ws.connect('ws://10.100.102.149:8080/ws')
   },
   sendMessage: (message: Omit<BaseClientMessage, 'token_id'>) => {
     const ws = useWebsocketStore.getState().__ws

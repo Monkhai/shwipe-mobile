@@ -1,19 +1,17 @@
-import AddGroup from '@/components/shapes/AddGroup'
 import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
 import { useGetGroupInvitations } from '@/queries/groups/useGetGroupInvitations'
 import { useGetGroups } from '@/queries/groups/useGetGroups'
 import { router } from 'expo-router'
 import React, { useCallback, useRef } from 'react'
-import { RefreshControl, ScrollView, useColorScheme, View } from 'react-native'
-import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'
+import { RefreshControl, ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import GroupCard from '../../components/groups/GroupCard/GroupCard'
-import NewGroupView from '../new-group/NewGroupView'
 import GroupInvitationView from '../group-invitation/GroupInvitationView'
+import NewGroupView from '../new-group/NewGroupView'
+import GroupCard from './components/GroupCard'
+import NewGroupButton from './components/NewGroupButton'
 
 export default function GroupsView() {
   const insets = useSafeAreaInsets()
@@ -104,17 +102,5 @@ export default function GroupsView() {
         />
       </Modal>
     </UIView>
-  )
-}
-
-function NewGroupButton({ onPress }: { onPress: () => void }) {
-  const theme = useColorScheme() ?? 'light'
-
-  return (
-    <Animated.View layout={LinearTransition} entering={ZoomIn} exiting={ZoomOut}>
-      <GeneralButton onPress={onPress} hitSlop={24} style={{ borderRadius: 100 }}>
-        <AddGroup />
-      </GeneralButton>
-    </Animated.View>
   )
 }
