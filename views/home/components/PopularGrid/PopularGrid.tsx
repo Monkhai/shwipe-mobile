@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FeaturedRestaurant from './components/PopularRestaurant'
 
 export default function PopularGrid() {
-  const { data: popularRestaurants } = useGetPopularRestaurants()
+  const { data: popularRestaurants, refetch, isRefetching } = useGetPopularRestaurants()
   const { width: screenWidth } = useWindowDimensions()
   const cardSize = (screenWidth - 48) / 2 // 16px padding on each side and 16px gap between cards
   const insets = useSafeAreaInsets()
@@ -16,6 +16,8 @@ export default function PopularGrid() {
         Popular Around You
       </UIText>
       <FlatList
+        onRefresh={refetch}
+        refreshing={isRefetching}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 16, alignItems: 'center', paddingBottom: insets.bottom + 90 }}
         numColumns={2}

@@ -19,11 +19,6 @@ export const useUpdateGroupInvitation = () => {
       queryClient.invalidateQueries({ queryKey: queryKeystore.groupInvitations })
       queryClient.invalidateQueries({ queryKey: () => queryKeystore.groupInvitation(request!.groupId) })
       queryClient.invalidateQueries({ queryKey: queryKeystore.groups })
-      if (request!.status === GroupInvitationStatus.ACCEPTED) {
-        router.dismissTo(`/(auth)/groups`)
-      } else {
-        router.dismissTo('/(auth)/home')
-      }
     },
   })
 }

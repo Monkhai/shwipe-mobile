@@ -109,7 +109,7 @@ function FriendItem({ friend, onInvite, onCancel, isPending, group }: FriendItem
   if (Platform.OS === 'ios') {
     return (
       <AnimatedPressable onPressIn={onPressIn} onPressOut={onPressOut} style={[styles.friendItem, animatedStyle]}>
-        <BlurView intensity={25} tint={theme} style={styles.blurContainer}>
+        <BlurView intensity={100} style={styles.blurContainer}>
           <View style={styles.cardContent}>
             <View style={styles.avatarSection}>
               <View style={styles.avatarFrame}>
@@ -211,23 +211,12 @@ const styles = StyleSheet.create({
   friendItem: {
     borderRadius: 16,
     overflow: 'hidden',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
   },
   blurContainer: {
     overflow: 'hidden',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   cardContent: {
     flexDirection: 'row',

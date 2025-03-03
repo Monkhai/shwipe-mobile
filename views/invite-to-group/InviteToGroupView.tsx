@@ -47,7 +47,7 @@ export default function InviteToGroupView({ groupId }: Props) {
     gap: 20,
     padding: 20,
     borderRadius: 32,
-    backgroundColor: colors[theme].elevatedBackground,
+    backgroundColor: colors[theme].secondaryBackground,
   }
 
   if (Platform.OS === 'android') {

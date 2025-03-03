@@ -4,7 +4,7 @@ import { colors } from '@/constants/colors'
 import { Group } from '@/queries/groups/groupTypes'
 import { BlurView } from 'expo-blur'
 import React from 'react'
-import { Image, useColorScheme, View } from 'react-native'
+import { Image, Platform, useColorScheme, View } from 'react-native'
 
 interface GroupCardProps {
   group: Group
@@ -14,9 +14,27 @@ interface GroupCardProps {
 export default function GroupCard({ group, onPress }: GroupCardProps) {
   const theme = useColorScheme() ?? 'light'
 
+  if (Platform.OS === 'ios') {
+    return (
+      <GeneralButton onPress={() => onPress(group.id)} style={{}}>
+        <BlurView
+          intensity={100}
+          style={{
+            overflow: 'hidden',
+            padding: 16,
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderRadius: 12,
+          }}
+        >
+          <Content group={group} />
+        </BlurView>
+      </GeneralButton>
+    )
+  }
   return (
-    // <BlurView intensity={80} tint="systemThickMaterial" style={{ borderRadius: 12, overflow: 'hidden' }}>
-    // <View></View>
     <GeneralButton
       onPress={() => onPress(group.id)}
       style={{
@@ -25,9 +43,18 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 12,
-        backgroundColor: colors[theme].platformMaterial,
+        backgroundColor: colors[theme].thinMaterial,
       }}
     >
+      <Content group={group} />
+    </GeneralButton>
+  )
+}
+
+function Content({ group }: { group: Group }) {
+  const theme = useColorScheme() ?? 'light'
+  return (
+    <>
       <UIText color="label" type="bodyEmphasized">
         {group.name}
       </UIText>
@@ -52,7 +79,6 @@ export default function GroupCard({ group, onPress }: GroupCardProps) {
           </View>
         )}
       </View>
-    </GeneralButton>
-    // </BlurView>
+    </>
   )
 }

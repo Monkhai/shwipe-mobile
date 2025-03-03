@@ -2,56 +2,18 @@ import UIText from '@/components/ui/UIText'
 import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
 import { colors } from '@/constants/colors'
 import { useCreateNewGroup } from '@/queries/groups/useCreateNewGroup'
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
-import { BlurView } from 'expo-blur'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Keyboard, Platform, Pressable, StyleSheet, TextInput, useColorScheme, View, ViewStyle } from 'react-native'
+import { Keyboard, Pressable, StyleSheet, TextInput, useColorScheme, View } from 'react-native'
 
 interface NewGroupForm {
   groupName: string
 }
 
-export default function NewGroupView() {
-  const theme = useColorScheme() ?? 'light'
-
-  const androidStyle: ViewStyle = {
-    flex: 1,
-    gap: 20,
-    padding: 20,
-    borderRadius: 32,
-    backgroundColor: colors[theme].elevatedBackground,
-  }
-
-  if (Platform.OS === 'android') {
-    return (
-      <View style={androidStyle}>
-        <Content />
-      </View>
-    )
-  }
-
-  const iosStyle: ViewStyle = {
-    flex: 1,
-    padding: 20,
-    gap: 20,
-    borderRadius: 32,
-    backgroundColor: 'transparent',
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-  }
-
-  return (
-    <BlurView intensity={80} style={iosStyle}>
-      <Content />
-    </BlurView>
-  )
+interface Props {
+  onSuccess: () => void
 }
-
-function Content() {
+export default function NewGroupView({ onSuccess }: Props) {
   const theme = useColorScheme() ?? 'light'
   const { mutate: createGroup, isPending } = useCreateNewGroup()
   const {
@@ -65,7 +27,7 @@ function Content() {
   })
 
   const onSubmit = (data: NewGroupForm) => {
-    createGroup({ groupName: data.groupName })
+    createGroup({ groupName: data.groupName }, { onSuccess: onSuccess })
   }
 
   return (

@@ -18,18 +18,16 @@ import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import InviteToGroupView from '../invite-to-group/InviteToGroupView'
 import LoadingView from '../loading/LoadingView'
-import { useAuth } from '@/providers/AuthProvider'
+import GroupInvitationView from '../group-invitation/GroupInvitationView'
 
 export default function GroupView() {
-  const [user] = useAuth()
   const { group_id } = useLocalSearchParams<{ group_id: string }>()
   const insets = useSafeAreaInsets()
   const { sendMessage } = useWebsocketStore()
   const { data: group, isLoading: isGroupLoading } = useGetGroup(group_id)
   const { mutate: leaveGroup, isPending: isLeaveGroupPending } = useLeaveGroup()
   const theme = useColorScheme() ?? 'light'
-  const modalRef = useRef<ModalRef>(null)
-
+  const inviteModalRef = useRef<ModalRef>(null)
   if (isGroupLoading) {
     return <LoadingView />
   }
@@ -38,7 +36,7 @@ export default function GroupView() {
     return <Redirect href="/not-found" />
   }
 
-  const handleInviteFriend = () => modalRef.current?.open()
+  const handleInviteFriend = () => inviteModalRef.current?.open()
 
   const handleStartSession = () => {
     const startSessionWithGroupMessage: UnsignedBaseClientMessage<CreateSessionWithGroupMessage> = {
@@ -80,7 +78,7 @@ export default function GroupView() {
           {/* Hero Section */}
           <Animated.View entering={FadeIn.delay(200)} style={styles.heroSection}>
             {Platform.OS === 'ios' ? (
-              <BlurView intensity={30} tint={theme} style={styles.heroBlur}>
+              <BlurView intensity={100} style={styles.heroBlur}>
                 <HeroContent theme={theme} />
               </BlurView>
             ) : (
@@ -137,7 +135,7 @@ export default function GroupView() {
           </Animated.View>
         </View>
       </View>
-      <Modal ref={modalRef}>
+      <Modal ref={inviteModalRef}>
         <InviteToGroupView groupId={group_id} />
       </Modal>
     </UIView>

@@ -1,6 +1,8 @@
+import { colors } from '@/constants/colors'
 import { Portal } from '@gorhom/portal'
+import { BlurView } from 'expo-blur'
 import React, { useImperativeHandle, useState } from 'react'
-import { Keyboard, StyleSheet, useWindowDimensions } from 'react-native'
+import { Keyboard, Platform, StyleSheet, useColorScheme, useWindowDimensions, View, ViewStyle } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 import Animated, { FadeIn, runOnJS, StyleProps, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
@@ -143,12 +145,47 @@ const Modal = React.forwardRef<ModalRef, ModalProps>(({ children }, ref) => {
             },
           ]}
         >
-          {children}
+          <Wrapper>{children}</Wrapper>
         </Animated.View>
       </GestureDetector>
     </Portal>
   )
 })
+
+function Wrapper({ children }: { children: React.ReactNode }) {
+  const theme = useColorScheme() ?? 'light'
+
+  const androidStyle: ViewStyle = {
+    flex: 1,
+    gap: 20,
+    padding: 20,
+    borderRadius: 32,
+    backgroundColor: colors[theme].secondaryBackground,
+  }
+
+  if (Platform.OS === 'android') {
+    return <View style={androidStyle}>{children}</View>
+  }
+
+  const iosStyle: ViewStyle = {
+    flex: 1,
+    padding: 20,
+    gap: 20,
+    borderRadius: 32,
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+  }
+
+  return (
+    <BlurView intensity={80} style={iosStyle}>
+      {children}
+    </BlurView>
+  )
+}
 
 export default Modal
 

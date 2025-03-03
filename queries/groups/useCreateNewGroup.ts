@@ -19,9 +19,8 @@ export function useCreateNewGroup() {
   return useMutation({
     mutationFn: createNewGroup,
     onSuccess: () => {
-      console.log('success')
+      console.log('test')
       queryClient.invalidateQueries({ queryKey: queryKeystore.groups })
-      router.back()
     },
   })
 }
