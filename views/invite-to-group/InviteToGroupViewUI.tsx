@@ -1,5 +1,5 @@
 import UIText from '@/components/ui/UIText'
-import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton, SecondaryButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { Friend } from '@/queries/friends/friendsTypes'
 import { Group } from '@/queries/groups/groupTypes'

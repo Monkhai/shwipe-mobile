@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton } from '@/components/ui/buttons/Buttons'
 import { ClientMessageType, LeaveSessionMessage, UnsignedBaseClientMessage } from '@/wsHandler/clientMessagesTypes'
 import { useSessionStore } from '@/zustand/sessionStore'
 import { useWebsocketStore } from '@/zustand/websocketStore'

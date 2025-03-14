@@ -10,31 +10,31 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		14892283F41242778B290AEE /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B617D345384FC799A5A7C6 /* noop-file.swift */; };
+		2FF0CCFFF87EDC96994EB99A /* Pods_shwipe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FAFBDAB56E111617FBB2F26 /* Pods_shwipe.framework */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		4FB306CED3B3E5CF9282F501 /* Pods_shwipe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A48551406B08C34359541582 /* Pods_shwipe.framework */; };
-		55195853C82D8BF45E6AC35C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 566B3E199844368CAC7ABC76 /* PrivacyInfo.xcprivacy */; };
+		7079DF3AECC842501026EB18 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1D1FE91A4D2940F6E6591735 /* PrivacyInfo.xcprivacy */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		BFB7F0FC6BE74573AEFE429F /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = C236E044561744EB8EE3033A /* noop-file.swift */; };
-		FB57A75A1211414F9B36E006 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4438C0B3BF440E8159F619 /* GoogleService-Info.plist */; };
+		DCD04ED70B4645FCBE89A4B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 17ADD9FAEDA84A6D902116C4 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C4438C0B3BF440E8159F619 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "shwipe/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0FAFBDAB56E111617FBB2F26 /* Pods_shwipe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_shwipe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* shwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = shwipe/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = shwipe/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = shwipe/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shwipe/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = shwipe/main.m; sourceTree = "<group>"; };
-		566B3E199844368CAC7ABC76 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = shwipe/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		68B26886DA5C415F9FE1C206 /* shwipe-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "shwipe-Bridging-Header.h"; path = "shwipe/shwipe-Bridging-Header.h"; sourceTree = "<group>"; };
+		14B617D345384FC799A5A7C6 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "shwipe/noop-file.swift"; sourceTree = "<group>"; };
+		17ADD9FAEDA84A6D902116C4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "shwipe/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1D1FE91A4D2940F6E6591735 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = shwipe/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-shwipe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shwipe.debug.xcconfig"; path = "Target Support Files/Pods-shwipe/Pods-shwipe.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-shwipe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shwipe.release.xcconfig"; path = "Target Support Files/Pods-shwipe/Pods-shwipe.release.xcconfig"; sourceTree = "<group>"; };
-		A48551406B08C34359541582 /* Pods_shwipe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_shwipe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		958C39505E244EBDB7402B6D /* shwipe-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "shwipe-Bridging-Header.h"; path = "shwipe/shwipe-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = shwipe/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C236E044561744EB8EE3033A /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "shwipe/noop-file.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-shwipe/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FB306CED3B3E5CF9282F501 /* Pods_shwipe.framework in Frameworks */,
+				2FF0CCFFF87EDC96994EB99A /* Pods_shwipe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,10 +61,10 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				0C4438C0B3BF440E8159F619 /* GoogleService-Info.plist */,
-				C236E044561744EB8EE3033A /* noop-file.swift */,
-				68B26886DA5C415F9FE1C206 /* shwipe-Bridging-Header.h */,
-				566B3E199844368CAC7ABC76 /* PrivacyInfo.xcprivacy */,
+				17ADD9FAEDA84A6D902116C4 /* GoogleService-Info.plist */,
+				14B617D345384FC799A5A7C6 /* noop-file.swift */,
+				958C39505E244EBDB7402B6D /* shwipe-Bridging-Header.h */,
+				1D1FE91A4D2940F6E6591735 /* PrivacyInfo.xcprivacy */,
 			);
 			name = shwipe;
 			sourceTree = "<group>";
@@ -73,7 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				A48551406B08C34359541582 /* Pods_shwipe.framework */,
+				0FAFBDAB56E111617FBB2F26 /* Pods_shwipe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -150,14 +150,14 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "shwipe" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				B8375FF7E4DB992E0266378D /* [Expo] Configure project */,
+				91E141D2192F44CF3395244B /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				245502ADD5416A4679DEA2BD /* [CP] Embed Pods Frameworks */,
-				EDB865F75A0152AD4D50C6AD /* [CP-User] [RNFB] Core Configuration */,
+				6CE2BB3F2F7F2AA942559C07 /* [CP] Embed Pods Frameworks */,
+				A6CD7CDBC94E8B6D116A1E44 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -177,8 +177,8 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = GLLM38Y5T6;
 						LastSwiftMigration = 1250;
+						DevelopmentTeam = "GLLM38Y5T6";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -209,8 +209,8 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				FB57A75A1211414F9B36E006 /* GoogleService-Info.plist in Resources */,
-				55195853C82D8BF45E6AC35C /* PrivacyInfo.xcprivacy in Resources */,
+				DCD04ED70B4645FCBE89A4B6 /* GoogleService-Info.plist in Resources */,
+				7079DF3AECC842501026EB18 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,7 +254,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		245502ADD5416A4679DEA2BD /* [CP] Embed Pods Frameworks */ = {
+		6CE2BB3F2F7F2AA942559C07 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -336,7 +336,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-shwipe/Pods-shwipe-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B8375FF7E4DB992E0266378D /* [Expo] Configure project */ = {
+		91E141D2192F44CF3395244B /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -355,7 +355,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-shwipe/expo-configure-project.sh\"\n";
 		};
-		EDB865F75A0152AD4D50C6AD /* [CP-User] [RNFB] Core Configuration */ = {
+		A6CD7CDBC94E8B6D116A1E44 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -378,7 +378,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				BFB7F0FC6BE74573AEFE429F /* noop-file.swift in Sources */,
+				14892283F41242778B290AEE /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,10 +392,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = shwipe/shwipe.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GLLM38Y5T6;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -412,12 +409,15 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shwipe.app;
-				PRODUCT_NAME = "shwipe";
+				PRODUCT_NAME = shwipe;
 				SWIFT_OBJC_BRIDGING_HEADER = "shwipe/shwipe-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "GLLM38Y5T6";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Debug;
 		};
@@ -428,10 +428,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = shwipe/shwipe.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GLLM38Y5T6;
 				INFOPLIST_FILE = shwipe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -443,11 +440,14 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shwipe.app;
-				PRODUCT_NAME = "shwipe";
+				PRODUCT_NAME = shwipe;
 				SWIFT_OBJC_BRIDGING_HEADER = "shwipe/shwipe-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				DEVELOPMENT_TEAM = "GLLM38Y5T6";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 			};
 			name = Release;
 		};

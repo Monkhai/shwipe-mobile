@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
 import NotFoundView from '@/views/not-found/NotFoundView'
+import React from 'react'
 
 export default function page() {
   return <NotFoundView />

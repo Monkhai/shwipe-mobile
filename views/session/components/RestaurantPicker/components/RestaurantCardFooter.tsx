@@ -1,6 +1,6 @@
 import NewHeart from '@/components/shapes/NewHeart'
 import { WhiteX } from '@/components/shapes/X'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import { BlurView } from 'expo-blur'

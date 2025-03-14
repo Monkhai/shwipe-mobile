@@ -1,4 +1,4 @@
-import { PrimaryButton, TertiaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton, TertiaryButton } from '@/components/ui/buttons/Buttons'
 import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'

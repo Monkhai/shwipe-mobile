@@ -1,4 +1,4 @@
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { FriendRequest } from '@/queries/friendRequests/friendRequestsTypes'
@@ -54,16 +54,12 @@ export default function FriendCard({ friend, onPress }: FriendCardProps) {
 }
 
 function FriendCardContent({ friend }: { friend: Friend | FriendRequest }) {
-  const theme = useColorScheme() ?? 'light'
   return (
-    <>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-        <Image source={{ uri: friend.photo_url }} style={{ width: 32, height: 32, borderRadius: 16 }} />
-        <UIText color="label" type="bodyEmphasized">
-          {friend.display_name}
-        </UIText>
-      </View>
-      <View></View> {/* Empty view to maintain the space-between in the parent */}
-    </>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+      <Image source={{ uri: friend.photo_url }} style={{ width: 32, height: 32, borderRadius: 16 }} />
+      <UIText color="label" type="bodyEmphasized">
+        {friend.display_name}
+      </UIText>
+    </View>
   )
 }

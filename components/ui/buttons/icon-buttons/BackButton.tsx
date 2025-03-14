@@ -1,7 +1,7 @@
 import { colors } from '@/constants/colors'
 import { Canvas, FitBox, Path } from '@shopify/react-native-skia'
 import { Platform, useColorScheme } from 'react-native'
-import { GeneralButton } from '../TextButtons'
+import { GeneralButton } from '../Buttons'
 import { router } from 'expo-router'
 import Animated, {
   BaseAnimationBuilder,

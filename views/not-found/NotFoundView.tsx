@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton } from '@/components/ui/buttons/Buttons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { BlurMask, Canvas, Circle, Group } from '@shopify/react-native-skia'

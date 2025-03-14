@@ -72,9 +72,9 @@ export function useGetOnboardingData() {
 
 export function useSetOnboardingData() {
   return useMutation({
-    mutationFn: (data: OnboardingData) => storageStore.setOnboardingData(data),
-    onSuccess: (_, args) => {
-      queryClient.setQueryData(queryKeystore.onboardingData, args)
+    mutationFn: storageStore.setOnboardingData,
+    onSuccess: (_, onboardingData) => {
+      queryClient.setQueryData(queryKeystore.onboardingData, onboardingData)
     },
   })
 }

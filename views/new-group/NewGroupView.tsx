@@ -1,5 +1,5 @@
 import UIText from '@/components/ui/UIText'
-import { PrimaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { useCreateNewGroup } from '@/queries/groups/useCreateNewGroup'
 import React from 'react'

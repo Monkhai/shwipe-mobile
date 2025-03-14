@@ -2,7 +2,7 @@ import Modal, { ModalRef } from '@/components/ui/Modal/Modal'
 import UIText from '@/components/ui/UIText'
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { updateFriendRequestAtom } from '@/jotai/updateFriendRequestAtom'
 import { FriendRequest } from '@/queries/friendRequests/friendRequestsTypes'
@@ -17,6 +17,8 @@ import { RefreshControl, ScrollView, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FriendCard from './components/FriendCard'
 import NewFriendButton from './components/NewFriendButton'
+import NewFriendModal from './components/NewFriendModal'
+import { useGetPublicId } from '@/queries/users/useGetPublicId'
 
 export default function FriendsView() {
   const insets = useSafeAreaInsets()
@@ -28,6 +30,7 @@ export default function FriendsView() {
     refetch: refetchReceivedRequests,
     isRefetching: isRefetchingReceivedRequests,
   } = useGetReceivedFriendRequests()
+  const { data: publicId } = useGetPublicId()
   const modalRef = useRef<ModalRef>(null)
   const requestModalRef = useRef<ModalRef>(null)
 
@@ -36,10 +39,6 @@ export default function FriendsView() {
     refetchSentRequests()
     refetchReceivedRequests()
   }, [refetchFriends, refetchSentRequests, refetchReceivedRequests])
-
-  function handleFriendCardPress(friendId: string) {
-    router.push(`/(auth)/profile/${friendId}`)
-  }
 
   function handleFriendRequestCardPress(request: FriendRequest) {
     setUpdateFriendRequest({
@@ -132,7 +131,7 @@ export default function FriendsView() {
             {friends && friends.length > 0 ? (
               <View style={{ gap: 10 }}>
                 {friends.map((friend, index) => (
-                  <FriendCard key={index} friend={friend} onPress={() => handleFriendCardPress(friend.id)} />
+                  <FriendCard key={index} friend={friend} onPress={() => {}} />
                 ))}
               </View>
             ) : (
@@ -147,15 +146,7 @@ export default function FriendsView() {
       </View>
 
       <Modal ref={modalRef}>
-        <View style={{ padding: 20 }}>
-          <UIText type="title">Add Friend</UIText>
-          <UIText type="body">This is a placeholder for the Add Friend functionality</UIText>
-          <GeneralButton onPress={() => modalRef.current?.close()}>
-            <UIText type="body" color="label">
-              Close
-            </UIText>
-          </GeneralButton>
-        </View>
+        <NewFriendModal publicId={publicId} />
       </Modal>
     </UIView>
   )

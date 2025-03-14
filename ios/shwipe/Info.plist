@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>myapp</string>
+          <string>shwipe</string>
           <string>com.shwipe.app</string>
         </array>
       </dict>

@@ -1,4 +1,4 @@
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import Skeleton from '@/components/ui/Skeleton'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'

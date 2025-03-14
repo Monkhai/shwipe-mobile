@@ -1,5 +1,5 @@
 import { AnimatedPressable } from '@/components/ui/buttons/AnimatedPressable'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { useDeleteAccount } from '@/queries/users/useDeleteAccount'

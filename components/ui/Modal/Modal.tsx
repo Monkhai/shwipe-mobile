@@ -24,7 +24,7 @@ const Modal = React.forwardRef<ModalRef, ModalProps>(({ children }, ref) => {
   const actualOriginY = useSharedValue(0)
   const backdropOpacity = useSharedValue(1)
 
-  const modalHeight = windowHeight * 0.35
+  const modalHeight = windowHeight * 0.5
 
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdropOpacity.value }))
 
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   modalBase: {
     position: 'absolute',
     bottom: 0,
-    height: '35%',
+    height: '50%',
   },
 })
 

@@ -8,7 +8,7 @@ import { FlatList, Image, Platform, Pressable, useColorScheme, useWindowDimensio
 import Animated, { LinearTransition, SlideInRight, SlideOutRight, StyleProps, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import UIText from '../../UIText'
-import { GeneralButton } from '../TextButtons'
+import { GeneralButton } from '../Buttons'
 
 const size = 32
 export function MenuIcon() {

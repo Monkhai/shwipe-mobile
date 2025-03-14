@@ -1,4 +1,4 @@
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import React from 'react'
 import { useColorScheme } from 'react-native'
 import Animated, { LinearTransition, ZoomIn, ZoomOut } from 'react-native-reanimated'

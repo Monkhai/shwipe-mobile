@@ -1,4 +1,4 @@
-import { PrimaryButton, TertiaryButton } from '@/components/ui/buttons/TextButtons'
+import { PrimaryButton, TertiaryButton } from '@/components/ui/buttons/Buttons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { GroupInvitationStatus } from '@/queries/groups/groupTypes'

@@ -1,4 +1,4 @@
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import { router } from 'expo-router'

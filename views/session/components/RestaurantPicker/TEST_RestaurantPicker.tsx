@@ -1,6 +1,6 @@
 import { WhiteHeart } from '@/components/shapes/Heart'
 import { WhiteX } from '@/components/shapes/X'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { Restaurant } from '@/queries/restaurants/restaurantTypes'
 import React, { useRef, useState } from 'react'

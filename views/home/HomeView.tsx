@@ -1,7 +1,7 @@
 import UIView from '@/components/ui/UIView'
 import ViewHeader from '@/components/ui/ViewHeader'
 import React, { useState } from 'react'
-import { Button, Pressable, StyleSheet, View, useColorScheme } from 'react-native'
+import { Button, Linking, Pressable, StyleSheet, View } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import HomeActionWidget from './components/HomeActionWidget'
@@ -11,13 +11,13 @@ import { router } from 'expo-router'
 
 export default function HomeView() {
   const insets = useSafeAreaInsets()
-  const theme = useColorScheme() ?? 'light'
   const [showMenu, setShowMenu] = useState(false)
   const [showActionWidget, setShowActionWidget] = useState(false)
+
   return (
     <UIView>
       <View style={{ paddingTop: insets.top + 16, gap: 32, flex: 1, width: '100%' }}>
-        <ViewHeader backButton={false} title="FindEats" description={getGreeting() + ', ready to eat?'} />
+        <ViewHeader backButton={false} title="Shwipe" description={getGreeting() + ', ready to eat?'} />
         <PopularGrid />
         {(showMenu || showActionWidget) && (
           <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, { zIndex: 3 }]}>

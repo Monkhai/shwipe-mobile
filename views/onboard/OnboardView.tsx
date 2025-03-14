@@ -1,5 +1,5 @@
 import { useSetOnboardingData } from '@/asyncStorage/storageStore'
-import { GeneralButton } from '@/components/ui/buttons/TextButtons'
+import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import BackgroundLayer from '@/views/onboard/components/BackgroundLayer'

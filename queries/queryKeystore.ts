@@ -1,6 +1,8 @@
 export const queryKeystore = {
+  publicId: ['publicId'],
   sessions: ['sessions'],
   users: ['users'],
+  user: (id: string) => ['users', id],
   friends: ['friends'],
   sentFriendRequests: ['sentFriendRequests'],
   receivedFriendRequests: ['receivedFriendRequests'],
