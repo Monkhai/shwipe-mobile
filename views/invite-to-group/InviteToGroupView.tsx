@@ -52,15 +52,7 @@ export default function InviteToGroupView({ groupId }: Props) {
 
   if (Platform.OS === 'android') {
     return (
-      <View style={androidStyle}>
-        <InviteToGroupViewUI
-          group={group}
-          friends={availableFriends}
-          onInvite={handleInvite}
-          onCancel={handleCancel}
-          isPending={isPending}
-        />
-      </View>
+      <InviteToGroupViewUI group={group} friends={availableFriends} onInvite={handleInvite} onCancel={handleCancel} isPending={isPending} />
     )
   }
 
@@ -78,8 +70,6 @@ export default function InviteToGroupView({ groupId }: Props) {
   }
 
   return (
-    <BlurView intensity={80} style={iosStyle}>
-      <InviteToGroupViewUI group={group} friends={availableFriends} onInvite={handleInvite} onCancel={handleCancel} isPending={isPending} />
-    </BlurView>
+    <InviteToGroupViewUI group={group} friends={availableFriends} onInvite={handleInvite} onCancel={handleCancel} isPending={isPending} />
   )
 }
