@@ -166,7 +166,7 @@ export const useWebsocketStore = create<WebSocketStore>()((set, get) => ({
       },
     })
     set({ __ws: ws })
-    ws.connect('ws://192.168.1.82:8080/ws')
+    ws.connect('ws://192.168.1.89:8080/ws')
   },
   sendMessage: (message: Omit<BaseClientMessage, 'token_id'>) => {
     const ws = useWebsocketStore.getState().__ws
