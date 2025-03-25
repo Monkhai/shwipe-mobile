@@ -4,6 +4,8 @@ import ViewHeader from '@/components/ui/ViewHeader'
 import { PrimaryButton } from '@/components/ui/buttons/Buttons'
 import { colors } from '@/constants/colors'
 import { useSendFriendRequest } from '@/queries/friendRequests/useSendFriendRequest'
+import { useUpdateFriendRequest } from '@/queries/friendRequests/useUpdateFriendRequest'
+import { useRemoveFriendship } from '@/queries/friends/useRemoveFriendship'
 import { useGetUser } from '@/queries/users/useGetUser'
 import { Ionicons } from '@expo/vector-icons'
 import { router, useLocalSearchParams } from 'expo-router'
@@ -20,6 +22,14 @@ export default function NewFriendView() {
   const { friend_id } = useLocalSearchParams<{ friend_id: string }>()
   const { data: user, isLoading: isUserLoading, error: userError } = useGetUser(friend_id)
   const { mutate: sendFriendRequest, isPending, isSuccess, isError, error } = useSendFriendRequest()
+  const {
+    mutate: removeFriendship,
+    isPending: isRemoveFriendshipPending,
+    isSuccess: isRemoveFriendshipSuccess,
+    isError: isRemoveFriendshipError,
+    error: removeFriendshipError,
+  } = useRemoveFriendship()
+
   const theme = useColorScheme() ?? 'light'
   const [requestSent, setRequestSent] = useState(false)
   const [friendRemoved, setFriendRemoved] = useState(false)
@@ -40,9 +50,14 @@ export default function NewFriendView() {
   const handleRemoveFriend = () => {
     if (!friend_id) return
 
-    // This is where we would call the API to remove friendship
-    // For now, we'll just fake the flow with a local state change
-    setFriendRemoved(true)
+    removeFriendship(
+      { friendId: friend_id },
+      {
+        onSuccess: () => {
+          setFriendRemoved(true)
+        },
+      }
+    )
   }
 
   const paddingTop = insets.top + 16
