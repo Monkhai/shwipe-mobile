@@ -1,31 +1,40 @@
 import UIText from '@/components/ui/UIText'
 import { colors } from '@/constants/colors'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { StyleSheet, useColorScheme, View } from 'react-native'
 import { GeneralButton } from '@/components/ui/buttons/Buttons'
 import QrCode from 'react-native-qrcode-svg'
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 
 interface Props {
   publicId: string | undefined
 }
 export default function NewFriendModal({ publicId }: Props) {
   const theme = useColorScheme() ?? 'light'
+  const [showQR, setShowQR] = useState(false)
 
-  // These functions do nothing for now as mentioned in requirements
-  const handleSearchPress = () => {}
-  const handleScanQRPress = () => {}
-  const handleShowQRPress = () => {}
+  function handleSearchPress() {}
+  function handleScanQRPress() {}
+  function handleShowQRPress() {
+    setShowQR(!showQR)
+  }
 
-  const link = `shwipe://new-friend/${publicId}`
+  const link = useMemo(() => {
+    return `shwipe://new-friend/${publicId}`
+  }, [publicId])
 
   return (
-    <View style={styles.container}>
+    <Animated.View layout={LinearTransition} style={styles.container}>
       <UIText type="largeTitle">Add Friends</UIText>
 
-      <QrCode value={link} size={200} />
+      {showQR && (
+        <Animated.View layout={LinearTransition} entering={FadeIn} exiting={FadeOut}>
+          <QrCode value={link} size={150} />
+        </Animated.View>
+      )}
 
-      <View style={styles.contentContainer}>
+      <Animated.View layout={LinearTransition} style={styles.contentContainer}>
         <View style={styles.mainButtonsContainer}>
           <GeneralButton style={styles.mainButton} onPress={handleScanQRPress}>
             <View style={styles.iconCircle}>
@@ -53,8 +62,8 @@ export default function NewFriendModal({ publicId }: Props) {
             Search by username
           </UIText>
         </GeneralButton>
-      </View>
-    </View>
+      </Animated.View>
+    </Animated.View>
   )
 }
 

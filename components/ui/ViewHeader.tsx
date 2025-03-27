@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import UIText from './UIText'
 import BackButton from './buttons/icon-buttons/BackButton'
 
@@ -12,7 +12,15 @@ interface ViewHeaderProps {
 
 export default function ViewHeader({ title, description, backButton = true, children }: ViewHeaderProps) {
   return (
-    <View style={{ paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', gap: 16, alignItems: 'center' }}>
+    <View
+      style={{
+        paddingHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 16,
+        alignItems: 'center',
+      }}
+    >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
         {backButton && <BackButton />}
         <View>
